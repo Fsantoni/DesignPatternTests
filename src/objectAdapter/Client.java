@@ -1,4 +1,4 @@
-package ClassAdapter;
+package objectAdapter;
 
 public class Client {
 
