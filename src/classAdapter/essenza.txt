@@ -1,0 +1,27 @@
+Class Adapter:
+ 
+adattare un preesistente oggetto alla interfaccia voluta.
+ 
+L'adattatore e' un' implementazione della preesistente classe, CONTIENE metodi della nuova interfaccia E metodi vecchi
+ 
+ATTENZIONE: C++ con private extension IMPEDISCE l'utilizzo dei vecchi metodi. In Java sono ANCORA UTILIZZABILI
+
+Non fattibile se preesistente e' *final*
+Target DEVE essere interface
+ 
+ 
+ 
+Permette un metodo la cui funzionalità si può ottenere dall’Adaptee,previa esecuzione di alcune operazioni
+
+Permette un metodo la cui funzionalità si può ottenere dall’Adaptee tramite l’invocazione di un’insieme dei suoi metodi
+
+Permette un metodo la cui funzionalità si ricava direttamente da un metodo dell’Adaptee, che ha soltanto una firma diversa (fra le parentesi)
+
+Permette un metodo la cui funzionalità si ricava direttamente da un metodo dell’Adaptee, e con la stessa firma
+
+Permette metodi che aggiungono nuove operazioni che non si ricavano dai metodi dell’Adaptee aggiungendo variabili
+ 
+ 
+ 
+ Possibili test: controllare abbia classe vecchia e nuova
+ 					

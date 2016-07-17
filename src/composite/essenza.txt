@@ -1,0 +1,22 @@
+Composite:
+
+Consente la costruzione di gerarchie di oggetti composti. 
+ 
+Gli oggetti composti possono essere realizzati da oggetti singoli, oppure da altri oggetti composti.
+
+Questo pattern è utile nei casi in cui si vuole:
+- Rappresentare gerarchie di oggetti tutto-parte.
+- Essere in grado di ignorare le differenze tra oggetti singoli e oggetti
+composti.
+ 
+ 
+ 
+ 
+ Composite e Leaf ESTENDONO la classe astratta, la gerarchia e' realizzata dalle collezioni contenute nei composite
+ non si hanno piu' livelli di ereditarieta' (in Java 1 solo)
+ 
+ Possibili test: controllare non ci siano problemi se ho composti o singoli
+ 
+ composto con composti
+ eseguo comandi di composti su foglia
+ 					

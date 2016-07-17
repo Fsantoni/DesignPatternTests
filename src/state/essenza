@@ -1,0 +1,21 @@
+State
+
+
+Permette ad un oggetto di alterare il suo comportamento quando il suo stato interno cambia
+
+Usa classi, non costanti, per rappresentare stati  -> permette di evitare tanti pezzi di codice dipendenti da tali costanti
+
+Le classi possono aggiornarsi in modo diverso e contenere differenti funzionalita', difficilmente implementabili con costanti
+
+
+
+
+Ogni ConcreteState e' un particolare modo di svolgere le operazioni individuate nell'interfaccia State.
+
+E' necessario mantenere un riferimento allo StateContext, che e' l'interfaccia con gli utenti esterni.
+
+
+Se non si usa una selezione di fissi stati interni, si ha una continua creazione di nuovi stati.
+
+
+Possibili test: controlla che sia cambiato lo stato interno ogni 1 e poi 2 passi
