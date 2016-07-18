@@ -1,0 +1,17 @@
+Innanzitutto
+
+separare tests riguardo:
+
+1 - sui metodi
+2 - sulle classi
+3 - sull'interazione fra classi
+4 - Prospettiva funzionale: use cases (forse coverage analysis)
+
+
+4 : esecuzione funzioni principali di classi diverse
+es.aggiungiEsame, trovaDocente, elencaMaterie    -> hanno diversi sequence diagr
+
+
+possibili realizzazioni multiple concrete di interfaccie e presa visione di stesso comportamento
+
+es. 2 adapter per tipi diversi rispondono entrambi allo stesso tipo di chiamata
