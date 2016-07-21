@@ -7,6 +7,10 @@ public class ClassAdapter implements Target{
 		this.adaptee = new Adaptee();
 	}
 	
+	public ClassAdapter(Adaptee adaptee){
+		this.adaptee = adaptee;
+	}
+	
 	public void setIntResult(int newVal){
 		adaptee.setBooleanResult((newVal==0?false:true));
 	}

@@ -1,9 +1,23 @@
+Info Utili
+	1 Il  flusso di controllo dipende da quale funzione è chiamata nel main
+	2 Le relazioni fra classi possono non essere esplicitate in un puntatore o variabile, ma dipendere dai parametri passati nelle chiamate ai loro metodi, 
+	3 Topologia ovvero rapporti fra oggetti è dinamica: solo alla creazione di un oggetto viene deciso quale altro oggetto esso contenga o con quali altri oggetti si rapporti
+	4 Stato e concorrenza: le variabili di oggetti mantengono stato, ed hanno durata di vita globale <- DA TESTARE QUASI SEMPRE
+	5 Polimorfismo: porta complicazioni e incertezze nell'esecuzione per la presenza di differenti "stesse" funzioni, DA TESTARE
+
+
+
 Adapter:
 
-data una classe legacy voglio permetterne l'accesso con una particolare interfaccia ed eventualmente aggiungere funzionalità 
+data una classe legacy(CHE SUPPONGO CORRETTA) voglio permetterne l'accesso con una particolare interfaccia ed eventualmente aggiungere funzionalità 
 
 - Class Adapter
  	- la nuova classe non è istanza della legacy o del interfaccia-> va testato che tipo di classe è Adapter rispetto Adaptee
  	- l'interfaccia non permette di operare sulla classe -> vanno testate i metodi pubblici dell'interfaccia TargetInterfaces
 
  -Object Adapter
+ 	-l'interfaccia non permette di operare sulla classe -> vanno testati i metodi pubblici
+ 	-l'oggetto contenuto può avere overloads, comportamenti dei metodi pubblici che modificano possono non essere determinati 
+ 		testare il suo polimorfismo
+ 
+ 
