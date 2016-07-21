@@ -16,6 +16,57 @@ data una classe legacy(CHE SUPPONGO CORRETTA) voglio permetterne l'accesso con u
  -Object Adapter
  	-l'interfaccia non permette di operare sulla classe -> vanno testati i metodi pubblici
  	-l'oggetto contenuto può avere overloads, comportamenti dei metodi pubblici che modificano possono non essere determinati 
- 		testare il suo polimorfismo
+ 		testare il suo polimorfismo, (in particolare se ha variabili interne)
+ 		
+ State:
+ 
+ data una classe ne voglio condizionare il comportamento in base a uno stato interno: non lo rappresento come costante con più valori con significato fissato ma come molteplici differenti classi con differenti implementazioni dei metodi della classe madre.
+ Viene fatta una callback dalle figlie alla madre per dirle di cambiare il propio stato interno
+ 
+ 	-è importante che l'esecuzione dipenda dallo stato interno, che deve cambiare correttamente 
+ 	- meno interesse nel possibile stato interno delle classi "stato"
+ 
+ Composite:
+ Scopo è trattare uniformemente e trasparentemente oggetti composti ed oggetti singoli tramite stessa interfaccia.
+ per -gerarchie tutto-parte
+ 	 -stesso trattamento composti e singoli
+ Operazioni su oggetti composti vengono eseguite su ogni elemento interno (o con qualche altra logica) 
+ 
+ gerarchie d'oggetti -> voglio creare una struttura topologica complessa
+ trattare alla stessa maniera->funzione operazione su entrambi
+ 
+ 	- exception must be executed -> consistent use of the methods in the topology test di operazione() su topologia e test di add() sul entrambi i casi 
+ 
+ Observer:
+ Notifica a più oggetti di un cambio di stato
+ 
+ 	-importa che la notifica venga fatta, gli errori sulla notifica avvengono se abstract_observers	ha problemi
+ 	-se ho cambiamento ogni observer che si è registrato deve essere notificato
+ 	
+ 
+ 
+ Proxy:
+ classe utilizzata come proxy per un altra la cui creazione o accesso richiedono costi elavati, o di cui certe azioni possono essere svolte separatamente senza costo
+ 
+ 	-il proxy mi deve fornire effettivamente soluzione, devo poter creare la risorsa/eseguire il task costoso 
+ 	- criticità NON in realSubject che si pensa apposto MA nella variabili del Proxy 
+ 
+ 
+ 
+ Decorator:
+ aggiunge dinamicamente responsabilità, capacità extra, dettagli alla normale esecuzione delle precedenti:
+ ogni shell esegue l'operazione del suo contenuto possibilmente preceduta o succeduta da aggiunte.
+ 
+ 	-voglio funzioni tutto se creo il mio trenino, è principalmente problematica la topologia, da testare che la successione di metodi non mi rompa nulla  
+ 
+ 
+ Visitor: 
+ dato un insieme di classi eterogenee voglio applicare per ognuna di esse una funzione con specifiche implementazioni
+ Uso una classe Visitor contenente multiple istanze di "visita" e chiamo ogni elemento affinche ne individui la corretta
+ 
+ 	- di problematico ha l'individuazione e la scelta della corretta implementazione: se ho un nuovo tipo a cui lo applico? test che vi siano tutte le implementazioni su Watcher:
+ 	 -	che accade se X eredita da Y e Y è Visitabile? controllare che venga applicata visit su X e non visit su Y?
+ 	
+ 	
  
  
