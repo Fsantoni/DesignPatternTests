@@ -32,8 +32,12 @@ data una classe legacy(CHE SUPPONGO CORRETTA) voglio permetterne l'accesso con u
  	 -stesso trattamento composti e singoli
  Operazioni su oggetti composti vengono eseguite su ogni elemento interno (o con qualche altra logica) 
  
- gerarchie d'oggetti -> voglio creare una struttura topologica complessa
- trattare alla stessa maniera->funzione operazione su entrambi
+ se fo test operation() su lista di 1 elemento dopo remove chissene perchè posso farlo su lista vuota.
+ Non penso sia necessario fare test su operation() e poi su add/remove() in quanto 1) sono indipendenti (add e remove non rompono la lista) e 2) corrispondono a casi d'uso distint
+ 
+  
+ 	- gerarchie d'oggetti -> voglio creare una struttura topologica complessa
+ 		trattare alla stessa maniera->funzione operazione su entrambi
  
  	- exception must be executed -> consistent use of the methods in the topology test di operazione() su topologia e test di add() sul entrambi i casi 
  
