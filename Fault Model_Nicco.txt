@@ -23,48 +23,40 @@ Decorator:
  aggiunge dinamicamente responsabilità ad un oggetto in modo da estenderne le funzionalità. E' visto come evoluzione
  del Pattern Proxy verso una struttura ripetitiva.
  
- - posso testare Decorator: verifico se essa possiede un riferimento all'oggetto Component
- - testo che tipo di classe è Decorator rispetto a Component
- - testo  l'oggetto di Concrete Component, per vedere se ha le caratteristiche per l'aggiunta di resp.(???)
- - testo metodi pubblici di Concrete Decorator, se modificano Component (forse grande cazzata)
+ - posso testare Decorator: verifico se essa possiede un riferimento all'oggetto Component -> (PERDO LA POSSIBILITà DI AGGIUNGERE NUOVE FUNZIONALITà)
+ - testo che tipo di classe è Decorator rispetto a Component -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
  - sarebbe interessante fare una valutazione della memoria occupata al crescere di lista ogg.
- - test su polimorfismo
- - test su topologia
+ - test su topologia -> (VOGLIO VEDERE COME SONO I SUCCESSIVI METODI)
  
 Proxy:
  
  fornisce rappresentazione di un oggetto di accesso difficle o che richiede un tempo importante per l'accesso.
  
- - posso testare che tipo di classe è Proxy rispetto a SubjectInterface
- - test su polimorfismo (ossia sulla ereditarietà)
- - test sull'accesso al RealSubject
- - test sulla topologia dell'oggetto instanziato dal RealSubject
+ - posso testare che tipo di classe è Proxy rispetto a SubjectInterface -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
+ - test sull'accesso al RealSubject -> (DEVO AVERE GARANZIA DI AVER ACCESSO ALLA RISORSA IN QUESTIONE)
+ - CRITICITà SULLA CLASSE (PROXYFILEHANDLER) CHE SI DEVE SOSTITUIRE A FILEHANDLER X GESTIONE RICHIESTE PIù SEMPLICI
  
 Observer:
  
  consente la definizione di associazioni di dipenenza di molti oggetti verso di uno, in modo che se quest'ultimo
  cambia il suo stato, tutti gli altri sono notificati e aggiornati automaticamente
  
- - test sulla responsabilità dell'observer 
- - test metodi attach/detach
- - testo che tipo di classe è ConcreteSubject rispetto a Subject
- - testo i metodi di aggiornamento di ConcreteObserver
+ - test metodi attach/detach -> (COME ULTIMO RIGA, PERCHè OGNI OGG. OBSERVER DEVE ESSERE NOTIFICATO)
+ - testo che tipo di classe è ConcreteSubject rispetto a Subject -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
+ - testo i metodi di aggiornamento di ConcreteObserver -> (VOGLIO GARANZIA CHE IL FINE ULTIMO, LA NOTIFICA SIA SODDISFATTO)
  
 Visitor:
  
  rappresenta un'operazione da essere eseguita in una collezione di elementi di una struttura.
  
- - testo che tipo di classe è ConcreteVisitor rispetto a Visitor
- - testo le operazioni di visita, implementate di Visitor (????)
- - test su operazione accept e sul suo riferimento Visitor passato come argomento
- - test su ObjectStructure sulla possibilità di accettare la visita dei suoi componenti
-  
+ - testo che tipo di classe è ConcreteVisitor rispetto a Visitor -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
+ - IL FINE ULTIMO è SCORRERE UNA LISTA, Ok! MA SE AGGIUNGO UN NUOVO ELEMENTO, A CHI LO APPLICO?
+ 	
 State:
  
 consente ad un oggetto modificare il suo comportamento quando il suo stato interno cambia
 
-- testo che tipo di classe è ConcreteState rispetto a State
-- testo l'oggeto di Context che deve essere riferimento per ConcreteState
+- testo che tipo di classe è ConcreteState rispetto a State -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
 - posso testare una classe tentando il condizionamento del suo comportamento in base ad uno stato interno
 
 
@@ -72,7 +64,7 @@ Composite: (finire)
 
 consente la costruzione di gerarchie di oggetti composti
 
-- testo che tipo di classe è Composite rispetto a Component
+- testo che tipo di classe è Composite rispetto a Component -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
 - 
 - 
 - 
