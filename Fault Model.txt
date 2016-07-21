@@ -5,8 +5,6 @@ Info Utili
 	4 Stato e concorrenza: le variabili di oggetti mantengono stato, ed hanno durata di vita globale <- DA TESTARE QUASI SEMPRE
 	5 Polimorfismo: porta complicazioni e incertezze nell'esecuzione per la presenza di differenti "stesse" funzioni, DA TESTARE
 
-
-
 Adapter:
 
 data una classe legacy(CHE SUPPONGO CORRETTA) voglio permetterne l'accesso con una particolare interfaccia ed eventualmente aggiungere funzionalità 
