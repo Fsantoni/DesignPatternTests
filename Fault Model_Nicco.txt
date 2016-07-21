@@ -60,13 +60,13 @@ consente ad un oggetto modificare il suo comportamento quando il suo stato inter
 - posso testare una classe tentando il condizionamento del suo comportamento in base ad uno stato interno
 
 
-Composite: (finire)
+Composite: 
 
 consente la costruzione di gerarchie di oggetti composti
 
 - testo che tipo di classe è Composite rispetto a Component -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
-- 
-- 
-- 
+- VOGLIO CHE IO ABBIA LA POSSIBILITà DI TRATTARE NELLO STESSO MODO SIA OGG. SINGOLI CHE OGG. COMPOSTI
+- VOLENDO UNA STRUTTURA DI OGGETI CIò HA COME CRITICITà CHE MI SI GENERINO GERARCHI DI OGGGETTI
+IN PARTICOLARE QUINDI MI RIFACCIO AI CASI SOPRA
  
  
