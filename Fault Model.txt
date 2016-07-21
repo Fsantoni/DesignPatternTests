@@ -69,7 +69,7 @@ data una classe legacy(CHE SUPPONGO CORRETTA) voglio permetterne l'accesso con u
  Uso una classe Visitor contenente multiple istanze di "visita" e chiamo ogni elemento affinche ne individui la corretta
  
  	- di problematico ha l'individuazione e la scelta della corretta implementazione: se ho un nuovo tipo a cui lo applico? test che vi siano tutte le implementazioni su Watcher:
- 	 -	che accade se X eredita da Y e Y è Visitabile? controllare che venga applicata visit su X e non visit su Y?
+ 	 -	//che accade se X eredita da Y e Y è Visitabile? controllare che venga applicata visit su X e non visit su Y?
  	
  	
  

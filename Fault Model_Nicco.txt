@@ -15,58 +15,49 @@ data una classe legacy(CHE SUPPONGO CORRETTA) voglio permetterne l'accesso con u
 
  -Object Adapter
  	-l'interfaccia non permette di operare sulla classe -> vanno testati i metodi pubblici
- 	-l'oggetto contenuto può avere overloads, comportamenti dei metodi pubblici che modificano possono non essere determinati 
- 		testare il suo polimorfismo ( in particolare se ha variabili interne)
+ 	-l'oggetto contenuto non è un legacy.
+ 	-i metodi dell'oggetto contenuto, poichè considero solo i vechhi, per gli overloads danno problemi
 
 Decorator:
  
  aggiunge dinamicamente responsabilità ad un oggetto in modo da estenderne le funzionalità. E' visto come evoluzione
  del Pattern Proxy verso una struttura ripetitiva.
  
- - posso testare Decorator: verifico se essa possiede un riferimento all'oggetto Component -> (PERDO LA POSSIBILITà DI AGGIUNGERE NUOVE FUNZIONALITà)
- - testo che tipo di classe è Decorator rispetto a Component -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
- - sarebbe interessante fare una valutazione della memoria occupata al crescere di lista ogg.
- - test su topologia -> (VOGLIO VEDERE COME SONO I SUCCESSIVI METODI)
+ - errore nel riferimento, nullo o sbagliato. La serie di decorazioni è tagliata prematuramente o inesatta
  
 Proxy:
  
  fornisce rappresentazione di un oggetto di accesso difficle o che richiede un tempo importante per l'accesso.
  
- - posso testare che tipo di classe è Proxy rispetto a SubjectInterface -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
- - test sull'accesso al RealSubject -> (DEVO AVERE GARANZIA DI AVER ACCESSO ALLA RISORSA IN QUESTIONE)
- - CRITICITà SULLA CLASSE (PROXYFILEHANDLER) CHE SI DEVE SOSTITUIRE A FILEHANDLER X GESTIONE RICHIESTE PIù SEMPLICI
+ - accesso al RealSubject o sua creazione porta a errori
  
 Observer:
  
  consente la definizione di associazioni di dipenenza di molti oggetti verso di uno, in modo che se quest'ultimo
  cambia il suo stato, tutti gli altri sono notificati e aggiornati automaticamente
  
- - test metodi attach/detach -> (COME ULTIMO RIGA, PERCHè OGNI OGG. OBSERVER DEVE ESSERE NOTIFICATO)
- - testo che tipo di classe è ConcreteSubject rispetto a Subject -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
- - testo i metodi di aggiornamento di ConcreteObserver -> (VOGLIO GARANZIA CHE IL FINE ULTIMO, LA NOTIFICA SIA SODDISFATTO)
+ - attach/detach non funzionano (se aggiorno, aggiorno tutti quelli che hanno fatto attach e non hanno ancora fatto detach)
+ - notify non viene chiamato
+ - update non esegue una volta chiamato
+ 
  
 Visitor:
  
  rappresenta un'operazione da essere eseguita in una collezione di elementi di una struttura.
  
- - testo che tipo di classe è ConcreteVisitor rispetto a Visitor -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
- - IL FINE ULTIMO è SCORRERE UNA LISTA, Ok! MA SE AGGIUNGO UN NUOVO ELEMENTO, A CHI LO APPLICO?
+ - Se viene inserita una nuova classe Visitable ma non ho il corrispondente visit
  	
 State:
  
 consente ad un oggetto modificare il suo comportamento quando il suo stato interno cambia
 
-- testo che tipo di classe è ConcreteState rispetto a State -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
-- posso testare una classe tentando il condizionamento del suo comportamento in base ad uno stato interno
+- la classe non si comporta come il suo stato interno vorrebbe
 
 
 Composite: 
 
 consente la costruzione di gerarchie di oggetti composti
 
-- testo che tipo di classe è Composite rispetto a Component -> (NUOVA CLASSE NON E' ISTANZA LEGACY)
-- VOGLIO CHE IO ABBIA LA POSSIBILITà DI TRATTARE NELLO STESSO MODO SIA OGG. SINGOLI CHE OGG. COMPOSTI
-- VOLENDO UNA STRUTTURA DI OGGETI CIò HA COME CRITICITà CHE MI SI GENERINO GERARCHI DI OGGGETTI
-IN PARTICOLARE QUINDI MI RIFACCIO AI CASI SOPRA
- 
+- operation() su strutture particolari non funziona
+- add e remove si comportano in maniera non conforme se applicati 
  
