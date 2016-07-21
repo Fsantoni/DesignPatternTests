@@ -1,0 +1,9 @@
+Adapter:
+
+data una classe legacy voglio permetterne l'accesso con una particolare interfaccia ed eventualmente aggiungere funzionalità 
+
+- Class Adapter
+ 	- la nuova classe non è istanza della legacy o del interfaccia-> va testato che tipo di classe è Adapter rispetto Adaptee
+ 	- l'interfaccia non permette di operare sulla classe -> vanno testate i metodi pubblici dell'interfaccia TargetInterfaces
+
+ -Object Adapter
