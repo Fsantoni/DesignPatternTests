@@ -5,7 +5,20 @@ Info Utili
 	4 Stato e concorrenza: le variabili di oggetti mantengono stato, ed hanno durata di vita globale <- DA TESTARE QUASI SEMPRE
 	5 Polimorfismo: porta complicazioni e incertezze nell'esecuzione per la presenza di differenti "stesse" funzioni, DA TESTARE
 
- Decorator:
+Adapter:
+
+data una classe legacy(CHE SUPPONGO CORRETTA) voglio permetterne l'accesso con una particolare interfaccia ed eventualmente aggiungere funzionalità 
+
+- Class Adapter
+ 	- la nuova classe non è istanza della legacy o del interfaccia-> va testato che tipo di classe è Adapter rispetto Adaptee
+ 	- l'interfaccia non permette di operare sulla classe -> vanno testate i metodi pubblici dell'interfaccia TargetInterfaces
+
+ -Object Adapter
+ 	-l'interfaccia non permette di operare sulla classe -> vanno testati i metodi pubblici
+ 	-l'oggetto contenuto può avere overloads, comportamenti dei metodi pubblici che modificano possono non essere determinati 
+ 		testare il suo polimorfismo ( in particolare se ha variabili interne)
+
+Decorator:
  
  aggiunge dinamicamente responsabilità ad un oggetto in modo da estenderne le funzionalità. E' visto come evoluzione
  del Pattern Proxy verso una struttura ripetitiva.
@@ -18,7 +31,7 @@ Info Utili
  - test su polimorfismo
  - test su topologia
  
- Proxy:
+Proxy:
  
  fornisce rappresentazione di un oggetto di accesso difficle o che richiede un tempo importante per l'accesso.
  
@@ -27,7 +40,7 @@ Info Utili
  - test sull'accesso al RealSubject
  - test sulla topologia dell'oggetto instanziato dal RealSubject
  
- Observer:
+Observer:
  
  consente la definizione di associazioni di dipenenza di molti oggetti verso di uno, in modo che se quest'ultimo
  cambia il suo stato, tutti gli altri sono notificati e aggiornati automaticamente
@@ -37,7 +50,7 @@ Info Utili
  - testo che tipo di classe è ConcreteSubject rispetto a Subject
  - testo i metodi di aggiornamento di ConcreteObserver
  
- Visitor:
+Visitor:
  
  rappresenta un'operazione da essere eseguita in una collezione di elementi di una struttura.
  
@@ -46,5 +59,22 @@ Info Utili
  - test su operazione accept e sul suo riferimento Visitor passato come argomento
  - test su ObjectStructure sulla possibilità di accettare la visita dei suoi componenti
   
+State:
+ 
+consente ad un oggetto modificare il suo comportamento quando il suo stato interno cambia
+
+- testo che tipo di classe è ConcreteState rispetto a State
+- testo l'oggeto di Context che deve essere riferimento per ConcreteState
+- posso testare una classe tentando il condizionamento del suo comportamento in base ad uno stato interno
+
+
+Composite: (finire)
+
+consente la costruzione di gerarchie di oggetti composti
+
+- testo che tipo di classe è Composite rispetto a Component
+- 
+- 
+- 
  
  
