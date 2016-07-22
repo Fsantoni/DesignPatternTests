@@ -4,14 +4,10 @@ package objectAdapter;
 public class ObjectAdapter implements Target{
 	
 	private Adaptee adaptee;
-	public ObjectAdapter(){
-		this.adaptee = new Adaptee();
-	}
-	
-	public void setAdaptee(Adaptee adaptee){
+	public ObjectAdapter(Adaptee adaptee){
 		this.adaptee = adaptee;
 	}
-	
+		
 	public void setIntResult(int newVal){
 		adaptee.setBooleanResult((newVal==0?false:true));
 	}

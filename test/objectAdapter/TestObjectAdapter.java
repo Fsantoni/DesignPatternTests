@@ -1,70 +1,35 @@
 package objectAdapter;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.Test;
 
 public class TestObjectAdapter {
-		
-	//****** Unit Tests ******//	
-		
-		@Test
-		public final void unitTestAdapterSetIntGetInt() {
+	
+	@Test
+	public final void testAdapterSetIntGetInt() {
 
-			ObjectAdapter adapt = new ObjectAdapter();
-			adapt.setIntResult(0);
-			int result=adapt.getIntResult();
+		ObjectAdapter adapt = new ObjectAdapter(new Adaptee());
+		adapt.setIntResult(0);
+		int result=adapt.getIntResult();
 
-			assertEquals(result, 0);
-		}
-
-		@Test
-		public final void unitTestAdapterSetAdapteeGetInt() {
-
-			ObjectAdapter adapt = new ObjectAdapter();
-			adapt.setIntResult(0);
-			int result=adapt.getIntResult();
-
-			assertEquals(result, 0);
-		}
-
-		
-		
-	//****** Integation Tests ******//	
-		
-		@Test
-		public final void testAdapterSetIntGetInt() {
-
-			ObjectAdapter adapt = new ObjectAdapter();
-			adapt.setIntResult(0);
-			int result=adapt.getIntResult();
-
-			assertEquals(result, 0);
-		}
-
-		@Test
-		public final void testAdapterSetAdapteeGetInt() {
-
-			ObjectAdapter adapt = new ObjectAdapter();
-			adapt.setAdaptee(new Adaptee());
-			int result=adapt.getIntResult();
-
-			assertEquals(result, 0);
-		}
-
-
-		@Test
-		public final void testAdapterSetAdapteeGetInt2() {
-
-			ObjectAdapter adapt = new ObjectAdapter();
-			Adaptee a =new AdapteeOpposite();
-			
-			adapt.setAdaptee(a);
-			int result=adapt.getIntResult();
-
-			assertEquals(result, 0);
-		}
-
-		
+		assertEquals(0,result);
 	}
+
+	
+
+	@Test
+	public final void testAdapterGetInt2() {
+		
+		Adaptee a =new AdapteeOpposite();
+		ObjectAdapter adapt = new ObjectAdapter(a);
+		
+			int result=adapt.getIntResult();
+
+		assertEquals(0,result);
+	}
+
+
+}
 

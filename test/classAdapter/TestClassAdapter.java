@@ -16,7 +16,7 @@ public class TestClassAdapter {
 		adapt.setIntResult(0);
 		int result=adapt.getIntResult();
 
-		assertEquals(result, 0);
+		assertEquals(0,result);
 	}
 
 	@Test
@@ -26,7 +26,7 @@ public class TestClassAdapter {
 		adapt.setBooleanResult(true);
 		int result=adapt.getIntResult();
 
-		assertEquals(result, 1);
+		assertEquals(1,result);
 	}
 	
 	
@@ -40,7 +40,7 @@ public class TestClassAdapter {
 		adapt.setIntResult(0);
 		int result=adapt.getIntResult();
 
-		assertEquals(result, 0);
+		assertEquals(0,result);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class TestClassAdapter {
 		adapt.setBooleanResult(true);
 		int result=adapt.getIntResult();
 
-		assertEquals(result, 1);
+		assertEquals(1,result);
 	}
 
 	

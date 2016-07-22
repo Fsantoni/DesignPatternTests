@@ -27,10 +27,17 @@ si considerano defs ogni modifica dello stato interno dell'oggetto "adaptee" e u
 
 Adapter() getInt() <- no, contenuto sotto
 Adapter SetInt getInt <- SI
-Adapter SetAdaptee getInt <- Si
 
 In particolare si è dato un test con variabile che eredita da Adaptee
 
 
 Composite:
 
+testo la variabile "children", vettore contenente le parti di Composite
+
+getValue lo utilizza come Use, essendo solo a destra non implica però che sia solo use, semplicemente i metodi chiamati su esso non danno side effects.
+
+Component add getchild
+Component add getValue
+Component add add remove getChild
+Component add add remove getValue 
