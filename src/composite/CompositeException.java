@@ -1,10 +1,10 @@
 package composite;
 
-public class SinglePartException extends Exception {
+public class CompositeException extends Exception {
 	static final long serialVersionUID = 1;
 	
 	
-	 public SinglePartException(String message) {
+	 public CompositeException(String message) {
 	        super(message);
 	    }
 

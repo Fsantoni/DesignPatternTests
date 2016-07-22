@@ -1,8 +1,4 @@
-Object adapter:
-
-si testa anche adapteeOpposite, il test risulta errato in quanto non possiamo conoscere l'effettiva topologia durante l'esecuzione.
-Risulterebbe corretto se fossero approntate misure per trattare estensioni dell'Adaptee o se lo stesso fosse dichiarato "final"
-
+Class Adapter:
 si testa solo la variabile interna boolean che corrisponde allo stato, con criterio "all uses"
 
 considerati i path di esecuzione si hanno
@@ -14,4 +10,27 @@ Adapter() setInt getInt <- si caso nuovo
 Adapter() setInt getBool <- non legacy MA contenuto sopra
 
 Adapter() setbool getInt <- SI, caso nuovo 
-Adapter() setbool getbool <- LEGACY, no
+Adapter() setbool getbool <- LEGACY, e in ogni caso lo stesso contenuto sopra
+
+
+Sono stati fatti sia unit test che integration tests, in particolare NON ci sono classi di cui fare mocks in quanto 1) l'unico oggetto istanziato è l'adapter da testare e 2)l'unica altra classe implementata è legacy, quindi già sicura e testata per ipotesi
+
+
+Object adapter:
+
+si testa anche adapteeOpposite, il test risulta errato in quanto non possiamo conoscere l'effettiva topologia durante l'esecuzione.
+Risulterebbe corretto se fossero approntate misure per trattare estensioni dell'Adaptee o se lo stesso fosse dichiarato "final"
+
+Testiamo quindi direttamente la variabile di stato adaptee
+
+si considerano defs ogni modifica dello stato interno dell'oggetto "adaptee" e use ogni "utilizzo" di campi o metodi interni dell'oggetto (avesse metodi o campi statici, corrisponderebbero ad elementi della classe, che dovrei testare separatamente)  
+
+Adapter() getInt() <- no, contenuto sotto
+Adapter SetInt getInt <- SI
+Adapter SetAdaptee getInt <- Si
+
+In particolare si è dato un test con variabile che eredita da Adaptee
+
+
+Composite:
+

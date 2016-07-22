@@ -1,13 +1,14 @@
 package objectAdapter;
 
-public class ClassAdapter implements Target{
+
+public class ObjectAdapter implements Target{
 	
 	private Adaptee adaptee;
-	public ClassAdapter(){
+	public ObjectAdapter(){
 		this.adaptee = new Adaptee();
 	}
 	
-	public ClassAdapter(Adaptee adaptee){
+	public void setAdaptee(Adaptee adaptee){
 		this.adaptee = adaptee;
 	}
 	
@@ -16,6 +17,11 @@ public class ClassAdapter implements Target{
 	}
 
 	public int getIntResult(){
-		return (adaptee.getBooleanResult()?1:0);
+		boolean b= adaptee.getBooleanResult();
+		if(adaptee instanceof AdapteeOpposite){
+			b=!b;
+		}
+		
+		return (b?1:0);
 	}
 }

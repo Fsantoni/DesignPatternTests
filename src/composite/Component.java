@@ -2,19 +2,19 @@ package composite;
 
 public abstract class Component {
 
-	public float multiplicity;
-	public Component(float val){
-		multiplicity = val;
+	protected float price;
+	public Component(float p){
+		price = p;
 	}
 	public abstract float getValue();
 	
-	public void add(Component c) throws SinglePartException {
+	public void add(Component c) throws CompositeException {
 		if (this instanceof Leaf)
-			throw new SinglePartException("execution of add on Leaf");
+			throw new CompositeException("execution of add on Leaf");
 	}
-	public void remove(Component c) throws SinglePartException{
+	public void remove(Component c) throws CompositeException{
 		if (this instanceof Leaf)
-			throw new SinglePartException("execution of remove on Leaf");
+			throw new CompositeException("execution of remove on Leaf");
 	}
 	
 	//returns null for LEAF requests
