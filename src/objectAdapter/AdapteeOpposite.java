@@ -1,15 +1,13 @@
 package objectAdapter;
 
+
 public class AdapteeOpposite extends Adaptee{
 	
-	private boolean current=true;
+	private boolean current=false;
 	
-	public void setBooleanResult(boolean newValue){
-		current= !newValue;
-	}
-	
+
 	public boolean getBooleanResult(){
-		return current;
+		return !current;
 	};
 
 }

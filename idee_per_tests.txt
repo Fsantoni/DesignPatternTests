@@ -1,17 +1,17 @@
-Innanzitutto
+Object adapter:
 
-separare tests riguardo:
+si testa anche adapteeOpposite, il test risulta errato in quanto non possiamo conoscere l'effettiva topologia durante l'esecuzione.
+Risulterebbe corretto se fossero approntate misure per trattare estensioni dell'Adaptee o se lo stesso fosse dichiarato "final"
 
-1 - sui metodi
-2 - sulle classi
-3 - sull'interazione fra classi
-4 - Prospettiva funzionale: use cases (forse coverage analysis)
+si testa solo la variabile interna boolean che corrisponde allo stato, con criterio "all uses"
 
+considerati i path di esecuzione si hanno
 
-4 : esecuzione funzioni principali di classi diverse
-es.aggiungiEsame, trovaDocente, elencaMaterie    -> hanno diversi sequence diagr
+Adapter() GetInt <- il caso è ripetuto
+Adapter() getBool  <- non è legacy, adapter() è nuovo, ma il caso è ripetuto 
 
+Adapter() setInt getInt <- si caso nuovo
+Adapter() setInt getBool <- non legacy MA contenuto sopra
 
-possibili realizzazioni multiple concrete di interfaccie e presa visione di stesso comportamento
-
-es. 2 adapter per tipi diversi rispondono entrambi allo stesso tipo di chiamata
+Adapter() setbool getInt <- SI, caso nuovo 
+Adapter() setbool getbool <- LEGACY, no
