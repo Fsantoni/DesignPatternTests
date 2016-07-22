@@ -16,7 +16,7 @@ data una classe legacy(CHE SUPPONGO CORRETTA) voglio permetterne l'accesso con u
  -Object Adapter
  	-l'interfaccia non permette di operare sulla classe -> vanno testati i metodi pubblici
  	-l'oggetto contenuto non è un legacy.
- 	-i metodi dell'oggetto contenuto, poichè considero solo i vechhi, per gli overloads danno problemi
+ 	-i metodi dell'oggetto contenuto, poichè considero solo l'implementazione standard dei metodi legacy per realizzare la nuova interfaccia, se hanno overloads danno problemi
 
 Decorator:
  
