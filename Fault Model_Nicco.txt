@@ -51,7 +51,7 @@ State:
  
 consente ad un oggetto modificare il suo comportamento quando il suo stato interno cambia
 
-- la classe non si comporta come il suo stato interno vorrebbe
+- la classe non si comporta come il suo stato interno vorrebbe (voglio testare ogni situazione in cui cambi lo stato interno)
 
 
 Composite: 

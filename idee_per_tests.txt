@@ -3,15 +3,14 @@ si testa solo la variabile interna boolean che corrisponde allo stato, con crite
 
 considerati i path di esecuzione si hanno
 
-Adapter() GetInt <- il caso è ripetuto
-Adapter() getBool  <- non è legacy, adapter() è nuovo, ma il caso è ripetuto 
+//Adapter() GetInt 
+//Adapter() getBool 
+Adapter() setInt getInt 
+//Adapter() setInt getBool 
 
-Adapter() setInt getInt <- si caso nuovo
-Adapter() setInt getBool <- non legacy MA contenuto sopra
-
-Adapter() setbool getInt <- SI, caso nuovo 
-Adapter() setbool getbool <- LEGACY, e in ogni caso lo stesso contenuto sopra
-
+Adapter() setbool getInt 
+Adapter() setbool getbool <- LEGACY (può essere errato, ma non si sta testando, al massimo si isola coi mock)
+//RIGUARDAMI
 
 Sono stati fatti sia unit test che integration tests, in particolare NON ci sono classi di cui fare mocks in quanto 1) l'unico oggetto istanziato è l'adapter da testare e 2)l'unica altra classe implementata è legacy, quindi già sicura e testata per ipotesi
 
@@ -25,8 +24,9 @@ Testiamo quindi direttamente la variabile di stato adaptee
 
 si considerano defs ogni modifica dello stato interno dell'oggetto "adaptee" e use ogni "utilizzo" di campi o metodi interni dell'oggetto (avesse metodi o campi statici, corrisponderebbero ad elementi della classe, che dovrei testare separatamente)  
 
-Adapter() getInt() <- no, contenuto sotto
-Adapter SetInt getInt <- SI
+//Adapter() getInt() 
+Adapter SetInt getInt 
+//RIGUARDAMI
 
 In particolare si è dato un test con variabile che eredita da Adaptee
 
@@ -41,3 +41,12 @@ Component add getchild
 Component add getValue
 Component add add remove getChild
 Component add add remove getValue 
+//RIGUARDAMI
+
+State:
+
+come cambino gli stati interni agli state concreti non ci interessa troppo, si vuole testare ogni volta che state cambia
+
+StateCont() writeOut 
+StateCont() setState write
+StateCont() writeOut writeOut
