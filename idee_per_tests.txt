@@ -11,6 +11,7 @@ Class Adapter:
 	Adapter() setbool getInt 
 	Adapter() setbool getbool <- LEGACY (può essere errato, ma non si sta testando, al massimo si isola coi mock)
 	
+	Potrei fare Getint[getBool] e non GetBool in quanto il primo corrisponde a un def clear path che passa da due USE, problema è che non riesco a testare la prima parte del path poichè il parametro passato dal "privato" getbool non lo riesco a catturare
 	
 	Sono stati fatti sia unit test che integration tests, in particolare NON ci sono classi di cui fare mocks in quanto 1) l'unico oggetto istanziato è l'adapter da testare e 2)l'unica altra classe implementata è legacy, quindi già sicura e testata per ipotesi
 	
@@ -65,6 +66,7 @@ State:
 	StateCont() writeOut writeOut
 	
 	in particolare si esegue l'ultimo in modo che il penultimo writeOut sia un Def nell'integration test: equivale a testare la "correttezza" dell'implementazione dei Concrete,
-	//NON NECESSARIO PER ALL USES, writeOut NON è Def (propiamente) ma esegue funzione che è def -> SOLO UN ALTRO PATH POSSIBILE 
+	//NON NECESSARIO PER ALL USES, writeOut NON è Def ma esegue funzione che è def -> SOLO UN ALTRO PATH POSSIBILE 
+	Li testo solo per vedere se funzionino, non gli dedico separati Unit Tests (che andrebbero fatti su ConcreteClass1 e 2) poichè non li vedo centrali nel mio fault model
 	
 	nello unit test io testo solo la mia classe, in particolare non considero i Concrete: come portano a chiamare SetState non mi interessa, voglio solo che SetState stesso e writeOutput se presi isolati funzionino
