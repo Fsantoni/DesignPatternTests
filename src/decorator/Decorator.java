@@ -13,7 +13,4 @@ abstract class Decorator implements Component{
 
 	}
 
-	public void operation() {
-		decor.operation();
-	}
 }

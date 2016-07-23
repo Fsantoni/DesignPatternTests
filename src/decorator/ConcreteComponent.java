@@ -1,6 +1,6 @@
 package decorator;
 
-abstract class ConcreteComponent implements Component {
+public class ConcreteComponent implements Component {
 
 	private String name;
 
@@ -8,7 +8,8 @@ abstract class ConcreteComponent implements Component {
 		name = nam;
 	}
 
-	public void operation() {
+	public String getName(){
+		return name;
 	}
-
+	
 }

@@ -70,3 +70,13 @@ State:
 	Li testo solo per vedere se funzionino, non gli dedico separati Unit Tests (che andrebbero fatti su ConcreteClass1 e 2) poichè non li vedo centrali nel mio fault model
 	
 	nello unit test io testo solo la mia classe, in particolare non considero i Concrete: come portano a chiamare SetState non mi interessa, voglio solo che SetState stesso e writeOutput se presi isolati funzionino
+	
+Decorator:
+
+ 	testo topologia, potrei fare con un unica singola copertura degli edges, decido di fare "più simile a all uses"	es. se ConcComp lo vedo come use lo devo raggiungere dai più modi possibili
+ 	ConcreteComp
+ 	DecoratorComp
+ 	DecorDecorComp
+ 	
+ 	non si testa su null poichè quello è un errore di chi ha creato (factory) e gli si delega tale responsabilità
+ 	
