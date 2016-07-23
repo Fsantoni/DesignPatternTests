@@ -77,16 +77,35 @@ public class TestComposite{
 	}
 
 	@Test
+	public final void topologyTestLeaf() {	
+
+		Leaf a = new Leaf(4.1f);
+	
+		float res = a.getValue();
+		assertEquals(4.1, res, 0.1);
+
+	}
+	
+	@Test
+	public final void topologyTestCompositeComposite() {	
+
+		CompoundPart b = new CompoundPart(1f);
+		CompoundPart c = new CompoundPart(1f);
+		c.add(b);
+
+		float res = c.getValue();
+		assertEquals(2, res, 0.1);
+
+	}
+	@Test
 	public final void topologyTestCompositeLeaf() {	
 
 		Leaf a = new Leaf(4.1f);
 		CompoundPart b = new CompoundPart(1f);
-		CompoundPart c = new CompoundPart(1f);
 		b.add(a);
-		c.add(b);
-
-		float res = c.getValue();
-		assertEquals(6.1, res, 0.1);
+	
+		float res = b.getValue();
+		assertEquals(5.1, res, 0.1);
 
 	}
 

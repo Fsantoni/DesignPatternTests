@@ -4,8 +4,8 @@ public class StateContext {
 
 	private State innerState;
 	
-	public StateContext(){
-		this.innerState= new ConcreteState2();
+	public StateContext(State state){
+		this.innerState= state;
 	}
 	
 	public void setState(State name){

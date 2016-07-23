@@ -8,7 +8,20 @@ import org.junit.Test;
 
 public class UnitTestObjectAdapter {
 		 
-	    
+	@Test
+	public final void testAdapterGetInt() {
+
+		Adaptee adaptee = mock(Adaptee.class);
+		when(adaptee.getBooleanResult()).thenReturn(false);
+		
+		ObjectAdapter adapt = new ObjectAdapter(adaptee);
+		int result=adapt.getIntResult();
+
+		assertEquals(0,result);
+	}
+	   
+	
+	
 	@Test
 	public final void testAdapterSetIntGetInt() {
 

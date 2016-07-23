@@ -1,11 +1,19 @@
 package objectAdapter;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
-
 import org.junit.Test;
 
 public class TestObjectAdapter {
+	
+
+	@Test
+	public final void testAdapterGetInt() {
+
+		ObjectAdapter adapt = new ObjectAdapter(new Adaptee());
+		int result=adapt.getIntResult();
+
+		assertEquals(0,result);
+	}
 	
 	@Test
 	public final void testAdapterSetIntGetInt() {
@@ -16,7 +24,7 @@ public class TestObjectAdapter {
 
 		assertEquals(0,result);
 	}
-
+	
 	
 
 	@Test

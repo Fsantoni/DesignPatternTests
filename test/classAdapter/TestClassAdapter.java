@@ -1,37 +1,27 @@
 package classAdapter;
-import static org.mockito.Mockito.*;
-
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class TestClassAdapter {
-	
-//****** Unit Tests ******//	
-	
+
+
 	@Test
-	public final void unitTestAdapterSetIntGetInt() {
+	public final void testAdapterGetInt() {
 
 		ClassAdapter adapt = new ClassAdapter();
-		adapt.setIntResult(0);
 		int result=adapt.getIntResult();
 
 		assertEquals(0,result);
 	}
-
 	@Test
-	public final void unitTestAdapterSetBoolGetInt() {
+	public final void testAdapterGetBool() {
 
 		ClassAdapter adapt = new ClassAdapter();
-		adapt.setBooleanResult(true);
-		int result=adapt.getIntResult();
+	boolean result=adapt.getBooleanResult();
 
-		assertEquals(1,result);
+		assertEquals(false,result);
 	}
-	
-	
-//****** Integation Tests ******//	
-	
 	//si testano solo all uses, quindi basta un singolo input, non essendo un test di All Paths
 	@Test
 	public final void testAdapterSetIntGetInt() {
@@ -44,6 +34,16 @@ public class TestClassAdapter {
 	}
 
 	@Test
+	public final void testAdapterSetIntGetBool() {
+
+		ClassAdapter adapt = new ClassAdapter();
+		adapt.setIntResult(10);
+		boolean result=adapt.getBooleanResult();
+
+		assertEquals(true,result);
+	}
+
+	@Test
 	public final void testAdapterSetBoolGetInt() {
 
 		ClassAdapter adapt = new ClassAdapter();
@@ -53,5 +53,5 @@ public class TestClassAdapter {
 		assertEquals(1,result);
 	}
 
-	
+
 }
