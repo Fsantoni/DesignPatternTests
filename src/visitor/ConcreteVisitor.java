@@ -26,6 +26,6 @@ public class ConcreteVisitor implements Visitor {
 		this.str += vString.getString();
 	}
 	public void visit(ConcreteElement1 vFloat) {
-		this.str += vFloat.getFloat().toString();
+		this.str += vFloat.getDouble().toString();
 	}
 }

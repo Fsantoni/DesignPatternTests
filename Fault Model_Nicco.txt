@@ -30,6 +30,9 @@ Proxy:
  fornisce rappresentazione di un oggetto di accesso difficle o che richiede un tempo importante per l'accesso.
  
  - accesso al RealSubject o sua creazione porta a errori
+ 	ci interessa che i metodi funzionino sempre, in particolare è realizzabile con un all use su RealSubject field
+ 	(tecnicamente anche su fileName ma non ha la stessa criticità)
+ 	
  
 Observer:
  

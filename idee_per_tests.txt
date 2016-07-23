@@ -99,5 +99,35 @@ Decorator:
  	
  	un def use path with respect to x: NON deve contenere cicli, ne def x intermedi
  			attach attach conterrebbe cicli, però non è esattamente lo stesso basic block in quanto eseguito da Observer distinti
- 						  	
+ 
+ Proxy:
+ 
+ 	ci interessa che i metodi funzionino sempre, in particolare è realizzabile con un all use su RealSubject field
+ 	(tecnicamente anche su fileName ma non ha la stessa criticità)
+ 	E stesso lavoro per la cache (si aggiunge un caso di test extra per testarla)<- si fa mock e verifica non si hanno chiamate
+ 		
+ 	///Non fo un "proper" unit testing in quanto Proxy auto-genera RealSubject, idealmente dovrei fare unit testing su quest'ultimo e testare insieme la coppia/unità funzionale Proxy-RealSubject
+ 	FO UNIT TESTS TRAMITE FAKE CLASSES CHE EREDITANO DALLE NORMALI MA CON INSERITI MOCKS
+ 	
+ 	
+ 	Proxy getstring
+ 	Proxy getstring getstring
+ 	Proxt getSubstring
+ 	Proxy getstring getsubstring
+ 	Proxy getsubstring getsubstring testa ANCHE per CACHE
+ 	Proxy getsubstring getstring
+ 	
+ 
+ Visitor:
+ 
+  	vi sono tante possibili topologie in cui si manifesta al tempo di run, voglio poterle testare tutte
+  	All edges delle relazioni di delega: a granularità differenti all edges copre ad esempio "tutti i path" in una funzione.
+  	
+  	Visitor ConcreteVisitor Element ConcreteElement2 Visitor
+  	Visitor ConcreteVisitor Element ConcreteElement1 Visitor
+  	 
+  	
+  // usare un plugin per ottenere coverage?
+ 	
+ 							  	
  	

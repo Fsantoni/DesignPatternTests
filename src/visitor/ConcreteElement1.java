@@ -1,12 +1,12 @@
 package visitor;
 
 public class ConcreteElement1 implements Element {
-	private Float value;
-	public ConcreteElement1(float f) {
-		value = new Float( f );
+	private Double value;
+	public ConcreteElement1(Double f) {
+		value = new Double( f );
 	}
 
-	public Float getFloat() {
+	public Double getDouble() {
 		return value;
 	}
 	public void accept( ConcreteVisitor visitor ) {
