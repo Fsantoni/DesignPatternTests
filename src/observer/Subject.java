@@ -1,25 +1,37 @@
 package observer;
 
+import java.util.LinkedList;
+
 class Subject { 
-	private Observer[] observers = new Observer[9];
-	private int totalObs = 0;
-	private int state;
+	private LinkedList<Observer> observers;
+
+	private boolean changed;
+	
+	public Subject(){
+		this.changed = false;
+		this.observers = new LinkedList<Observer>();
+	}
+	
 	public void attach( Observer o ) {
-		observers[totalObs++] = o;
+		observers.add(o);
+	}
+	public void detach( Observer o ) {
+		observers.remove(o);
 	}
 
-	public int getState() {
-		return state;
+	
+	public void setChanged(boolean b){
+		this.changed=b;
 	}
+	
+	
 
-	public void setState( int in ) {
-		state = in;
-		notify();
-	}
-
-	public void notify() {
-		for (int i=0; i < totalObs; i++) {
-			observers[i].update();
+	protected void notifyObservers() {
+		if(changed){
+			for (Observer obs: observers) {
+				obs.update();
+			}
 		}
+		setChanged(false);
 	}
 }

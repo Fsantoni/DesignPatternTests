@@ -38,6 +38,8 @@ Composite:
 	
 	getValue lo utilizza come Use; l'essere unicamente a destra non implica però che sia solo use, semplicemente i metodi chiamati su esso non danno side effects.
 	
+	>>>Alcuni di questi percorsi possono essere originati sia da client che da Composite,in particolare per forza di cose le ho gia testate entrambe
+
 	Component getChild
 	Component getValue
 	Component add getchild
@@ -79,4 +81,23 @@ Decorator:
  	DecorDecorComp
  	
  	non si testa su null poichè quello è un errore di chi ha creato (factory) e gli si delega tale responsabilità
+ 	
+ Observer:
+ 	
+ 	si testa lo stato dell'Object, portavoce dell'andata a buon fine dell'update(quindi non il counter) e la lista di observers
+ 	
+ 	ConcreteObs GetState
+ 	ConcreteObs Update GetState
+ 		
+ 	attach e detach sono sia def che use in quanto non creano ex novo un valore, ma utilizzano la preesistente lista e la modificano
+ 	ANZI chiamano observer.add/remove!! USANO la variabile, ed il loro uso porta a modifica
+ 	
+ 	Subject setState[notify]
+ 	Subject detach				 <- In questo caso il driver fa le veci dell'"Object", ne chiamo il metodo e lo "lascio fare", identico anche in integration test 
+ 	Subject attach attach attach detach detach  (+setState[notify]) x4 attach attach E attach detach E detach detach E detach notify
+ 	Subject attach detach attach (+setState[notify]) x3 subject attach E detach attach E attach notify 
+ 	
+ 	un def use path with respect to x: NON deve contenere cicli, ne def x intermedi
+ 			attach attach conterrebbe cicli, però non è esattamente lo stesso basic block in quanto eseguito da Observer distinti
+ 						  	
  	
