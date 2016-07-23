@@ -1,0 +1,22 @@
+
+any(Class<T>) serve solo ad evitare successivi cast, NON fa controlli di alcun tipo
+
+spy può essere usato sulla classe di mio interesse al cui interno si ha un "new", isolando il new in un metodo senza logica, quindi che posso non testare,
+e modificare solamente tale metodo costruttore fornendo un mock creato a mio piacimento (attenzione che se fornisco oggetti tramite thenReturn e non thenAnswer tali oggetti sono tutti LO STESSO e quindi mi creano problemi con verify)
+
+doReturn(_risposta_).when(_variabileMockata_).mioMetodo(mioInput); 
+restituisce subito l'output senza eseguire,
+
+when( aaa.aa() ).thenReturn(bb);  
+invece ESEGUE aa() con i sideeffects al suo interno (es. anche chiamate a funzioni o lancio eccezioni)
+
+per mock di metodi VOID si usa doNothing() altrimenti il compilatore dà errori (è la versione doReturn per void)
+
+Answer è utilizzato per dare non solo un output ma anche eseguire sideeffects e fare chiamate a funzioni alla chiamata di un metodo di oggetto mock
+ 
+spy è utilizzato per fare logs sulle operazioni eseguite su la classe, se non modificata ancora intoccata, 
+ è copia di un OGGETTO(quindi rispecchia anche i parametri passati al constructor), essendo copia esecuzioni su Spy non disturbano l'oggetto originario e viceversa.
+ 
+mock può essere utilizzato anche solo parzialmente: fo mock di che mi pare mentre se alcune operazioni mi servono le lascio intoccate, con CallRealMethod. 
+ è copia di CLASSE
+ 

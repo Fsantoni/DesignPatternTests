@@ -14,14 +14,16 @@ public class UnitTestProxy {
 // 	Proxy getsubstring getsubstring testa ANCHE per CACHE
 // 	Proxy getsubstring getstring
 	
-	private class FakeProxy extends RealSubject{
-		
-	}
+	
 	
 	@Test
 	public final void testProxyGetString() {
 		
-		Proxy p = new Proxy("p");
+		Proxy p = spy(new Proxy("p"));
+		RealSubject s = mock(RealSubject.class);
+		when(s.getString()).thenReturn("plong");
+		doReturn(s).when(p).makeReal(anyString());
+		
 		String res= p.getString();
 		assertEquals("plong", res);
 	}
@@ -29,7 +31,11 @@ public class UnitTestProxy {
 	@Test
 	public final void testProxyGetStringGetString() {
 		
-		Proxy p = new Proxy("p");
+		Proxy p = spy(new Proxy("p"));
+		RealSubject s = mock(RealSubject.class);
+		when(s.getString()).thenReturn("plong");
+		doReturn(s).when(p).makeReal(anyString());
+		
 		p.getString();
 		String res= p.getString();
 		assertEquals("plong", res);
@@ -38,15 +44,23 @@ public class UnitTestProxy {
 	@Test
 	public final void testProxyGetSubstring() {
 		
-		Proxy p = new Proxy("p");
+		Proxy p = spy(new Proxy("p"));
+		RealSubject s = mock(RealSubject.class);
+		when(s.getSubstring(1)).thenReturn("long");
+		doReturn(s).when(p).makeReal(anyString());
+		
 		String res= p.getSubstring(1);
 		assertEquals("long", res);
 	}
 	
 	@Test
 	public final void testProxyGetStringGetSubstring() {
+		Proxy p = spy(new Proxy("p"));
+		RealSubject s = mock(RealSubject.class);
+		when(s.getString()).thenReturn("plong");
+		when(s.getSubstring(1)).thenReturn("long");
+		doReturn(s).when(p).makeReal(anyString());
 		
-		Proxy p = new Proxy("p");
 		p.getString();
 		String res= p.getSubstring(1);
 		assertEquals("long", res);
@@ -55,7 +69,12 @@ public class UnitTestProxy {
 	@Test
 	public final void testProxyGetSubstringGetSubstring() {
 		
-		Proxy p = new Proxy("p");
+		Proxy p = spy(new Proxy("p"));
+		RealSubject s = mock(RealSubject.class);
+		when(s.getSubstring(1)).thenReturn("long");
+		when(s.getSubstring(2)).thenReturn("ong");
+		
+		doReturn(s).when(p).makeReal(anyString());
 		p.getSubstring(1);
 		String res= p.getSubstring(1);
 		
@@ -70,7 +89,12 @@ public class UnitTestProxy {
 	@Test
 	public final void testProxyGetSubstringGetString() {
 		
-		Proxy p = new Proxy("p");
+		Proxy p = spy(new Proxy("p"));
+		RealSubject s = mock(RealSubject.class);
+		when(s.getSubstring(1)).thenReturn("long");
+		when(s.getString()).thenReturn("plong");
+		
+		doReturn(s).when(p).makeReal(anyString());
 		p.getSubstring(1);
 		String res= p.getString();
 		assertEquals("plong", res);

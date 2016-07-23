@@ -29,9 +29,14 @@ class Subject {
 	protected void notifyObservers() {
 		if(changed){
 			for (Observer obs: observers) {
-				obs.update();
+				obs.update(this);
 			}
 		}
 		setChanged(false);
+	}
+	
+	
+	public Object[] getList(){
+		return observers.toArray();
 	}
 }

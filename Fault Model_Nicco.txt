@@ -38,6 +38,11 @@ Observer:
  
  consente la definizione di associazioni di dipenenza di molti oggetti verso di uno, in modo che se quest'ultimo
  cambia il suo stato, tutti gli altri sono notificati e aggiornati automaticamente
+
+Fare slicing sulla lista degli observer significa testare le operazioni di delega (interclass testing), e
+non la complessità interna della classe (intraclass testing, quello che sostanzialmente costituisce lo unit testing); 
+i parametri critici sono quelli che hanno a che fare con l’integrazione tra le classi
+
  
  - attach/detach non funzionano (se aggiorno, aggiorno tutti quelli che hanno fatto attach e non hanno ancora fatto detach)
  - notify non viene chiamato

@@ -92,13 +92,21 @@ Decorator:
  	attach e detach sono sia def che use in quanto non creano ex novo un valore, ma utilizzano la preesistente lista e la modificano
  	ANZI chiamano observer.add/remove!! USANO la variabile, ed il loro uso porta a modifica
  	
- 	Subject setState[notify]
- 	Subject detach				 <- In questo caso il driver fa le veci dell'"Object", ne chiamo il metodo e lo "lascio fare", identico anche in integration test 
+ 	Subject setState[notify]	<- controllo che con lista vuota non lanci errori
+ 	Subject detach				 <-1) In questo caso il driver fa le veci dell'"Object", ne chiamo il metodo e lo "lascio fare", identico anche in integration test 
+ 								   2) sto testando detach prima di attach: controllo non dia errori	
  	Subject attach attach attach detach detach  (+setState[notify]) x4 attach attach E attach detach E detach detach E detach notify
- 	Subject attach detach attach (+setState[notify]) x3 subject attach E detach attach E attach notify 
+ 	Subject attach attach detach detach attach (+setState[notify]) x3 subject attach E detach attach E attach notify 
  	
  	un def use path with respect to x: NON deve contenere cicli, ne def x intermedi
  			attach attach conterrebbe cicli, però non è esattamente lo stesso basic block in quanto eseguito da Observer distinti
+ 	
+ 	su attachX3 e detachX2 testo con stessa coppia e coppia distinta di Object,
+ 	su attachX2 detachX2 attach testo le altre combinazioni fra attach e detach 
+ 	
+ 	Utilizzo un metodo senza logica (quindi corretto e per cui non servono test) per creare output della lista di observers: LA TESTO DIRETTAMENTE QUINDI SENZA ASPETTARE
+ 	col notify finale invece testo sugli oggetti (tramite verify su UnitTest) se sono partite le chiamate 
+ 
  
  Proxy:
  
@@ -106,15 +114,13 @@ Decorator:
  	(tecnicamente anche su fileName ma non ha la stessa criticità)
  	E stesso lavoro per la cache (si aggiunge un caso di test extra per testarla)<- si fa mock e verifica non si hanno chiamate
  		
- 	///Non fo un "proper" unit testing in quanto Proxy auto-genera RealSubject, idealmente dovrei fare unit testing su quest'ultimo e testare insieme la coppia/unità funzionale Proxy-RealSubject
- 	FO UNIT TESTS TRAMITE FAKE CLASSES CHE EREDITANO DALLE NORMALI MA CON INSERITI MOCKS
- 	
+ 	//riferirsi a "MockingObjectCreation" html
  	
  	Proxy getstring
  	Proxy getstring getstring
  	Proxt getSubstring
  	Proxy getstring getsubstring
- 	Proxy getsubstring getsubstring testa ANCHE per CACHE
+ 	Proxy getsubstring getsubstring testa ANCHE per CACHE (eh, da ricontrollare, la cache non è esattamente testata)
  	Proxy getsubstring getstring
  	
  

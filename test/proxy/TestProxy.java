@@ -53,6 +53,7 @@ public class TestProxy {
 		
 		Proxy p = new Proxy("p");
 		p.getSubstring(1);
+	
 		String res= p.getSubstring(1);
 		
 		assertEquals("long", res);

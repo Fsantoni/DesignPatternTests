@@ -24,5 +24,5 @@ class ConcreteSubject extends Subject {
 		notifyObservers();
 	}
 
-
+	
 }

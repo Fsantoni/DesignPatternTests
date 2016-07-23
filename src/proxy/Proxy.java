@@ -14,10 +14,14 @@ public class Proxy extends SubjectInterface {
 		cache="";
 
 	}
+	
+	protected RealSubject makeReal(String fileName){
+		return new RealSubject(fileName);
+	}
 
 	public String getString(){
 		if (realHandler == null)
-			realHandler = new RealSubject(fileName);
+			realHandler = makeReal(fileName);
 		return realHandler.getString();
 	}
 
@@ -34,11 +38,10 @@ public class Proxy extends SubjectInterface {
 			cacheInt=posit;
 
 			if (realHandler == null)
-				realHandler = new RealSubject(fileName);
+				realHandler = makeReal(fileName);
 			cache=realHandler.getSubstring(posit);
 
 		}return cache;
 	}
-
 
 }
