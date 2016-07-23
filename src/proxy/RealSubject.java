@@ -2,13 +2,28 @@ package proxy;
 
 class RealSubject extends SubjectInterface {
 
-	private byte[] str;
+	private String longStr;
 
 	public RealSubject( String fName ){
 		super(fName);
+		this.longStr= fName+"long";
 	}
+	
+	
 
 	public String getString(){
-		return new String(str);
+		return longStr;
+	}
+
+	@Override
+	public String getFileName() {
+		
+		return this.fileName;
+	}
+
+
+	public String getSubstring(int posit) {
+		
+		return longStr.substring(posit);
 	}
 }

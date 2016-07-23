@@ -7,4 +7,9 @@ public abstract class SubjectInterface {
 	}
 
 	public abstract String getString();
+	public abstract String getFileName();
+	public abstract String getSubstring(int posit);
+		
 }
+
+
