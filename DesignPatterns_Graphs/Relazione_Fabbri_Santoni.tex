@@ -133,28 +133,124 @@ To negate the two source of failures we reasoned that it is sufficient to test t
 
 
 \subsubsection{Tests}
-abbiamo fatto test sia di unità che di interazione:
+We generated a test suite capable to test all the \textit{all-uses} paths:
+\begin{enumerate}
+	\item Adapter() GetInt() 
+	\item Adapter() GetBool() 
+	\item Adapter() setInt() getInt() 
+	\item Adapter() setInt() getBool() 
+	\item Adapter() setBool() getInt()
+	
+\end{enumerate}
+The special case of
+\begin{enumerate}
+		\item \item Adapter() setBool() getbool() 
+		
+\end{enumerate}	
+is not tested because all the methods are directly inherited from the legacy (and thus supposedly already tested) class and no side-effects, which could have invalidated some invariants, are introduced in the adapter.
 
-spara rassegna test $(i tipi elencati in idee_per_test)$
+In this particular pattern the presence of a lone object other than the Client makes Unit and Integration tests un-distinguishable.
 
+\subsubsection{Code Coverage}
+The code coverage measure obtained from EclEmma Java plugin is: 100%.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%1
 \section{Object Adapter}
+Adapts a pre-existent class to a new interface through class composition. 
 
+Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added. 
+
+The composition adds the possibility of dynamically switching the adapted legacy class.
+
+
+\subsubsection{Class Diagram}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{./Adapter/Object/ClassDiagram.png}
+	\caption{Object Adapter: Class Diagram }
+	\label{OAclassDiag}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Adaptee}: legacy class with specific methods and fields
+	\item \textbf{Target}: desired interface
+	\item \textbf{ObjectAdapter}: inheriting from Target, adapts the legacy methods to the desired interface through delegation. 
+\end{itemize}
+
+\subsubsection{Fault Model}
+Given that the pattern focuses on allowing access to legacy methods through a new interface, failures are found in the following situations:  
+\begin{itemize}
+	\item the adapter did not inherit from the legacy class or the new interface
+	\item the adapter for some reason cannot interact with the legacy methods 
+\end{itemize}
+
+\subsection{Testing}
+To negate the two source of failures we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts with the methods:
+
+\begin{itemize}
+	\item having represented the field's interaction with the class methods through a data flow graph whose basic blocks are methods, we decided to test them following the all-uses criterion.    
+\end{itemize}
+
+\paragraph{Data Flow Graph}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{./Adapter/Class/CallGraph.png}
+	\caption{Data Flow Graph: \textit{bool\_value}}
+	\label{CAdataflow}
+\end{figure}
+
+
+\subsubsection{Tests}
+We generated a test suite capable to test all the \textit{all-uses} paths:
+\begin{enumerate}
+	\item Adapter() GetInt() 
+	\item Adapter() GetBool() 
+	\item Adapter() setInt() getInt() 
+	\item Adapter() setInt() getBool() 
+	\item Adapter() setBool() getInt()
+	
+\end{enumerate}
+The special case of
+\begin{enumerate}
+	\item \item Adapter() setBool() getbool() 
+	
+\end{enumerate}	
+is not tested because all the methods are directly inherited from the legacy (and thus supposedly already tested) class and no side-effects, which could have invalidated some invariants, are introduced in the adapter.
+
+In this particular pattern the presence of a lone object other than the Client makes Unit and Integration tests un-distinguishable.
+
+\subsubsection{Code Coverage}
+The code coverage measure obtained from EclEmma Java plugin is: 100%.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%2
 
 \section{Proxy}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%3
 \section{Decorator}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%4
 \section{Composite}
 
 -A è di tipo variabile/complessità dovuta a topologia, rappresentato la nostra microarchitettura tramite  Data Flow graph/Class Dependency graph abbiamo deciso  di utilizzare il criterio di copertura all uses(rispetto a all defs)/all edges(rispetto a all nodes) 
 -B è di tipo K,...
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 \section{Observer}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%6
 \section{State}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%7
 \section{Visitor}
 
-\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%8
+
+\chapter{JUnit & Mockito}
+
+\section{JUnit}
+\section{Mockito}
+\paragraph{EclEmma}
 
 
 \chapter{Conclusioni}
