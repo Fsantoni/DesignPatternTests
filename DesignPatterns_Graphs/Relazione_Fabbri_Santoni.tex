@@ -109,23 +109,28 @@ We will study:
 	\item \textbf{ClassAdapter}: inheriting from Adaptee and Target both, adapts the legacy methods to the desired interface  
 \end{itemize}
 
-\subsection{Fault Model}
-in risposta all'essenza abbiamo individuato le criticità...
+\subsubsection{Fault Model}
+Given that the pattern focuses on allowing access to legacy methods through a new interface, failures are found in the following situations:  
+\begin{itemize}
+	\item the adapter did not inherit from the legacy class or the new interface
+	\item the adapter for some reason cannot interact with the legacy methods 
+\end{itemize}
 
 \subsection{Testing}
-Per eliminiare la possibilità di criticità x e y abbiamo ritenuto necessario e/o sufficiente testare A e B: 
+To negate the two source of failures we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts with the methods:
 
--A è di tipo variabile/complessità dovuta a topologia, rappresentato la nostra microarchitettura tramite  Data Flow graph/Class Dependency graph abbiamo deciso  di utilizzare il criterio di copertura all uses(rispetto a all defs)/all edges(rispetto a all nodes) 
--B è di tipo K,...
+\begin{itemize}
+	\item having represented the field's interaction with the class methods through a data flow graph whose basic blocks are methods, we decided to test them following the all-uses criterion.    
+\end{itemize}
 
 \paragraph{Data Flow Graph}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=1\textwidth]{./LaTeX_extra/logo-unifi-1.png}
-	\caption{Immagini in input}
-	\label{Figura 1}
+	\includegraphics[width=0.3\textwidth]{./Adapter/Class/CallGraph.png}
+	\caption{Data Flow Graph: \textit{bool\_value}}
+	\label{CAdataflow}
 \end{figure}
-qualche info se si ha
+
 
 \subsubsection{Tests}
 abbiamo fatto test sia di unità che di interazione:
@@ -141,6 +146,8 @@ spara rassegna test $(i tipi elencati in idee_per_test)$
 
 \section{Composite}
 
+-A è di tipo variabile/complessità dovuta a topologia, rappresentato la nostra microarchitettura tramite  Data Flow graph/Class Dependency graph abbiamo deciso  di utilizzare il criterio di copertura all uses(rispetto a all defs)/all edges(rispetto a all nodes) 
+-B è di tipo K,...
 \section{Observer}
 
 \section{State}
