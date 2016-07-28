@@ -33,25 +33,25 @@ Corso di Laurea Magistrale in Ingegneria Informatica}}
 \end{center}
 \vspace{15mm}
 \begin{center}
-{\LARGE{\bf Nuovo approccio per l'identificazione}}\\
+{\LARGE{\bf Testing of chosen Design Patterns}}\\
 \vspace{3mm}
-{\LARGE{\bf di muri all'interno di planimetrie}}\\
+{\LARGE{\bf with JUnit and Mockito}}\\
 \end{center}
 \begin{figure}
 \centering
-\includegraphics[scale=0.2]{logo-unifi-1}
+\includegraphics[scale=0.2]{./LaTeX_extra/logo-unifi-1.png}
 \end{figure}
 \vspace{32mm}
 \par
 \noindent
 \begin{minipage}[t]{0.55\textwidth}
 {\large{\bf Docente\\
-Prof. Simone Marinai}} \\
+Prof. Enrico Vicario}} \\
 \end{minipage}
 \hfill
 \begin{minipage}[t]{0.47\textwidth}\raggedleft
 {\large{\bf Relazione a cura di\\
-Niccolò Fabbri\\
+Niccolo' Fabbri\\
 Francesco Santoni}}
 \end{minipage}
 \vspace{12mm}
@@ -76,20 +76,13 @@ Francesco Santoni}}
 \chapter{Introduction}
 \markboth{Introduction}{\textit{Introduction}}
 
-\begin{figure}[!h]
-\centering
-\includegraphics[width=1\textwidth]{.png}
-\caption{Immagini in input}
-\label{Figura 1}
-\end{figure}
-
 77777777777 VUOTO PER ORA
 
 \chapter{Design Patterns}
 \markboth{Design Patterns}{\textit{Design Patterns}}
 In software engineering, a software design pattern is a general reusable template to solve a commonly occurring problem within a given context.
 
-We will study
+We will study:
 \begin{enumerate}
 	\item Structural patterns: Adapter(both in his Class and Object variants), Proxy, Decorator, Composite.
 	\item Behavioural patterns: Observer, State, Visitor.
@@ -97,9 +90,24 @@ We will study
 
 
 \section{Class Adapter}
-essenza
+ Adapts a pre-existent class to a new interface through inheritance. 
+ 
+ Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added. 
+ 
+ 
 \subsubsection{Class Diagram}
-partecipanti sono...
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.3\textwidth]{./Adapter/Class/ClassDiagram.png}
+	\caption{Class Adapter: Class Diagram }
+	\label{CAclassDiag}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Adaptee}: legacy class with specific methods and fields
+	\item \textbf{Target}: desired interface
+	\item \textbf{ClassAdapter}: inheriting from Adaptee and Target both, adapts the legacy methods to the desired interface  
+\end{itemize}
 
 \subsection{Fault Model}
 in risposta all'essenza abbiamo individuato le criticità...
@@ -111,12 +119,18 @@ Per eliminiare la possibilità di criticità x e y abbiamo ritenuto necessario e/o
 -B è di tipo K,...
 
 \paragraph{Data Flow Graph}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=1\textwidth]{./LaTeX_extra/logo-unifi-1.png}
+	\caption{Immagini in input}
+	\label{Figura 1}
+\end{figure}
 qualche info se si ha
 
 \subsubsection{Tests}
 abbiamo fatto test sia di unità che di interazione:
 
-spara rassegna test (i tipi elencati in idee_per_test)
+spara rassegna test $(i tipi elencati in idee_per_test)$
 
 \section{Object Adapter}
 
