@@ -18,6 +18,7 @@ public class ConcreteVisitor implements Visitor {
 	}
 	
 	public void visit() {
+		str = "";
 		for(Element e: list){
 			e.accept(this);
 		}
