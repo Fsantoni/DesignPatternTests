@@ -1,0 +1,313 @@
+\documentclass[12pt, a4paper, oneside, openright]{book}
+\pdfpagewidth\paperwidth
+\pdfpageheight\paperheight
+\usepackage[latin1]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{hyperref}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\frenchspacing
+\makeatletter
+\let\@orig@endthebibliography\endthebibliography 
+\renewcommand\endthebibliography{% 
+  \xdef\@kept@last@number{\the\c@enumiv}% 
+  \@orig@endthebibliography} 
+
+\newenvironment{thesitography}[1] 
+  {\def\bibname{Sitografia}% 
+   \thebibliography{#1}% 
+   \setcounter{enumiv}{\@kept@last@number}% 
+} 
+  {\@orig@endthebibliography} 
+\makeatother
+\begin{document}
+\pagestyle{myheadings}
+\hyphenation{se-con-do si-ste-ma sul-l-'oc-cu-pa-zio-ne ra-zio-na-liz-za-re re-la-ti-vo li-be-ra-zio-ne co-o-pe-ra-ti-va a-zio-na-men-to a-bi-li-ta-ti-vi in-te-res-sa-ta in-con-di-zio-na-to u-sci-te sod-dis-fa-ci-men-to e-ser-ci-ta-no}
+\begin{titlepage}
+\begin{center}
+{{\Large{\textsc{Universit\`{a} degli studi di Firenze}}}} \rule[0.1cm]{15.8cm}{0.1mm}
+\rule[0.5cm]{15.8cm}{0.6mm}
+{\small{\bf SCUOLA DI INGEGNERIA\\
+Corso di Laurea Magistrale in Ingegneria Informatica}}
+\end{center}
+\vspace{15mm}
+\begin{center}
+{\LARGE{\bf Nuovo approccio per l'identificazione}}\\
+\vspace{3mm}
+{\LARGE{\bf di muri all'interno di planimetrie}}\\
+\end{center}
+\begin{figure}
+\centering
+\includegraphics[scale=0.2]{logo-unifi-1}
+\end{figure}
+\vspace{32mm}
+\par
+\noindent
+\begin{minipage}[t]{0.55\textwidth}
+{\large{\bf Docente\\
+Prof. Simone Marinai}} \\
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.47\textwidth}\raggedleft
+{\large{\bf Relazione a cura di\\
+Niccolò Fabbri\\
+Tommaso Mugnai}}
+\end{minipage}
+\vspace{12mm}
+\vspace{12mm}
+\begin{center}
+{\large{\bf Firenze,\\%inserire il numero della sessione in cui ci si laurea
+15 Giugno 2015 }}%inserire l'anno accademico a cui si ÃƒÂƒÃ‚Â¨ iscritti
+\end{center}
+\end{titlepage}
+
+\mainmatter
+\pagenumbering{roman}
+\newpage\null\thispagestyle{empty}
+\null\vspace{\stretch{0.6}}
+\pagenumbering{gobble}
+\frontmatter
+\clearpage
+\tableofcontents
+\cleardoublepage
+\mainmatter
+\chapter*{Sommario}
+
+Il rilevamento di muri all'interno di planimetrie è un passo fondamentale per il completo riconoscimento di planimetrie. Le pareti, generalmente, definiscono le strutture principali degli edifici e trasmettono informazioni essenziali per la rilevazione di altri elementi strutturali. Tuttavia, la segmentazione delle pareti è un compito difficile, soprattutto a causa della mancanza di una notazione grafica standard. In questo articolo presentiamo un sistema automatico di segmentazione di muri, con la possibilità di gestire automaticamente le diverse notazioni grafiche affrontate.
+Il nostro metodo si basa su una sequenza di riconoscimento di ciò che può essere o non essere un muro e la cancellazione di ciò che non è ritenuto tale, per poi arrivare ad estrarre e ricostruire i muri.
+Il metodo che illustreremo è stato testato su dataset di planimetrie reali con notazioni grafiche diverse tra loro: in particolare è stato utilizzato il dataset di \url{https://dag.cvc.uab.es/resources/floorplans} ed infine i risultati ottenuti sono stati comparati con quelli dei proprietari del sito, ossia i membri del laboratorio Computer Vision Center (CVC), dell'Università Autonoma di Barcellona (UAB).
+I risultati mostrano valori di riconoscimento simili a quelli ottenuti da CVC: inoltre in circa un terzo dei casi risultano anche migliori.
+
+\chapter{Introduzione}
+\markboth{Introduzione}{\textit{Introduzione}}
+
+L'analisi automatica di planimetrie è al centro di una serie di applicazioni nel settore architettonico, come riutilizzo di progetti precedenti e ricostruzione 3D di planimetrie.
+In questo articolo viene proposto un programma in grado di fornire in input una planimetria o un set di planimetrie, fornendo in uscita una versione binarizzata di quest'ultima, ripulita dagli elementi decorativi e strutturali non desiderati.
+Inoltre dove è stato effettuato un riconoscimento dei muri ed in alcuni casi anche di porte, finestre e stanze è stato possibile ottenere una versione digitale della piantina, come se fosse stata interamente ricostruita da un sistema CAD. In questo modo la digitalizzazione può essere sfruttata da vari sistemi (tipo CAD) per poter rianalizzare e rimodellare la piantina in questione.
+Un certo numero di tecniche di rilevamento di pareti sono state presentate in letteratura, la maggior parte delle quali basate sul raggruppamento strutturale di alcune primitive di base. In \cite{3}, le coppie parallele di linee sono dapprima rilevate. Poi, le informazioni di testo e una serie definita di regole grafiche sono state utilizzate per il rilevamento di muri. Al contrario, in \cite{2}, le pareti sono modellate da linee tratteggiate e rilevate applicando un filtraggio morfologico. In \cite{4}, le pareti sono rilevate dopo aver trovato le linee parallele incontrate utilizzando una combinazione di \textit{Hough Transform} e vettorizzazione di immagine. Solo la coppia di linee parallele rilevate con i pixel neri sono considerate muri finali. Più di recente, in \cite{6} le pareti sono state segmentate iterativamente eseguendo processi di erosione e di dilatazione, permettendo di distinguere tra pareti sottili, medie e grandi. Questi approcci sono in grado di rilevare correttamente pareti nei propri dataset testati. Tuttavia, la mancanza di una notazione grafica standard nelle planimetrie conduce alla modellazione grafica diversa da paese a paese. Pertanto, è necessario affrontare una elevata variabilità: la rappresentazione visiva di un edificio, la natura delle informazioni contenute in una planimetria e il modo in cui queste informazioni vengono rappresentate visivamente; per esempio, una parete può essere descritta come una linea spessa o come due linee parallele sottili, ecc. Alcuni dati come ad esempio, dimensioni, annotazioni testuali, mobili, la proiezione del tetto, ecc possono apparire o meno a seconda dello stile di disegno. Questo fatto provoca che lo stato dell'arte delle strategie debba essere riformulato per ogni planimetria contenente una nuova notazione grafica.
+In questo lavoro, ci concentriamo sul rilevamento automatico e la segmentazione del muro in due tipi di planimetrie, con qualsiasi tipologia di notazione grafica per quanto riguarda gli elementi non-muro.
+Per fare ciò è stato, in primo luogo, implementato un sistema in grado di fare quanto richiesto su piantine con muri "pieni" (Figura \ref{Figura 1} sinistra), in modo automatico ed indipendentemente dallo stile usato per caratterizzare gli elementi della planimetria. In seguito è stato sviluppato un sistema che riconoscesse i muri con campiture (Figura \ref{Figura 1} destra) così da poterli riempire e ricondursi al caso precedente.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=1\textwidth]{iniziali.png}
+\caption{Immagini in input}
+\label{Figura 1}
+\end{figure}
+\\
+Per sviluppare questo programma è stato scelto di usare il linguaggio Python. Esso, grazie alla interazione con la libreria Open CV, mette a disposizione numerose funzioni per la manipolazione delle immagini. In Python, come in altri linguaggi, le immagini vengono viste come matrici dove ogni pixel è identificato da alcuni valori (3 per l'immagine a colori e 1 per un'immagine in scale di grigio) che ne determinano il colore.
+
+\chapter{Metodologia}
+\markboth{Metodologia}{\textit{Metodologia}}
+\section{Idee di base}
+
+Prima di iniziare l'estrazione dei muri è necessario avere un dataset di immagini in grado di essere analizzato ed elaborato. Nel metodo proposto è stato, in primo luogo, sviluppato un sistema funzionante nel caso di muri pieni. A tal punto si rende sufficiente far in modo che le immagini che non corrispondo a tale notazione grafica vengano riportate alla precedente: nello specifico là dove non erano presenti muri pieni essi sono stati prima riconosciuti e poi riempiti, così da avere un dataset di immagini in grado di essere elaborato dal nostro programma.
+L'idea di base per arrivare ad estrarre i muri dall'immagine di partenza è la sequenza di riconoscimento di ciò che può essere o non essere un muro e la cancellazione di ciò che non è ritenuto tale, per poi arrivare ad estrarre e ricostruire i muri. Per fare ciò si inizia con un passaggio di pre-processing che comprende ridimensionamento, aggiunta di un bordo ed il riconoscimento e cancellazione degli elementi esterni alla planimetria (\ref{myref}), quali: spazi di testo che contengono nomi vari, immagini decorative (auto, rose dei venti), simboli vari (legenda, fattore di scala).
+In seguito vengono identificate le componenti connesse presenti nella planimetria. Tra di esse, tramite un apposito sistema di riconoscimento, vengono individuate e cancellate le componenti testuali presenti all'interno della planimetria. Questo passo risulta essere fondamentale in quanto solitamente ve ne sono presenti almeno una per stanza e rimuovendole il rumore dell'immagine viene ridotto notevolmente.
+A questo punto si avrà un immagine pronta per essere analizzata alla ricerca dei muri sia esterni sia, in seguito, interni. Infine le due tipologie di muri verranno riunite per trovare l'immagine finale.
+
+\section{Pre - processing} \label{myref}
+
+Il problema principale se si vuole estrarre muri dall'immagine di una planimetria consiste nella mancanza di uno standard grafico comune, questo porta problemi a, più o meno, tutti i passaggi che è necessario fare. Nello specifico si possono avere immagini che differiscono per colore, dimensioni, stile di rappresentazione dei muri, presenza di elementi grafici e presenza di elementi testuali. Per ridurre al minimo questi problemi sono necessari innanzitutto, anche se da soli non sono sufficienti, diversi passaggi di pre - processing che portino l'immagine di partenza in uno stato che è possibile analizzare. Tali passaggi sono:
+
+\begin{itemize}
+\item \textbf{Binarizzazione dell'immagine:}
+una volta letta l'immagine viene convertita in scale di grigio e poi sogliata in modo da avere solo pixel neri o bianchi. Questo passo è fondamentale perché si vuole lavorare con funzioni che riconoscano gli elementi senza basarsi sul colore. Di solito la maggior parte delle immagini sono già in bianco e nero, ma questo non è sempre vero dunque si rende necessario tale passaggio.
+\item \textbf{Padding:}
+in alcuni casi si sono presentate delle immagini dove il muro esterno era a diretto contatto col bordo dell'immagine. Questa situazione comporta problemi quando vengono ricercate le componenti connesse. Per evitare ciò, dopo la binarizzazione, ad ogni immagine viene aggiunto un bordo (padding) bianco di 25 pixel per ogni lato. Questo semplice passaggio è sufficiente a permettere lo studio corretto delle suddette planimetrie.
+\item \textbf{Cancellazione elementi esterni:}
+spesso nelle planimetrie sono presenti elementi che niente hanno a che fare con la piantina dell'edificio. Questi posso variare dal nome del costruttore o dell'architetto alla legenda o al fattore di scala dell'immagine. Tutti questi elementi sono rumore ai fini della nostra ricerca, dunque devono essere rimossi dall'immagine. Questo processo è effettuato tramite una funzione da noi sviluppata la quale, sfruttando alcune funzioni della libreria Open Cv, permette l'individuazione e cancellazione di decorazioni esterne alla planimetria. Per individuare tali elementi vengono sfruttate funzioni di Open Cv che permettono di rilevare il contorno degli elementi ed il rettangolo circoscritto a tale contorno. Vengono in seguito rimossi quei rettangoli aventi i valori di base e altezza in un dato intervallo, in particolare vengono eliminati quelli aventi:
+\begin{equation}
+altezza < \dfrac{altezza\textunderscore img}{4,5}\;\;\; \text{o} \;\;\; larghezza < \dfrac{larghezza\textunderscore img}{4,5}
+\end{equation}
+\end{itemize}
+\vspace{1mm}
+Una volta trovati, questi elementi vengono rimossi. Empiricamente si è notato che questa pulizia (con la scelta del fattore $4,5$ trovato empiricamente) non va mai a danneggiare la planimetria e compie sempre una pulizia degli elementi esterni che risulta molto utile per evitare errori nei passaggi successivi (in particolare nel riconoscimento di muri), anche se in base alla natura degli elementi essa non risulta sempre in grado di rimuoverne il 100\%. Sono qui sotto riportati due esempi: le prime 2 immagini rappresentano il prima \verb0-0 dopo di una planimetria dove gli elementi sono stati tutti riconosciuti correttamente; le successive 2 immagini rappresentano il prima \verb0-0 dopo di una planimetria dove gli elementi non sono stati tutti riconosciuti correttamente.
+\begin{figure}[h!]
+\centering
+{\includegraphics[width=4.15cm]{s20.png}}
+\hspace{1mm}
+{\includegraphics[width=4.15cm]{recognition_and_delete_noise_s20.png}}
+\caption{Caso di riconoscimento corretto}
+\label{Figura 2}
+\end{figure}
+\begin{figure}[h!]
+\centering
+{\includegraphics[width=4.15cm]{s5.png}}
+\hspace{1mm}
+{\includegraphics[width=4.15cm]{recognition_and_delete_noise_s5.png}}
+\caption{Caso di riconoscimento errato}
+\label{Figura 3}
+\end{figure}
+\vspace{122mm}
+\begin{itemize}
+\item \textbf{Ridimensionamento:}
+oltre al mancato standard per il tipo di simboli utilizzati manca ovviamente anche una dimensione standard per le immagini. Si hanno infatti immagini che oscillano dai 300x400 pixel ai 4000x7000 pixel. Se da una parte ingrandire un'immagine è rischioso in quanto comporta una distorsione dell'immagine, dall'altra limitarne le dimensioni massime può essere utile in modo da non lavorare con un dataset di immagini troppo grandi, e soprattutto troppo variabili. Per questo viene svolto un ridimensionamento che, riconosciuta un'immagine con almeno una delle due dimensioni superiore ai 4000 pixel, riduce l'immagine mantenendo il rapporto originale in modo che la dimensione più grande sia pari a 4000 pixel.
+\end{itemize}
+Una volta pre \verb0-0 processate le immagini in una versione il più possibile standard e pulita esse sono convertite in oggetti dalla classe ``image'' da noi sviluppata. Questa conversione permette di associare alle immagini molte più informazioni e metodi specifici utili alla manipolazione. Infatti la classe ``image'' contiene metodi che permettono di rilevare ed identificare le componenti connesse, individuare i pixel contigui nelle componenti connesse in modo da definire la grandezza dei muri, riconoscere e cancellare gli elementi testuali presenti nelle planimetrie, riconoscere muri esterni e interni, riunire gli elementi per determinare l'immagine finale. Inoltre in Python un'immagine è vista semplicemente come una matrice, dalla quale si può dunque estrarre poche informazioni, mentre tramite la classe ``image'' associamo ad ogni immagine: dimensioni, nome, matrice dell'immagine, percorso dell'immagine, lista delle componenti connesse e dimensioni dei muri. Questo passaggio non appartiene al vero e proprio pre \verb0-0 processing, però viene eseguito subito dopo di esso e precedete tutti i passi successivi.
+
+\section{Caso d'uso: riempimento campiture}
+
+L'obiettivo prefissato dal nostro progetto è di riuscire a far funzionare il riconoscimento dei muri non solo su un determinato standard grafico. Per fare ciò, in primo luogo, è stato sviluppato un codice in grado di riconoscere i muri pieni (Figura \ref{Figura 4} a). In seguito è stato sviluppato un metodo per riconoscere muri con campitura (Figura \ref{Figura 4} b) così da poterli riempire e potersi infine ricondurre al caso precedente. In questo paragrafo viene illustrato il metodo usato per riconoscere e riempire tali muri.
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.40\textwidth]{muri.png}
+\caption{Esempi di muri}
+\label{Figura 4}
+\end{figure}
+\\
+Esattamente come avviene per le planimetrie dei muri pieni anche quelle con campiture vengono prima pre-processate tramite binarizzazione, aggiunto il bordo, eliminati gli elementi esterni e ridimensionata l'immagine iniziale.
+\\
+A questo punto viene effettuata una rotazione dell'immagine a diverse inclinazioni che vanno dai 30 ai 60 gradi con passo di 1 grado, generando così 31 nuove immagini. Ruotare un'immagine comporta la formazione di spigoli neri in essa (Figura \ref{Figura 5}, parte superiore), ma per noi il nero rappresenta i muri e il bianco lo sfondo quindi dobbiamo applicare un accorgimento: l'immagine viene prima complementata nei colori, poi ruotata ed infine complementata di nuovo (Figura \ref{Figura 5}, parte inferiore). In questo modo si ottiene un'immagine che è la rotazione di quella iniziale senza spigoli neri.
+Adesso su ogni immagine viene eseguito un metodo che ricerca il numero di pixel neri verticalmente consecutivi. I risultati vengono salvati in un istogramma dove l'indice rappresenta il numero di pixel consecutivi ed il valore a quell'indice rappresenta quante volte occorre tale valore. Nelle varie immagini, per valori superiori ai 5 pixel (valore trovato empiricamente che funziona bene sul nostro set di dati), si avranno occorrenze maggiori quando si avrà a che fare con le campiture, questo perché sono in assoluto l'elemento più ripetuto all'interno dell'immagine. È necessario scartare valori troppo bassi perché potrebbero corrispondere allo spessore del tratto. Inoltre quando l'immagine si trova
+\begin{figure}[!h]
+\centering
+\includegraphics[width=1\textwidth]{spigoli.png}
+\caption{Esempi di spigoli}
+\label{Figura 5}
+\end{figure}
+nell'inclinazione che rende le campiture esattamente perpendicolari alla base dell'immagine si avrà un netto picco nelle occorrenze. Attraverso questa metodologia è possibile individuare sia l'inclinazione che permette di individuare il maggior numero possibile di campiture, sia la lunghezza delle stesse. Nello specifico si sceglie per ogni inclinazione il valore di lunghezza che occorre più volte; e tra le inclinazioni quella avente tale valore massimo. In seguito viene selezionata solo l'immagine a inclinazione ottimale e su di essa viene nuovamente compiuta una ricerca delle campiture, salvandosi la posizione delle stesse (il pixel più centrale) quando viene riscontrato una lunghezza simile a quella precedentemente rilevata (viene accettato un valore che disti da quello ottimale fino a 2 pixel). Una volta recuperate tutte le posizioni, per ognuna di esse ci si sposta di 4 pixel a destra, poi di 4 pixel a sinistra ed in entrambe le nuove posizioni si richiama il metodo \textit{fill\textunderscore campiture()}. In figura \ref{Figura 6} è possibile vedere un esempio nel quale sono state messe in risalto le campiture riconosciute (in blu), le posizioni centrali individuate (in arancione) e le posizioni dove viene richiamato il metodo \textit{fill\textunderscore campiture()\textit{}} (in rosso).
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.4\textwidth]{riconoscimento.png}
+\caption{Esempio di utilizzo \textit{fill\textunderscore campiture()}}
+\label{Figura 6}
+\end{figure}
+
+\section{Componenti connesse}
+
+Arrivati a questo punto si avrà un database di immagini il più standard possibile dove le planimetrie hanno tutte i muri pieni. Si può dunque proseguire alla ricerca dei muri. Il primo passo da fare è il riconoscimento delle componenti connesse e della loro dimensione.
+Questo passo avviene mediante l'utilizzo di due funzioni da noi sviluppate che servono rispettivamente proprio per individuare le componenti connesse e determinarne le dimensioni.
+La prima (\textit{find\textunderscore connect\textunderscore component()\textit{}}) sfrutta una funzione della libreria Scypy in grado di estrarre le componenti connesse, tale funzione restituisce una matrice delle stesse dimensioni dell'immagine, dove ogni pixel di una i\verb0-0 esima componente connessa ha come valore i.
+Abbiamo implementato un ciclo per estrarre gli attributi della componente connessa, tra cui i più importanti sono:
+\begin{itemize}
+\item \textbf{coordinate (x\textunderscore max, y\textunderscore max), (x\textunderscore min, y\textunderscore min) dell'immagine:}
+per estrarre queste coordinate sono state utilizzate le funzioni della libreria \textit{numpy.argwhere}, le quali restituiscono una lista di tuple, dove ogni tupla è la coordinata di un punto della componente connessa i\verb0-0 esima.
+\item \textbf{l'immagine della componente connessa:\textbf{}}
+per estrarre questa immagine sono state utilizzate le funzioni della libreria \textit{numpy.where}, le quali consentono di mettere tutti i pixel a zero (valore che corrisponde al colore nero) tranne quelli della componente connessa i\verb0-0 esima.
+\end{itemize}
+La seconda (\textit{find\textunderscore connect\textunderscore component()}) funzione permette l'individuazione dei run\textunderscore pixel, ossia un insieme di pixel ``bianchi'' consecutivi, in orizzontale e in verticale. Noi rappresentiamo i muri come pixel neri su sfondo bianco, d'altra parte molte librerie atte alla lavorazione di immagini considerano rilevanti i pixel bianchi e sfondo quelli neri; da questo ne viene che più volte le immagine vengono complementate (scambiati i colori dei pixel da bianchi a neri e viceversa) per far combaciare il tutto. Successivamente viene costruito un istogramma mediante il quale si ricercano i ``run\textunderscore pixel'' di lunghezza massima che hanno una frequenza sopra una certa soglia. Ciò indica lo spessore del muro esterno. In seguito, considerando le spessore trovato, vengono colorati di rosso tutti i ``run\textunderscore pixel'' che hanno una lunghezza che si trova nell'intorno del $\pm$ 10\% rispetto al valore trovato. Tali pixel colorati saranno proprio i pixel dei muri.
+
+\section{Cancellazione testo}
+
+Per la cancellazione del testo presente all'interno delle planimetrie è stata implementata la funzione \textit{methods\textunderscore text\textunderscore recognition\textunderscore based\textunderscore 
+analysis\textunderscore cc()} la quale permette l'individuazione del testo, mediante l'analisi delle componenti connesse.
+Il metodo di riconoscimento del testo si basa sull'analisi delle componenti connesse e dunque deve essere invocato in seguito all'uso di \textit{find\textunderscore connect\textunderscore component()}. Tale funzione sfruttando i risultati di \textit{find\textunderscore connect\textunderscore component()} e alcune funzioni della libreria Numpy, in particolare \textit{numpy.zeros}, permette l'individuazione e cancellazione del testo riconosciuto. Abbiamo appreso che questo metodo ha una percentuale di individuazione molto superiore al 90\%.
+\\
+In fine, la funzione \textit{methods\textunderscore text\textunderscore recognition\textunderscore based\textunderscore analysis\textunderscore cc()} è correlata di una funzione di pulizia la quale ha il compito di eliminare le linee fini di costruzione. Inoltre è utilizzata perché quando viene ricercato il testo, tale ricerca si basa sulla dimensione delle componenti connesse, però vi sono alcune lettere che sono attraversate da queste suddette linee e quindi non è garantita l'individuazione, per cui prima vengono tolte queste linee e poi ricercate e rimosse le lettere.
+
+\section{Riconoscimento muri}
+
+L'immagine è, adesso, ripulita da elementi che chiaramente non fanno parte della struttura ``muro''. Inoltre, tramite \textit{find\textunderscore connected\textunderscore component()} e \textit{find\textunderscore run\textunderscore pixel()\textit{}}, sono già state riconosciute le componenti connesse ed è stato individuato lo spessore dei muri esterni.  Adesso è sufficiente eliminare tutte le componenti con spessore minore del 90\% o maggiore del 110\% rispetto a quello individuato. Il metodo di pulizia è effettuato tramite la nostra funzione \textit{utility\textunderscore clean()}. Questa funzione si basa su alcune funzioni standard della libreria Open Cv. Si ottiene così un immagine contenente solo i muri più spessi presenti nella planimetria iniziale, solitamente coincidono con i muri esterni e pochi muri interni portanti.
+Viene ora recuperata nuovamente l'immagine iniziale e ad essa viene sottratta quella contenente i muri esterni. Alla nuova immagine ottenuta vengono applicate nuovamente le funzioni \textit{find\textunderscore connected\textunderscore component(\textit{}}), \textit{find\textunderscore run\textunderscore pixel()} e \textit{utility\textunderscore clean()} in modo analogo a quanto fatto in precedenza. Poiché i muri più spessi sono stati rimossi dall'immagine che stiamo analizzando, questo secondo passaggio ci permette di andare ad individuare i muri interni, ossia quelli strutturalmente più sottili. Una volta che i muri interni ed esterni sono individuati è sufficiente unire le due immagini, così da ottenere l'immagine finale.
+\begin{figure}[ht]
+\centering
+\includegraphics[width=1\textwidth,keepaspectratio]{ini-finpieni.png}
+\caption{Esempi di riconoscimento muri pieni}
+\label{Figura 7}
+\end{figure}
+\newline
+\begin{figure}[hb]
+\centering
+\includegraphics[width=1\textwidth,keepaspectratio]{ini-fincampit.png}
+\caption{Esempi di riconoscimento muri con campiture}
+\label{Figura 8}
+\end{figure}
+\newpage
+\section{Flusso di esecuzione}
+
+Al fine di fare ordine tra tutte le operazione esposte in questo capitolo, vediamo ora uno schema che mostri l'ordine in cui tutte le funzionalità sopra citate vengono eseguite
+\begin{figure}[!h]
+\centering
+\includegraphics[width=1\textwidth,keepaspectratio]{tes-1.png}
+\caption{Workflow generale}
+\label{Figura 9}
+\end{figure}
+\newline
+Viene mostrato anche nello specifico il flusso del pre \verb0-0 processing:
+\begin{figure}[!h]
+\centering
+\includegraphics[width=1\textwidth,keepaspectratio]{Immagine.png}
+\caption{Workflow pre - processing}
+\label{Figura 10}
+\end{figure}
+
+\chapter{Risultati}
+\markboth{Risultati}{\textit{Risultati}}
+
+Per verificare la qualità dei risultati ottenuti abbiamo confrontato i nostri risultati con quelli del laboratorio Computer Vision Center (CVC). Per farlo abbiamo eseguito il nostro programma sul dataset di immagini scaricabili dal sito \url{https://dag.cvc.uab.es/resources/floorplans}. Tale dataset contiene 104 immagini di planimetrie, ad ognuna è associata un'immagine .svg che mostra muri, porte, finestre e identificazione delle stanze. CVC fornisce un apposito programma Java con il quale è possibile estrarre da ogni file .svg i singoli elementi, ossia solo muri o solo porte o solo finestre, e stamparli in un file .png. In questo modo si ottiene per ogni planimetria iniziale un'immagine che corrisponde all'individuazione dei muri effettuata da CVC. Un volta complementati i colori di queste ultime immagini (le quali vengono originariamente fornite con muri bianchi su sfondo nero) è possibile effettuare un confronto fra i risultati da noi ottenuti ed i loro.
+Per fornire una stima della precisione del nostro sistema il più attendibile possibile è stato necessario effettuare un doppio confronto: prima con l'immagine dei muri ritrovati da CVC ed in seguito con l'immagine originale. Infatti se da una parte si può pensare che i muri trovati da CVC siano un confronto ottimale, dall'altro lato c'è l'inconveniente che la loro ricostruzione stampa immagini con muri sempre dello stesso spessore in tutto il dataset indipendentemente dall'immagine di partenza. Questo comporta che se i nostri risultati venissero confrontati solo con i loro otterremo numerosi falsi errori, facendo risultare dunque il nostro metodo notevolmente peggiore di quanto sia in realtà. Per risolvere questo problema ed avere valori più attendibili, come appena detto, effettuiamo un doppio confronto.
+In primo luogo viene effettuato un confronto fra la nostra immagine finale e quella di CVC dal quale troviamo i pixel differenti tramite uno ``xor''. Una volta individuati tutti i pixel diversi nelle due immagini si confronta, solo su quei pixel, la nostra immagine contenente i muri e l'immagine originale di partenza (sempre tramite ``xor''). In questo modo vengono riconosciuti come pixel errati solo quelli che sono sia differenti dall'immagine di CVC sia differenti dall'immagine iniziale. Infine il numero di tali pixel errati viene diviso per il numero dei pixel neri totali presenti nella nostra immagine contenente i muri.
+\begin{equation}
+Percentuale\:precisione = (1 -\dfrac{pixel\:errati}{pixel\:neri}) *100
+\end{equation}
+Attraverso questo metodo sono stati ottenuti i risultati mostrati dalla seguente doppia tabella.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.48\textwidth]{tabella1.png}
+\caption{Tabella dei risultati}
+\label{Figura 11}
+\end{figure}
+\begin{itemize}
+\item \textbf{Black Wall:}
+immagini con muri neri pieni
+\item \textbf{Texture Wall:\textbf{}}
+immagini con muri con campiture
+\item \textbf{\# images:\textbf{}}
+numero di immagini di quel tipo
+\item \textbf{CVC\%:}
+percentuale di riconoscimento medio di CVC
+\item \textbf{Our\%:}
+percentuale di riconoscimento medio del nostro programma
+\item \textbf{better CVC:}
+percentuale dei casi in cui CVC funziona meglio del nostro
+\item \textbf{better OUR:}
+percentuale dei casi in cui il nostro funziona meglio di CVC
+\item \textbf{CVC variance:}
+varianza nei risultati percentuali ottenuti da CVC
+\item \textbf{Our variance:}
+varianza nei risultati percentuali ottenuti da noi
+\item \textbf{CVC min-max:}
+minimo e massimo percentuali ottenuti da CVC
+\item \textbf{Our min-max:}
+minimo e massimo percentuali ottenuti da noi
+\end{itemize}
+Come si può notare in generale si sono ottenuti risultati molto simili. In particolare si ha che sebbene in più di due terzi (67,78\%) dei casi il loro programma (che ricordiamo svolge anche altre funzioni) elabori meglio del nostro, in media il nostro programma funziona leggermente meglio. Questo è possibile perché il programma sviluppato da CVC molto spesso è vicino o coincidente con la perfezione ma in alcuni casi, probabilmente per via di notazioni grafiche che vanno particolarmente in conflitto con il loro sistema, si hanno grandi errori. Ciò può essere osservando guardando i valori di varianza, di minimi e massimi riportati nella tabella soprastante.
+\\
+In figura \ref{Figura 12} è presentata un'ulteriore analisi dei risultati, nella quale sono riportate le differenze dei valori percentuali tra i loro risultati e i nostri: ossia in ogni punto si ha percentuale riconoscimento muri CVC meno la percentuale riconoscimenti effettuata da noi. I valori sono stati ordinati in modo decrescente così da rendere più chiare le differenze tramite la divisione dei dati in due aree: quella in cui funziona meglio il programma sviluppato da CVC (valori positivi sulla sinistra) e quella in cui funziona meglio il nostro programma (valori negativi sulla destra).
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.85\textwidth]{graf.png}
+\caption{Valori percentuali}
+\label{Figura 12}
+\end{figure}
+
+\chapter{Conclusioni}
+
+In questo elaborato abbiamo mostrato un sistema in grado di riconoscere automaticamente i muri di una planimetria, indipendentemente dalla notazione grafica utilizzata. In questo programma, se i muri rientrano nelle tipologie citate, è indipendente dagli altri standard e non necessita di informazioni aggiuntive per svolgere il proprio compito.
+Dalla bontà dei risultati mostrati nel paragrafo precedente si può notare che quello presentato è un metodo valido per l'individuazione di muri in planimetrie. Le idee di base, in parte ispirate agli articoli \cite{1} e \cite{5} e in parte sviluppate ex novo, si sono dimostrate valide per raggiungere l'obiettivo prefissato. A sostegno di quanto appena detto viene ricordato quanto riportato nel capitolo precedente: ossia il fatto che i nostri risultati sono molto simili a quelli ottenuti da CVC ed in alcuni casi sono risultati anche migliori.
+Con l'utilizzo di queste idee appena esposte sarebbe possibile arrivare ad un riconoscimento al 100\% indipendente dagli standard grafici utilizzati solo con un'aggiunta di codice che, riconosciuti i muri non pieni, si limiti a riempirli. Una volta raggiunto questo obiettivo un altro sviluppo futuro potrebbe essere il riconoscimento (già effettuato da CVC) di altri elementi strutturali quali porte, finestre e stanze.
+
+\addcontentsline{toc}{chapter}{Bibliografia}
+\begin{thebibliography}{99}
+
+\bibitem{1} Lluis-Pere de las Heras, David Fernandez, Ernest Valveny, Josep Llados and Gemma Sanchez, ``Unsupervised Wall Detector in Architectural Floor Plans,'' in 12th International Conference on Document Analysis and Recognition, 2013.
+
+\bibitem{2} P. Dosch, K. Tombre, C. Ah-Soon, and G. Masini, ``A complete system for the analysis of architectural drawings,'' International Journal on Document Analysis and Recognition, vol. 3, pp. 102 \verb0-0 116, 2000.
+
+\bibitem{3} T. Lu, H. Yang, R. Yang, and S. Cai, ``Automatic analysis and integration of architectural drawings,'' International Journal on Document Analysis and Recognition, vol. 9, pp. 31 \verb0-0 47, 2007.
+
+\bibitem{4} S. Mace, H. Locteau, E. Valveny, and S. Tabbone, ``A system to detect rooms in architectural floor plan images,'' in Proceedings of the 9th IAPR International Workshop on Document Analysis Systems, 2010, pp. 167\verb0-0 174.
+
+\bibitem{5} Lluis-Pere de las Heras, David Fernandez, Ernest Valveny, Josep Llados and Gemma Sanchez, ``Statistical segmentation and structural recognition for floor plan interpretation,''  2013.
+
+\bibitem{6} S. Ahmed, M. Liwicki, M. Weber, and A. Dengel, ``Improved automatic analysis of architectural floor plans,'' in Proceedings of the 11th International Conference on Document Analysis and Recognition, 2011.
+
+\end{thebibliography}
+\addcontentsline{toc}{chapter}{Elenco delle Figure}\listoffigures
+\end{document}
