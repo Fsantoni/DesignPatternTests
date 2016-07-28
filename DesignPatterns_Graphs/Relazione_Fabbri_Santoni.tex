@@ -98,7 +98,7 @@ We will study:
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.3\textwidth]{./Adapter/Class/ClassDiagram.png}
+	\includegraphics[width=0.6\textwidth]{./Adapter/Class/ClassDiagram.png}
 	\caption{Class Adapter: Class Diagram }
 	\label{CAclassDiag}
 \end{figure}
@@ -106,7 +106,7 @@ We will study:
 \begin{itemize}
 	\item \textbf{Adaptee}: legacy class with specific methods and fields
 	\item \textbf{Target}: desired interface
-	\item \textbf{ClassAdapter}: inheriting from Adaptee and Target both, adapts the legacy methods to the desired interface  
+	\item \textbf{ClassAdapter}: inherits from both Adaptee and Target, adapts the legacy methods to the desired interface  
 \end{itemize}
 
 \subsubsection{Fault Model}
@@ -117,42 +117,44 @@ Given that the pattern focuses on allowing access to legacy methods through a ne
 \end{itemize}
 
 \subsection{Testing}
-To negate the two source of failures we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts with the methods:
+The two sources of failure both depend on the inability of the Client to reach the Adaptee methods through the Adapter.  We reasoned that it is thus sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods. As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
+\newline
+We have thus represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
-\begin{itemize}
-	\item having represented the field's interaction with the class methods through a data flow graph whose basic blocks are methods, we decided to test them following the all-uses criterion.    
-\end{itemize}
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact deemed the\textit{ all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus all its \textit{uses}.    
+
 
 \paragraph{Data Flow Graph}
-\begin{figure}[!h]
+ The Client is the only external class interacting with the public methods of the Adapter. The Data Flow Graph can be seen in Figure \ref*{CAdataflow}.
+\begin{figure}[h]
 	\centering
-	\includegraphics[width=0.3\textwidth]{./Adapter/Class/CallGraph.png}
+	\includegraphics[width=0.8\textwidth]{./Adapter/Class/CallGraph.png}
 	\caption{Data Flow Graph: \textit{bool\_value}}
 	\label{CAdataflow}
 \end{figure}
 
 
 \subsubsection{Tests}
-We generated a test suite capable to test all the \textit{all-uses} paths:
-\begin{enumerate}
-	\item Adapter() GetInt() 
-	\item Adapter() GetBool() 
+We generated a test suite capable of testing all the \textit{all-uses} paths:
+\begin{itemize}
+	\item Adapter() getInt() 
+	\item Adapter() getBool() 
 	\item Adapter() setInt() getInt() 
 	\item Adapter() setInt() getBool() 
 	\item Adapter() setBool() getInt()
-	
-\end{enumerate}
+	\newline
+\end{itemize}
 The special case of
-\begin{enumerate}
-		\item \item Adapter() setBool() getbool() 
+\begin{itemize}
+	\item Adapter() setBool() getBool() 
 		
-\end{enumerate}	
-is not tested because all the methods are directly inherited from the legacy (and thus supposedly already tested) class and no side-effects, which could have invalidated some invariants, are introduced in the adapter.
+\end{itemize}	
+is not tested because all the methods are directly inherited from the legacy class(and thus are supposedly already tested) and no side-effects, which could have invalidated some invariants, are introduced in the adapter.
 
 In this particular pattern the presence of a lone object other than the Client makes Unit and Integration tests un-distinguishable.
 
 \subsubsection{Code Coverage}
-The code coverage measure obtained from EclEmma Java plugin is: 100%.
+The code coverage measure obtained from EclEmma Java plug-in is: 100\%.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%1
 \section{Object Adapter}
@@ -160,13 +162,15 @@ Adapts a pre-existent class to a new interface through class composition.
 
 Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added. 
 
-The composition adds the possibility of dynamically switching the adapted legacy class.
+The composition adds the possibility of dynamically switching the adapted legacy class (not contemplated in our implementation) and the possibility of overridden methods with altered functionality.
+
+If the adaptee class is declared final, the increased complexity from overridden methods is eliminated but the extra functionality is removed as well.
 
 
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.3\textwidth]{./Adapter/Object/ClassDiagram.png}
+	\includegraphics[width=0.7\textwidth]{./Adapter/Object/ClassDiagram.png}
 	\caption{Object Adapter: Class Diagram }
 	\label{OAclassDiag}
 \end{figure}
@@ -174,7 +178,7 @@ The composition adds the possibility of dynamically switching the adapted legacy
 \begin{itemize}
 	\item \textbf{Adaptee}: legacy class with specific methods and fields
 	\item \textbf{Target}: desired interface
-	\item \textbf{ObjectAdapter}: inheriting from Target, adapts the legacy methods to the desired interface through delegation. 
+	\item \textbf{ObjectAdapter}: inherits from Target, adapts the legacy methods to the desired interface through delegation. 
 \end{itemize}
 
 \subsubsection{Fault Model}
@@ -182,45 +186,69 @@ Given that the pattern focuses on allowing access to legacy methods through a ne
 \begin{itemize}
 	\item the adapter did not inherit from the legacy class or the new interface
 	\item the adapter for some reason cannot interact with the legacy methods 
+	\item the instance contained in the adapter, which inherited the adaptee class, has overrode its methods in an unforeseen way
 \end{itemize}
+
 
 \subsection{Testing}
-To negate the two source of failures we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts with the methods:
 
-\begin{itemize}
-	\item having represented the field's interaction with the class methods through a data flow graph whose basic blocks are methods, we decided to test them following the all-uses criterion.    
-\end{itemize}
+The sources of failure depend on the inability of the Client to reach the Adaptee methods through the Adapter or in the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden:  we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods, considering all the possible alternative implementations. 
+As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
+
+The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{bool\_value},  and topology, the different ways the class are ordered in a hierarchy at runtime.
+
+We decided to explore both of them separately in specific focused tests.
+\newline
+\subparagraph{Data flow}
+We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
+
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact deemed the \textit{all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus all its \textit{uses}.   
+\subparagraph{Topology}
+We have tested separately the overridden variants of the methods through simple tests.
+
+We reasoned that such a separation would allow us to sufficiently cover the code while maintaining a low number of tests.
+
 
 \paragraph{Data Flow Graph}
+Like the ClassAdapter, only the Client interacts with the Adapter methods.
+The Data Flow Graph can be seen in Figure \ref*{OAdataflow}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.3\textwidth]{./Adapter/Class/CallGraph.png}
+	\includegraphics[width=0.8\textwidth]{./Adapter/Object/CallGraph.png}
 	\caption{Data Flow Graph: \textit{bool\_value}}
-	\label{CAdataflow}
+	\label{OAdataflow}
 \end{figure}
 
 
 \subsubsection{Tests}
-We generated a test suite capable to test all the \textit{all-uses} paths:
+
+
+
+We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{enumerate}
-	\item Adapter() GetInt() 
-	\item Adapter() GetBool() 
+	\item Adapter() getInt() 
 	\item Adapter() setInt() getInt() 
-	\item Adapter() setInt() getBool() 
-	\item Adapter() setBool() getInt()
 	
 \end{enumerate}
-The special case of
+To these are also added the topology tests:
 \begin{enumerate}
-	\item \item Adapter() setBool() getbool() 
-	
+	\item Adapter( Adaptee ) getInt() 
+	\item Adapter( AdapteeOpposite ) getInt()
 \end{enumerate}	
-is not tested because all the methods are directly inherited from the legacy (and thus supposedly already tested) class and no side-effects, which could have invalidated some invariants, are introduced in the adapter.
+Of these the first, being already tested in the first suite, is not repeated.
 
-In this particular pattern the presence of a lone object other than the Client makes Unit and Integration tests un-distinguishable.
+Since in this pattern the tested class's methods (Adapter's) interacted with external classes (Adaptee) we  differentiated between Unit and Integration tests.
 
+We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the Adapter class's code.
 \subsubsection{Code Coverage}
-The code coverage measure obtained from EclEmma Java plugin is: 100%.
+The code coverage measure obtained from EclEmma Java plugin is: 98.6\% 
+\begin{itemize}
+	\item Adapter: 97.1\% (UnitTest: 88.6\%)
+	\item Adaptee: 100\%
+	\item AdapteeOpposite: 100\% 
+\end{itemize}
+
+The single remaining untested branch is a setter method which was not called with all the possible inputs equivalence classes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%2
 
@@ -246,12 +274,17 @@ The code coverage measure obtained from EclEmma Java plugin is: 100%.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%8
 
-\chapter{JUnit & Mockito}
+\chapter{JUnit \& Mockito}
 
 \section{JUnit}
 \section{Mockito}
 \paragraph{EclEmma}
+EclEmma is a plug-in which measures the branch coverage of the bytecode produced by the compiler. The branches which were not tested are then traced back to the code and highlighted as a warning. 
 
+In some cases such highlighting is confusing and can even be impossible to eliminate through testing: the Java compiler in fact sometimes creates additional bytecode that seems to have no relation to the source code (e.g. synthetic classes and methods). 
+
+In some other cases test execution is questionable or impossible by design: for example private, empty default constructors (assuming they receive no calls) or methods that contains no logic, like plain getters and setters,
+or even extra exception handlers installed to close resources from try/with statements.
 
 \chapter{Conclusioni}
 

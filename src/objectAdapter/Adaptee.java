@@ -2,7 +2,7 @@ package objectAdapter;
 
 public class Adaptee {
 	
-	private boolean current=false;
+	protected boolean current=false;
 	
 	public void setBooleanResult(boolean newValue){
 		current= newValue;
