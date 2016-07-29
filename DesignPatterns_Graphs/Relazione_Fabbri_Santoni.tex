@@ -419,71 +419,88 @@ The pattern focuses on maintaining updated objects that expressed the interest i
 
 \subsection{Testing}
 
-The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after inter-class method invocation and the way the state of the observer is modified after a notification.
-
-As long as the outcomes differ from the expectation we can reasonably predict that the transmission of information upon notification .
-
-The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{price},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
+The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We considered the correct modification on the subject internal \textit{state} as not important for our pattern.  We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after an inter-class method invocation and the way the \textit{state} of the observer is modified after a notification.
 
 
-We decided to explore both of them separately in specific focused tests.
-\newline
-\paragraph{Field \textit{price}: Data flow}
+
+As long as the outcomes differ from the expectation we can reasonably predict that the transmission of information upon notification encountered problems.
+
+\paragraph{Field \textit{list\_observers}: Data flow}
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
 \subparagraph{Data Flow Graph}
-Both Client and other wrapping Composites interacts with the Component methods.
-The Data Flow Graph can be seen in Figure \ref{Codataflow}.
+Only the Client interacts with the Subject methods, in particular the responsibility of attaching or detaching Observers from Subjects lies with the Client.
+The Data Flow Graph can be seen in Figure \ref{Obdataflow1}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Composite/CallGraph.png}
-	\caption{Data Flow Graph: \textit{price}}
-	\label{Codataflow}
+	\includegraphics[width=0.8\textwidth]{./Observer/CallGraph.png}
+	\caption{Data Flow Graph: \textit{list\_observers}}
+	\label{Obdataflow1}
 \end{figure}
 
 
-We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
+We decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion.
 
-The field was tested in the fixed hierarchy formed with a Composite element containing another Composite, which contained a Leaf.  
-We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
+\paragraph{Field \textit{state}: Data flow}
+We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
-
-
-\paragraph{Method \textit{operation\(\)}: Topology}
-We generated a Class Dependency Graph to identify all the possible relations between classes.
-
-\subparagraph{Class Dependency Graph}
-In the Figure \ref{Codepengraph} are made explicit the relations between classes: in particular since Component is an abstract class it and its inheriting classes depend on each other. 
+\subparagraph{Data Flow Graph}
+Both Client and followed Subjects interacts with the Component methods.
+The Data Flow Graph can be seen in Figure \ref{Obdataflow2}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
-	\caption{Data Flow Graph: \textit{operation()}}
-	\label{Codepengraph}
+	\includegraphics[width=0.8\textwidth]{./Observer/CallGraph_State.png}
+	\caption{Data Flow Graph: \textit{state}}
+	\label{Obdataflow2}
 \end{figure}
+
+
+We decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
+
 
 \subsubsection{Tests}
 
-\paragraph{Field \textit{price}: Data flow}
+\paragraph{Field \textit{list\_observer}: Data flow}
 We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{enumerate}
-	\item Component() getChild()
-	\item Component() getValue()
-	\item Component() add() getChild()
-	\item Component() add() getValue()
-	\item Component() add() add() remove() getChild()
-	\item Component() add() add() remove() getValue() 
+	\item Subject() setState()[notify()]	<- controllo che con lista vuota non lanci errori
+	\item Subject() detach()				 <-1) In questo caso il driver fa le veci dell'"Object", ne chiamo il metodo e lo "lascio fare", identico anche in integration test 
+	2) sto testando detach prima di attach: controllo non dia errori	
+	\item Subject() attach() attach() attach() detach() detach()  (+setState()[notify()]) x4 attach attach E attach detach E detach detach E detach notify
+	\item Subject() attach() attach() detach() detach() attach() (+setState()[notify()]) x3 subject attach E detach attach E attach notify 
+	
+	un def use path with respect to x: NON deve contenere cicli, ne def x intermedi
+	attach attach conterrebbe cicli, però non è esattamente lo stesso basic block in quanto eseguito da Observer distinti
+	
+	su attachX3 e detachX2 testo con stessa coppia e coppia distinta di Object,
+	su attachX2 detachX2 attach testo le altre combinazioni fra attach e detach 
 \end{enumerate}
 
-\paragraph{Method \textit{operation\(\)}: Topology}
-We identified the 3 cases of:
-\begin{itemize}
-	\item single Leaf
-	\item Composite containing Leaf
-	\item Composite containing Composite
-\end{itemize}
-as representative of the entire set of possible hierarchies.
+\paragraph{Field \textit{state}: Data flow}
+We generated a test suite capable of testing all the \textit{all-uses} paths:
+\begin{enumerate}
+	\item ConcreteObserver() getState()
+	\item ConcreteObserver() update() getState()
+	
+\end{enumerate}
+	
 
-We then tested all the composite-specific methods (add, remove, getChild) on the identified cases.
+	
+	Subject setState[notify]	<- controllo che con lista vuota non lanci errori
+	Subject detach				 <-1) In questo caso il driver fa le veci dell'"Object", ne chiamo il metodo e lo "lascio fare", identico anche in integration test 
+	2) sto testando detach prima di attach: controllo non dia errori	
+	Subject attach attach attach detach detach  (+setState[notify]) x4 attach attach E attach detach E detach detach E detach notify
+	Subject attach attach detach detach attach (+setState[notify]) x3 subject attach E detach attach E attach notify 
+	
+	un def use path with respect to x: NON deve contenere cicli, ne def x intermedi
+	attach attach conterrebbe cicli, però non è esattamente lo stesso basic block in quanto eseguito da Observer distinti
+	
+	su attachX3 e detachX2 testo con stessa coppia e coppia distinta di Object,
+	su attachX2 detachX2 attach testo le altre combinazioni fra attach e detach 
+	
+	Utilizzo un metodo senza logica (quindi corretto e per cui non servono test) per creare output della lista di observers: LA TESTO DIRETTAMENTE QUINDI SENZA ASPETTARE
+	col notify finale invece testo sugli oggetti (tramite verify su UnitTest) se sono partite le chiamate 
+
 
 In both type of tests, since the tested class's methods (Component) interacted with external classes (Leaf or Composites) we  differentiated between Unit and Integration tests.
 
