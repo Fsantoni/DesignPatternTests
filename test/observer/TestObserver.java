@@ -91,7 +91,7 @@ public class TestObserver {
 	}
 	
 	@Test
-	public void testAttach2Detach2Attach1() {
+	public void testAttach2Detach2Attach1Detach1Attach1() {
 		ConcreteSubject s = new ConcreteSubject();
 		ConcreteObserver c = new ConcreteObserver(0);
 		ConcreteObserver b = new ConcreteObserver(1);

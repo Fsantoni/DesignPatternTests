@@ -264,6 +264,93 @@ Since the Unit Tests and the Integration Tests are identical, with the only diff
 
 \section{Proxy}
 
+The Proxy pattern is constituted by a class  functioning as an interface to something else, usually a complex or heavy object.
+
+ It is called by the client to access the real serving object behind the scenes, it either provides a cached result or transmits the request to the actual object.
+
+\subsubsection{Class Diagram}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Proxy/ClassDiagram.png}
+	\caption{Proxy: Class Diagram }
+	\label{ProclassDiag}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{SubjectInterface}: defines the interface used by the Client to access the RealSubject.
+	\item \textbf{Proxy}: allows access to the RealSubject, either by providing a cached response or by delegating the requests to the RealSubject itself.
+	\item \textbf{RealSubject}: defines the real complex or heavy object wrapped by the proxy.
+\end{itemize}
+
+\subsubsection{Fault Model}
+
+The pattern focuses on optimizing or controlling the access to the heavy subject. We have failures in the following situations:  
+\begin{itemize}
+	\item the access to the RealSubject is impeded
+	\item the cached copies provided by the wrapper differ from the actual source.
+\end{itemize}
+
+\subsection{Testing}
+
+The sources of failure depend on the inability of the Client to reach the RealSubject fields through the Proxy or in the inability of the Proxy of providing correct cached versions:  we reasoned that it is sufficient to test the ways in which the variable \textit{realSubj} interacts and is modified by the methods, by slight modification of the tests we can automatically verify the cached versions validity.
+
+
+
+
+\paragraph{Field \textit{price}: Data flow}
+We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
+
+\subparagraph{Data Flow Graph}
+Only the Client interacts with the Proxy methods.
+The Data Flow Graph can be seen in Figure \ref{Prodataflow}.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Proxy/CallGraph.png}
+	\caption{Data Flow Graph: \textit{realSubj}}
+	\label{Prodataflow}
+\end{figure}
+
+
+We decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact desired to verify through the tests not only the correct interactions of the \textit{realSubj} field with the methods but also the \textit{cache}'s, we determined that a more extensive coverage could thus be desired.
+
+\subsubsection{Tests}
+
+\paragraph{Field \textit{price}: Data flow}
+We generated a test suite capable of testing all the \textit{all-uses} paths:
+\begin{enumerate}
+	\item Proxy() getString() 
+	\item Proxy() getString() getString()
+	\item Proxy() getSubString()
+	\item Proxy() getString() getSubString()
+	\item Proxy() getSubString() getSubString()
+	\item Proxy() getSubString() getString()
+	
+\end{enumerate}
+In particular  \textit{Proxy() getSubString() getSubString()} was altered to test the returned cached version after each method call. 
+
+
+Since in this pattern the tested class's methods (Proxy's) interacted with external classes (RealSubject) we  differentiated between Unit and Integration tests.
+
+The Proxy class, by having to provide a cached version or to instantiate a RealSubject which will process the heavy data and return it to the Proxy, poses problems to the injection of a mocked RealSubject class.
+
+Two possibilities were considered: create a RealSubjectFactory to pass during the construction of the Proxy and utilize it during the instantiation of the inner RealSubject or separate the responsibility of instantiation in a method void of logic.
+
+In the first possibility one would have to use Mockito's \textit{mock} method to mock the Factory so that it would return a mocked RealSubject, while in the second case one would have to use Mockito's \textit{spy} method to modify the Proxy itself so that the logic-less method would return a mocked RealSubject.
+
+Due to not having to create an unnecessary extra class we preferred and thus implemented the second option.
+
+\subsubsection{Code Coverage}
+The code coverage measure obtained from EclEmma Java plugin is: 93.8\% 
+\begin{itemize}
+	\item Proxy: 95.4\% (UnitTest 95.4\%)
+	\item RealSubject: 88\%
+	\item SubjectInterface: 100\%
+	
+\end{itemize}
+
+The remaining untested branches correspond to the \textit{getFilename()} methods, which where not tested due to absence of logic.
+
+Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the Proxy class's code is the same.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%3
 \section{Decorator}
 
@@ -461,20 +548,33 @@ We decided to test the interaction between the variable and the methods followin
 \subsubsection{Tests}
 
 \paragraph{Field \textit{list\_observer}: Data flow}
+We decided to test as separate and distinct cases for situations like \textit{detach() detach()} where the methods are called with the same Observer or different ones. 
 We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{enumerate}
-	\item Subject() setState()[notify()]	<- controllo che con lista vuota non lanci errori
-	\item Subject() detach()				 <-1) In questo caso il driver fa le veci dell'"Object", ne chiamo il metodo e lo "lascio fare", identico anche in integration test 
-	2) sto testando detach prima di attach: controllo non dia errori	
-	\item Subject() attach() attach() attach() detach() detach()  (+setState()[notify()]) x4 attach attach E attach detach E detach detach E detach notify
-	\item Subject() attach() attach() detach() detach() attach() (+setState()[notify()]) x3 subject attach E detach attach E attach notify 
-	
-	un def use path with respect to x: NON deve contenere cicli, ne def x intermedi
-	attach attach conterrebbe cicli, però non è esattamente lo stesso basic block in quanto eseguito da Observer distinti
-	
-	su attachX3 e detachX2 testo con stessa coppia e coppia distinta di Object,
-	su attachX2 detachX2 attach testo le altre combinazioni fra attach e detach 
+	\item Subject() setState()[notify()]	
+	\item Subject() detach() 		
+	\item Subject() attach()x3 detach()x2 (+setState()[notify()]) 
+	\item Subject() attach()x2 detach()x2 attach() detach() attach() (+setState()[notify()])
 \end{enumerate}
+
+All these paths are interesting to study:
+\begin{enumerate}
+	\item controls no errors are introduced if a \textit{setState()} is called with empty list
+	\item a detach is called with empty list
+	\item[3,4] by interspersing verifications on the \textit{list\_observer} we test all combinations of the different D-U paths:
+	\begin{enumerate}
+		\item attach() attach()  
+		\item attach() detach()	 	
+		\item detach() detach()	 
+		\item detach() notify()
+		\item Subject() attach()
+		\item detach() attach()
+		\item attach() notify()
+	\end{enumerate} 
+	
+\end{enumerate} 
+To create an output of the \textit{list\_observer} we utilize a support method void of logic, which we decided did not need to be considered as an \textit{use} during the tests.
+
 
 \paragraph{Field \textit{state}: Data flow}
 We generated a test suite capable of testing all the \textit{all-uses} paths:
@@ -486,37 +586,14 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	
 
 	
-	Subject setState[notify]	<- controllo che con lista vuota non lanci errori
-	Subject detach				 <-1) In questo caso il driver fa le veci dell'"Object", ne chiamo il metodo e lo "lascio fare", identico anche in integration test 
-	2) sto testando detach prima di attach: controllo non dia errori	
-	Subject attach attach attach detach detach  (+setState[notify]) x4 attach attach E attach detach E detach detach E detach notify
-	Subject attach attach detach detach attach (+setState[notify]) x3 subject attach E detach attach E attach notify 
-	
-	un def use path with respect to x: NON deve contenere cicli, ne def x intermedi
-	attach attach conterrebbe cicli, però non è esattamente lo stesso basic block in quanto eseguito da Observer distinti
-	
-	su attachX3 e detachX2 testo con stessa coppia e coppia distinta di Object,
-	su attachX2 detachX2 attach testo le altre combinazioni fra attach e detach 
-	
-	Utilizzo un metodo senza logica (quindi corretto e per cui non servono test) per creare output della lista di observers: LA TESTO DIRETTAMENTE QUINDI SENZA ASPETTARE
-	col notify finale invece testo sugli oggetti (tramite verify su UnitTest) se sono partite le chiamate 
 
-
-In both type of tests, since the tested class's methods (Component) interacted with external classes (Leaf or Composites) we  differentiated between Unit and Integration tests.
+In both type of tests, since the tested class's methods (ConcreteSubject and ConcreteObserver) interacted with external classes (Observer and Subject) we  differentiated between Unit and Integration tests.
 
 We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the main class's code.
+To 
 \subsubsection{Code Coverage}
-The code coverage measure obtained from EclEmma Java plugin is: 97.8\% 
-\begin{itemize}
-	\item Component: 92.3\% (UnitTest 92.3\%)
-	\item Composite: 100\%
-	\item Leaf: 100\%
-	\item LeafException 100\%
-\end{itemize}
+The code coverage measure obtained from EclEmma Java plugin is: 100\% (Unit: 100\%)
 
-The remaining untested branches are found in the implementation of the composite-specific methods that Component provides for Leaf: all other classes (Composite) directly override those methods so their implementation when they are called not by a Leaf is never tested.
-
-Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%6
 \section{State}
@@ -524,12 +601,17 @@ Since the Unit Tests and the Integration Tests are identical, with the only diff
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%7
 \section{Visitor}
 
+
+non era necessario la Answer  es.particolare logica che decide che fare(avrei potuto lo stesso chiamare direttamente con cast, forse testando di piu anche) si e' deciso di esplorare le potenzialita' di Mockito..
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%8
 
 \chapter{JUnit \& Mockito}
 
 \section{JUnit}
 \section{Mockito}
+answer serve per fare cose complesse es. particolare logica che decide che fare, qui lo ho usato per cose banali
+
+
 \paragraph{EclEmma}
 EclEmma is a plug-in which measures the branch coverage of the bytecode produced by the compiler. The branches which were not tested are then traced back to the code and highlighted as a warning. 
 
