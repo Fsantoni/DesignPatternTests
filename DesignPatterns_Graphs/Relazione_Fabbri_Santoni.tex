@@ -199,17 +199,10 @@ The problem of testing thus expands in two different orthogonal dimensions: data
 
 We decided to explore both of them separately in specific focused tests.
 \newline
-\subparagraph{Field \textit{adaptee}: Data flow}
+\paragraph{Field \textit{adaptee}: Data flow}
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
-We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact deemed the \textit{all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus all its \textit{uses}.   
-\subparagraph{Overridden methods: Topology}
-We have tested separately the overridden variants of the methods through simple tests.
-
-We reasoned that such a separation would allow us to sufficiently cover the code while maintaining a low number of tests.
-
-
-\paragraph{Data Flow Graph}
+\subparagraph{Data Flow Graph}
 Like the ClassAdapter, only the Client interacts with the Adapter methods.
 The Data Flow Graph can be seen in Figure \ref{OAdataflow}.
 \begin{figure}[!h]
@@ -219,6 +212,13 @@ The Data Flow Graph can be seen in Figure \ref{OAdataflow}.
 	\label{OAdataflow}
 \end{figure}
 
+
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact deemed the \textit{all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus all its \textit{uses}.   
+
+\paragraph{Overridden methods: Topology}
+We have tested separately the overridden variants of the methods through simple tests.
+
+We reasoned that such a separation would allow us to sufficiently cover the code while maintaining a low number of tests.
 
 \subsubsection{Tests}
 
@@ -300,28 +300,10 @@ The problem of testing thus expands in two different orthogonal dimensions: data
 
 We decided to explore both of them separately in specific focused tests.
 \newline
-\subparagraph{Field \textit{price}: Data flow}
+\paragraph{Field \textit{price}: Data flow}
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
-We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
-
-The field was tested in the fixed hierarchy formed with a CompoundPart element containing another CompoundPart, which contained a Leaf.  
-We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
-  
-\subparagraph{Method \textit{operation\(\)}: Topology}
-We generated a Class Dependency Graph to identify all the possible relations between classes.
-We identified the 3 cases of:
-\begin{itemize}
-	\item single Leaf
-	\item CompoundPart containing Leaf
-	\item CompoundPart containing CompoundPart
-\end{itemize}
-as representative of the entire set of possible hierarchies.
-
-We then tested the composite-specific methods (add, remove, getChild) on the identified cases.
-
-
-\paragraph{Data Flow Graph}
+\subparagraph{Data Flow Graph}
 Both Client and other wrapping CompoundParts interacts with the Component methods.
 The Data Flow Graph can be seen in Figure \ref{Codataflow}.
 \begin{figure}[!h]
@@ -331,7 +313,19 @@ The Data Flow Graph can be seen in Figure \ref{Codataflow}.
 	\label{Codataflow}
 \end{figure}
 
-\paragraph{Class Dependency Graph}
+
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
+
+The field was tested in the fixed hierarchy formed with a CompoundPart element containing another CompoundPart, which contained a Leaf.  
+We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
+  
+  
+  
+\paragraph{Method \textit{operation\(\)}: Topology}
+We generated a Class Dependency Graph to identify all the possible relations between classes.
+
+\subparagraph{Class Dependency Graph}
+In the Figure \ref{Codepengraph} are made explicit the relations between classes: in particular since Component is an abstract class it and its inheriting classes depend on each other. 
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
@@ -341,8 +335,7 @@ The Data Flow Graph can be seen in Figure \ref{Codataflow}.
 
 \subsubsection{Tests}
 
-
-
+\paragraph{Field \textit{price}: Data flow}
 We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{enumerate}
 	\item Adapter() getInt() 
@@ -355,6 +348,18 @@ To these are also added the topology tests:
 	\item Adapter( AdapteeOpposite ) getInt()
 \end{enumerate}	
 Of these the first, being already tested in the first suite, is not repeated.
+
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We identified the 3 cases of:
+\begin{itemize}
+	\item single Leaf
+	\item CompoundPart containing Leaf
+	\item CompoundPart containing CompoundPart
+\end{itemize}
+as representative of the entire set of possible hierarchies.
+////
+We then tested the composite-specific methods (add, remove, getChild) on the identified cases.
 
 Since in this pattern the tested class's methods (Adapter's) interacted with external classes (Adaptee) we  differentiated between Unit and Integration tests.
 
