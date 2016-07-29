@@ -125,7 +125,7 @@ We then decided to test the interaction between the variable and the methods fol
 
 
 \paragraph{Data Flow Graph}
- The Client is the only external class interacting with the public methods of the Adapter. The Data Flow Graph can be seen in Figure \ref*{CAdataflow}.
+ The Client is the only external class interacting with the public methods of the Adapter. The Data Flow Graph can be seen in Figure \ref{CAdataflow}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Adapter/Class/CallGraph.png}
@@ -195,15 +195,15 @@ Given that the pattern focuses on allowing access to legacy methods through a ne
 The sources of failure depend on the inability of the Client to reach the Adaptee methods through the Adapter or in the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden:  we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods, considering all the possible alternative implementations. 
 As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
 
-The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{bool\_value},  and topology, the different ways the class are ordered in a hierarchy at runtime.
+The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{bool\_value},  and topology, the different ways the classes are ordered in a hierarchy at runtime.
 
 We decided to explore both of them separately in specific focused tests.
 \newline
-\subparagraph{Data flow}
+\subparagraph{Field \textit{adaptee}: Data flow}
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
 We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact deemed the \textit{all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus all its \textit{uses}.   
-\subparagraph{Topology}
+\subparagraph{Overridden methods: Topology}
 We have tested separately the overridden variants of the methods through simple tests.
 
 We reasoned that such a separation would allow us to sufficiently cover the code while maintaining a low number of tests.
@@ -211,7 +211,7 @@ We reasoned that such a separation would allow us to sufficiently cover the code
 
 \paragraph{Data Flow Graph}
 Like the ClassAdapter, only the Client interacts with the Adapter methods.
-The Data Flow Graph can be seen in Figure \ref*{OAdataflow}.
+The Data Flow Graph can be seen in Figure \ref{OAdataflow}.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Adapter/Object/CallGraph.png}
@@ -262,81 +262,82 @@ Since the Unit Tests and the Integration Tests are identical, with the only diff
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%4
 \section{Composite}
 
-
-The Composite pattern allows the creation of hierarchies of composite elements. These composite elements can be composed of single parts or other composite elements.
-
-The Composite pattern "composes" objects into tree structures to represent part-whole hierarchies. Implementing the composite pattern lets clients treat individual objects and compositions uniformlydescribes that a group of objects is to be treated in the same way as a single instance of an object. The intent of a composite is to 
-
-The pattern is useful when there is a need to:
-\begin{itemize}
-	\item represent hierarchies of 
-\end{itemize} 
-
-onsente la costruzione di gerarchie di oggetti composti. Gli oggetti
-composti possono essere conformati da oggetti singoli, oppure da altri
-oggetti composti. Questo pattern è utile nei casi in cui si vuole:
-- Rappresentare gerarchie di oggetti tutto-parte.
-- Essere in grado di ignorare le differenze tra oggetti singoli e oggetti
-composti.
-consente la costruzione di gerarchie di oggetti composti
-
-- operation() su strutture particolari non funziona
--(2) add e remove si comportano in maniera non conforme se applicati: errore su Leaf ed errori su vettore di Composite 
-
-
+The Composite pattern "composes" objects into tree structures to represent part-whole hierarchies. Implementing the composite pattern lets clients treat individual objects and compositions uniformly.
 
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Adapter/Object/ClassDiagram.png}
-	\caption{Object Adapter: Class Diagram }
-	\label{OAclassDiag}
+	\includegraphics[width=0.7\textwidth]{./Composite/ClassDiagram.png}
+	\caption{Composite: Class Diagram }
+	\label{CoclassDiag}
 \end{figure}
 
 \begin{itemize}
-	\item \textbf{Adaptee}: legacy class with specific methods and fields
-	\item \textbf{Target}: desired interface
-	\item \textbf{ObjectAdapter}: inherits from Target, adapts the legacy methods to the desired interface through delegation. 
+	\item \textbf{Component}: common interface to the individual and compound objects.
+	\item \textbf{CompoundPart}: composition of individual objects and other compositions.
+	\item \textbf{Leaf}: individual object. 
+	\item \textbf{LeafException}: exception thrown when a composite-specific method is called on a Leaf object. 
+		
 \end{itemize}
 
 \subsubsection{Fault Model}
-Given that the pattern focuses on allowing access to legacy methods through a new interface, failures are found in the following situations:  
+
+The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
 \begin{itemize}
-	\item the adapter did not inherit from the legacy class or the new interface
-	\item the adapter for some reason cannot interact with the legacy methods 
-	\item the instance contained in the adapter, which inherited the adaptee class, has overrode its methods in an unforeseen way
+	\item the common \textit{operation} works differently than expected
+	\item the composite-specific methods produce unexpected effects when called on a Leaf object
 \end{itemize}
 
 
 \subsection{Testing}
 
-The sources of failure depend on the inability of the Client to reach the Adaptee methods through the Adapter or in the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden:  we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods, considering all the possible alternative implementations. 
-As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
+The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.
 
-The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{bool\_value},  and topology, the different ways the class are ordered in a hierarchy at runtime.
+As long as the different outcomes are observed we can reasonably predict that no uniform treatments of the components is in place.
+
+The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{price},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
+
 
 We decided to explore both of them separately in specific focused tests.
 \newline
-\subparagraph{Data flow}
+\subparagraph{Field \textit{price}: Data flow}
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
-We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact deemed the \textit{all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus all its \textit{uses}.   
-\subparagraph{Topology}
-We have tested separately the overridden variants of the methods through simple tests.
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
 
-We reasoned that such a separation would allow us to sufficiently cover the code while maintaining a low number of tests.
+The field was tested in the fixed hierarchy formed with a CompoundPart element containing another CompoundPart, which contained a Leaf.  
+We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
+  
+\subparagraph{Method \textit{operation\(\)}: Topology}
+We generated a Class Dependency Graph to identify all the possible relations between classes.
+We identified the 3 cases of:
+\begin{itemize}
+	\item single Leaf
+	\item CompoundPart containing Leaf
+	\item CompoundPart containing CompoundPart
+\end{itemize}
+as representative of the entire set of possible hierarchies.
+
+We then tested the composite-specific methods (add, remove, getChild) on the identified cases.
 
 
 \paragraph{Data Flow Graph}
-Like the ClassAdapter, only the Client interacts with the Adapter methods.
-The Data Flow Graph can be seen in Figure \ref*{OAdataflow}.
+Both Client and other wrapping CompoundParts interacts with the Component methods.
+The Data Flow Graph can be seen in Figure \ref{Codataflow}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Adapter/Object/CallGraph.png}
-	\caption{Data Flow Graph: \textit{bool\_value}}
-	\label{OAdataflow}
+	\includegraphics[width=0.8\textwidth]{./Composite/CallGraph.png}
+	\caption{Data Flow Graph: \textit{price}}
+	\label{Codataflow}
 \end{figure}
 
+\paragraph{Class Dependency Graph}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
+	\caption{Data Flow Graph: \textit{operation()}}
+	\label{Codepengraph}
+\end{figure}
 
 \subsubsection{Tests}
 
