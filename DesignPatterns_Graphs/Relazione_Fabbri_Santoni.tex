@@ -274,7 +274,7 @@ The Composite pattern "composes" objects into tree structures to represent part-
 
 \begin{itemize}
 	\item \textbf{Component}: common interface to the individual and compound objects.
-	\item \textbf{CompoundPart}: composition of individual objects and other compositions.
+	\item \textbf{Composite}: composition of individual objects and other compositions.
 	\item \textbf{Leaf}: individual object. 
 	\item \textbf{LeafException}: exception thrown when a composite-specific method is called on a Leaf object. 
 		
@@ -304,7 +304,7 @@ We decided to explore both of them separately in specific focused tests.
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
 \subparagraph{Data Flow Graph}
-Both Client and other wrapping CompoundParts interacts with the Component methods.
+Both Client and other wrapping Composites interacts with the Component methods.
 The Data Flow Graph can be seen in Figure \ref{Codataflow}.
 \begin{figure}[!h]
 	\centering
@@ -316,7 +316,7 @@ The Data Flow Graph can be seen in Figure \ref{Codataflow}.
 
 We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
 
-The field was tested in the fixed hierarchy formed with a CompoundPart element containing another CompoundPart, which contained a Leaf.  
+The field was tested in the fixed hierarchy formed with a Composite element containing another Composite, which contained a Leaf.  
 We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
   
   
@@ -338,46 +338,41 @@ In the Figure \ref{Codepengraph} are made explicit the relations between classes
 \paragraph{Field \textit{price}: Data flow}
 We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{enumerate}
-	\item Adapter() getInt() 
-	\item Adapter() setInt() getInt() 
-	
+	\item Component() getChild()
+	\item Component() getValue()
+	\item Component() add() getChild()
+	\item Component() add() getValue()
+	\item Component() add() add() remove() getChild()
+	\item Component() add() add() remove() getValue() 
 \end{enumerate}
-To these are also added the topology tests:
-\begin{enumerate}
-	\item Adapter( Adaptee ) getInt() 
-	\item Adapter( AdapteeOpposite ) getInt()
-\end{enumerate}	
-Of these the first, being already tested in the first suite, is not repeated.
-
 
 \paragraph{Method \textit{operation\(\)}: Topology}
 We identified the 3 cases of:
 \begin{itemize}
 	\item single Leaf
-	\item CompoundPart containing Leaf
-	\item CompoundPart containing CompoundPart
+	\item Composite containing Leaf
+	\item Composite containing Composite
 \end{itemize}
 as representative of the entire set of possible hierarchies.
-////
-We then tested the composite-specific methods (add, remove, getChild) on the identified cases.
 
-Since in this pattern the tested class's methods (Adapter's) interacted with external classes (Adaptee) we  differentiated between Unit and Integration tests.
+We then tested all the composite-specific methods (add, remove, getChild) on the identified cases.
 
-We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the Adapter class's code.
+In both type of tests, since the tested class's methods (Component) interacted with external classes (Leaf or Composites) we  differentiated between Unit and Integration tests.
+
+We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the main class's code.
 \subsubsection{Code Coverage}
-The code coverage measure obtained from EclEmma Java plugin is: 98.6\% 
+The code coverage measure obtained from EclEmma Java plugin is: 97.8\% 
 \begin{itemize}
-	\item Adapter: 97.1\% (UnitTest: 97.1\%)
-	\item Adaptee: 100\%
-	\item AdapteeOpposite: 100\% 
+	\item Component: 92.3\% (UnitTest 92.3\%)
+	\item Composite: 100\%
+	\item Leaf: 100\%
+	\item LeafException 100\%
 \end{itemize}
 
-The single remaining untested branch is a setter method which was not called with all the possible inputs equivalence classes.
+The remaining untested branches are found in the implementation of the composite-specific methods that Component provides for Leaf: all other classes (Composite) directly override those methods so their implementation when they are called not by a Leaf is never tested.
 
-Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the Adapter class's code is the same.
+Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
 
--A è di tipo variabile/complessità dovuta a topologia, rappresentato la nostra microarchitettura tramite  Data Flow graph/Class Dependency graph abbiamo deciso  di utilizzare il criterio di copertura all uses(rispetto a all defs)/all edges(rispetto a all nodes) 
--B è di tipo K,...
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 \section{Observer}
