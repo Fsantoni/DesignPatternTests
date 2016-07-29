@@ -287,7 +287,7 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 The pattern focuses on optimizing or controlling the access to the heavy subject. We have failures in the following situations:  
 \begin{itemize}
 	\item the access to the RealSubject is impeded
-	\item the cached copies provided by the wrapper differ from the actual source.
+	\item the cached copies provided by the Proxy differ from the actual source.
 \end{itemize}
 
 \subsection{Testing}
@@ -353,6 +353,80 @@ The remaining untested branches correspond to the \textit{getFilename()} methods
 Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the Proxy class's code is the same.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%3
 \section{Decorator}
+
+The Decorator pattern allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
+ 
+
+\subsubsection{Class Diagram}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Decorator/ClassDiagram.png}
+	\caption{Decorator: Class Diagram }
+	\label{DeclassDiag}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Component}: common interface to the concrete component and its wrappers.
+	\item \textbf{ConcreteComponent}: implements the object to which responsibilities can be added.
+	\item \textbf{Decorator}: interface to concrete additive responsibilities, maintains a reference to a Component. 
+	\item \textbf{ConcreteDecorator}: implements an additive responsibility. 
+	
+\end{itemize}
+ 
+\subsubsection{Fault Model}
+
+The pattern focuses on allowing an extension of functionality in objects. Grave errors are found in the following situations:  
+\begin{itemize}
+	\item the call to the \textbf{operation (getName)} does not reach the Component or results in unexpected behavior
+\end{itemize}
+
+
+\subsection{Testing}
+
+The sources of failure depend on the presence of errors in the sequence of additive behavior to the \textit{operation (getName)}. We reasoned that to produce a satisfying test suite it is sufficient to test the correctness of the sequence of method calls in different hierarchies of classes.
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We generated a Class Dependency Graph to identify all the possible relations between classes.
+
+\subparagraph{Class Dependency Graph}
+In the Figure \ref{Dedepengraph} are made explicit the relations between classes: in particular since Decorator is an abstract class it and its inheriting classes depend on each other. 
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Decorator/ClassDepencyGraph.png}
+	\caption{Class Dependency Graph: \textit{getName()}}
+	\label{Dedepengraph}
+\end{figure}
+
+We decided to generate a test suite dependent on the \textit{all-edges} criterion.
+
+\subsubsection{Tests}
+testo topologia, potrei fare con un unica singola copertura degli edges, decido di fare "più simile a all uses"	es. se ConcComp lo vedo come use lo devo raggiungere dai più modi possibili
+ConcreteComp
+DecoratorComp
+DecorDecorComp
+
+non si testa su null poichè quello è un errore di chi ha creato (factory) e gli si delega tale responsabilità
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We identified the 3 cases of:
+\begin{itemize}
+	\item ConcreteComponent
+	\item Decorator ConcreteComponent
+	\item Decorator Decorator ConcreteComponent
+	
+\end{itemize}
+as representative of the entire set of possible hierarchies.
+
+We then tested the \textit{getName()} method on the identified cases.
+
+Since the tested class's methods (ConcreteComponent and Decorator) interacted with external classes (an other Component) we  differentiated between Unit and Integration tests.
+
+We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the main class's code.
+\subsubsection{Code Coverage}
+The code coverage measure obtained from EclEmma Java plugin is: 100\% (Unit: 100\%) 
+
+
+Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%4
 \section{Composite}
@@ -424,7 +498,7 @@ In the Figure \ref{Codepengraph} are made explicit the relations between classes
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
-	\caption{Data Flow Graph: \textit{operation()}}
+	\caption{Class Dependency Graph Graph: \textit{operation()}}
 	\label{Codepengraph}
 \end{figure}
 
@@ -598,8 +672,237 @@ The code coverage measure obtained from EclEmma Java plugin is: 100\% (Unit: 100
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%6
 \section{State}
 
+
+The Composite pattern "composes" objects into tree structures to represent part-whole hierarchies. Implementing the composite pattern lets clients treat individual objects and compositions uniformly.
+
+\subsubsection{Class Diagram}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Composite/ClassDiagram.png}
+	\caption{Composite: Class Diagram }
+	\label{CoclassDiag}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Component}: common interface to the individual and compound objects.
+	\item \textbf{Composite}: composition of individual objects and other compositions.
+	\item \textbf{Leaf}: individual object. 
+	\item \textbf{LeafException}: exception thrown when a composite-specific method is called on a Leaf object. 
+	
+\end{itemize}
+
+\subsubsection{Fault Model}
+
+The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
+\begin{itemize}
+	\item the common \textit{operation} works differently than expected
+	\item the composite-specific methods produce unexpected effects when called on a Leaf object
+\end{itemize}
+
+
+\subsection{Testing}
+
+The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.
+
+As long as outcomes different from the expectation are observed we can reasonably predict that no uniform treatments of the components is in place.
+
+The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{price},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
+
+
+We decided to explore both of them separately in specific focused tests.
+\newline
+\paragraph{Field \textit{price}: Data flow}
+We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
+
+\subparagraph{Data Flow Graph}
+Both Client and other wrapping Composites interacts with the Component methods.
+The Data Flow Graph can be seen in Figure \ref{Codataflow}.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Composite/CallGraph.png}
+	\caption{Data Flow Graph: \textit{price}}
+	\label{Codataflow}
+\end{figure}
+
+
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
+
+The field was tested in the fixed hierarchy formed with a Composite element containing another Composite, which contained a Leaf.  
+We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
+
+
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We generated a Class Dependency Graph to identify all the possible relations between classes.
+
+\subparagraph{Class Dependency Graph}
+In the Figure \ref{Codepengraph} are made explicit the relations between classes: in particular since Component is an abstract class it and its inheriting classes depend on each other. 
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
+	\caption{Class Dependency Graph Graph: \textit{operation()}}
+	\label{Codepengraph}
+\end{figure}
+
+We decided to generate a test suite dependent on the \textit{all-edges} criterion.\textit{ all-nodes} is in fact excessively relaxed and would not cover all cases of interests. 
+
+\subsubsection{Tests}
+
+\paragraph{Field \textit{price}: Data flow}
+We generated a test suite capable of testing all the \textit{all-uses} paths:
+\begin{itemize}
+	\item Component() getChild()
+	\item Component() getValue()
+	\item Component() add() getChild()
+	\item Component() add() getValue()
+	\item Component() add() add() remove() getChild()
+	\item Component() add() add() remove() getValue() 
+\end{itemize}
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We identified the 3 cases of:
+\begin{itemize}
+	\item single Leaf
+	\item Composite containing Leaf
+	\item Composite containing Composite
+\end{itemize}
+as representative of the entire set of possible hierarchies.
+
+We then tested all the composite-specific methods (add, remove, getChild) on the identified cases.
+
+In both type of tests, since the tested class's methods (Component) interacted with external classes (Leaf or Composites) we  differentiated between Unit and Integration tests.
+
+We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the main class's code.
+\subsubsection{Code Coverage}
+The code coverage measure obtained from EclEmma Java plugin is: 97.8\% 
+\begin{itemize}
+	\item Component: 92.3\% (UnitTest 92.3\%)
+	\item Composite: 100\%
+	\item Leaf: 100\%
+	\item LeafException 100\%
+\end{itemize}
+
+The remaining untested branches are found in the implementation of the composite-specific methods that Component provides for Leaf: all other classes (Composite) directly override those methods so their implementation when they are called not by a Leaf is never tested.
+
+Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%7
 \section{Visitor}
+
+
+The Composite pattern "composes" objects into tree structures to represent part-whole hierarchies. Implementing the composite pattern lets clients treat individual objects and compositions uniformly.
+
+\subsubsection{Class Diagram}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Composite/ClassDiagram.png}
+	\caption{Composite: Class Diagram }
+	\label{CoclassDiag}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Component}: common interface to the individual and compound objects.
+	\item \textbf{Composite}: composition of individual objects and other compositions.
+	\item \textbf{Leaf}: individual object. 
+	\item \textbf{LeafException}: exception thrown when a composite-specific method is called on a Leaf object. 
+	
+\end{itemize}
+
+\subsubsection{Fault Model}
+
+The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
+\begin{itemize}
+	\item the common \textit{operation} works differently than expected
+	\item the composite-specific methods produce unexpected effects when called on a Leaf object
+\end{itemize}
+
+
+\subsection{Testing}
+
+The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.
+
+As long as outcomes different from the expectation are observed we can reasonably predict that no uniform treatments of the components is in place.
+
+The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{price},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
+
+
+We decided to explore both of them separately in specific focused tests.
+\newline
+\paragraph{Field \textit{price}: Data flow}
+We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
+
+\subparagraph{Data Flow Graph}
+Both Client and other wrapping Composites interacts with the Component methods.
+The Data Flow Graph can be seen in Figure \ref{Codataflow}.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Composite/CallGraph.png}
+	\caption{Data Flow Graph: \textit{price}}
+	\label{Codataflow}
+\end{figure}
+
+
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
+
+The field was tested in the fixed hierarchy formed with a Composite element containing another Composite, which contained a Leaf.  
+We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
+
+
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We generated a Class Dependency Graph to identify all the possible relations between classes.
+
+\subparagraph{Class Dependency Graph}
+In the Figure \ref{Codepengraph} are made explicit the relations between classes: in particular since Component is an abstract class it and its inheriting classes depend on each other. 
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
+	\caption{Class Dependency Graph Graph: \textit{operation()}}
+	\label{Codepengraph}
+\end{figure}
+
+We decided to generate a test suite dependent on the \textit{all-edges} criterion.\textit{ all-nodes} is in fact excessively relaxed and would not cover all cases of interests. 
+
+\subsubsection{Tests}
+
+\paragraph{Field \textit{price}: Data flow}
+We generated a test suite capable of testing all the \textit{all-uses} paths:
+\begin{itemize}
+	\item Component() getChild()
+	\item Component() getValue()
+	\item Component() add() getChild()
+	\item Component() add() getValue()
+	\item Component() add() add() remove() getChild()
+	\item Component() add() add() remove() getValue() 
+\end{itemize}
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We identified the 3 cases of:
+\begin{itemize}
+	\item single Leaf
+	\item Composite containing Leaf
+	\item Composite containing Composite
+\end{itemize}
+as representative of the entire set of possible hierarchies.
+
+We then tested all the composite-specific methods (add, remove, getChild) on the identified cases.
+
+In both type of tests, since the tested class's methods (Component) interacted with external classes (Leaf or Composites) we  differentiated between Unit and Integration tests.
+
+We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the main class's code.
+\subsubsection{Code Coverage}
+The code coverage measure obtained from EclEmma Java plugin is: 97.8\% 
+\begin{itemize}
+	\item Component: 92.3\% (UnitTest 92.3\%)
+	\item Composite: 100\%
+	\item Leaf: 100\%
+	\item LeafException 100\%
+\end{itemize}
+
+The remaining untested branches are found in the implementation of the composite-specific methods that Component provides for Leaf: all other classes (Composite) directly override those methods so their implementation when they are called not by a Leaf is never tested.
+
+Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
+
 
 
 non era necessario la Answer  es.particolare logica che decide che fare(avrei potuto lo stesso chiamare direttamente con cast, forse testando di piu anche) si e' deciso di esplorare le potenzialita' di Mockito..
