@@ -1,0 +1,5 @@
+l ordine con cui sono stati implementati i Dp non è casuale. In particolare per quanto riguarda i dp strutturali, l'ordine che è stato scelto
+tiene di conto il naturale crescendo della topologia della complessità di questi dp. In particolare si parte con un class adapter che identifica
+il singolo, si procede con un proxy (che ha una estensione). si procede con decorotor (che ha due parti o + al suo seguito) ed infine si passa
+al composite che invece ha + parti con complessità maggiori. per quanto riguarda i dp di tipo comportamentali (behavioral) l'ordine è del tutto
+casuale.
