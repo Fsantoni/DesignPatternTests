@@ -123,7 +123,9 @@ Given that the pattern focuses on allowing access to legacy methods through a ne
 \end{itemize}
 
 \subsection{Testing}
-The two sources of failure both depend on the inability of the Client to reach the Adaptee methods through the Adapter.  We reasoned that it is thus sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods. As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
+The two sources of failure both depend on the inability of the Client to reach the Adaptee methods through the Adapter.  We reasoned that it is thus sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods.
+
+ As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
 \newline
 We have thus represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
 
@@ -299,7 +301,7 @@ The pattern focuses on treating uniformly individual and compound objects. Grave
 
 The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.
 
-As long as the different outcomes are observed we can reasonably predict that no uniform treatments of the components is in place.
+As long as outcomes different from the expectation are observed we can reasonably predict that no uniform treatments of the components is in place.
 
 The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{price},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
 
@@ -338,6 +340,8 @@ In the Figure \ref{Codepengraph} are made explicit the relations between classes
 	\caption{Data Flow Graph: \textit{operation()}}
 	\label{Codepengraph}
 \end{figure}
+
+We decided to generate a test suite dependent on the \textit{all-edges} criterion.\textit{ all-nodes} is in fact excessively relaxed and would not cover all cases of interests. 
 
 \subsubsection{Tests}
 
@@ -383,38 +387,41 @@ Since the Unit Tests and the Integration Tests are identical, with the only diff
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 \section{Observer}
 
-The Composite pattern "composes" objects into tree structures to represent part-whole hierarchies. Implementing the composite pattern lets clients treat individual objects and compositions uniformly.
+In the Observer pattern an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods.
+
+The observers must be explicitly associated and disassociated with the subjects they follow, possibly causing memory leaks.
 
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Composite/ClassDiagram.png}
-	\caption{Composite: Class Diagram }
-	\label{CoclassDiag}
+	\includegraphics[width=0.7\textwidth]{./Observer/ClassDiagram.png}
+	\caption{Observer: Class Diagram }
+	\label{ObclassDiag}
 \end{figure}
 
 \begin{itemize}
-	\item \textbf{Component}: common interface to the individual and compound objects.
-	\item \textbf{Composite}: composition of individual objects and other compositions.
-	\item \textbf{Leaf}: individual object. 
-	\item \textbf{LeafException}: exception thrown when a composite-specific method is called on a Leaf object. 
+	\item \textbf{Subject}: provides methods to add or remove observers in his list of followers.
+	\item \textbf{Observer}: specifies an interface for the notification of change on a subject.
+	\item \textbf{ConcreteSubject}: contains a state that can be modified. 
+	\item \textbf{ConcreteObserver}: implements the update operation. 
 	
 \end{itemize}
 
 \subsubsection{Fault Model}
 
-The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
+The pattern focuses on maintaining updated objects that expressed the interest in a specific subject. Failures are found in the following situations:  
 \begin{itemize}
-	\item the common \textit{operation} works differently than expected
-	\item the composite-specific methods produce unexpected effects when called on a Leaf object
+	\item \textit{attach} and \textit{detach} do not produce the expected results.
+	\item after a change of the subject state the following observers are not \textit{notified}.
+	\item the observer after being notified does not execute correctly the \textit{update} method.
 \end{itemize}
 
 
 \subsection{Testing}
 
-The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.
+The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after inter-class method invocation and the way the state of the observer is modified after a notification.
 
-As long as the different outcomes are observed we can reasonably predict that no uniform treatments of the components is in place.
+As long as the outcomes differ from the expectation we can reasonably predict that the transmission of information upon notification .
 
 The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{price},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
 
