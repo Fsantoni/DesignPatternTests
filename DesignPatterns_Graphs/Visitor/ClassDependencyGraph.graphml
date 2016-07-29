@@ -17,10 +17,10 @@
     <node id="n0">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="90.0" width="115.0" x="-27.5" y="75.0"/>
+          <y:Geometry height="90.0" width="115.0" x="62.5" y="75.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="48.453125" x="33.2734375" y="33.19921875">Visitor<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="18" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="26.0517578125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="54.009765625" x="30.4951171875" y="31.97412109375">Visitor<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -34,10 +34,10 @@
     <node id="n1">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="90.0" width="115.0" x="452.5" y="75.0"/>
+          <y:Geometry height="90.0" width="132.0" x="384.0" y="75.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="113.375" x="0.8125" y="33.19921875">ConcreteVisitor<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="18" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="26.0517578125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="127.046875" x="2.4765625" y="31.97412109375">ConcreteVisitor<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -51,10 +51,10 @@
     <node id="n2">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="90.0" width="115.0" x="632.5" y="345.0"/>
+          <y:Geometry height="90.0" width="115.0" x="572.5" y="315.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="62.6953125" x="26.15234375" y="33.19921875">Element<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="18" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="26.0517578125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="70.0322265625" x="22.48388671875" y="31.97412109375">Element<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -68,10 +68,10 @@
     <node id="n3">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="96.0" width="146.0" x="-163.0" y="342.0"/>
+          <y:Geometry height="96.0" width="153.0" x="-170.0" y="312.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="136.515625" x="4.7421875" y="36.19921875">ConcreteElement1<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="18" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="26.0517578125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="153.080078125" x="-0.0400390625" y="34.97412109375">ConcreteElement1<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -85,10 +85,10 @@
     <node id="n4">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="96.0" width="146.0" x="137.0" y="342.0"/>
+          <y:Geometry height="96.0" width="153.0" x="130.0" y="312.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="136.515625" x="4.7421875" y="36.19921875">ConcreteElement2<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="18" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="26.0517578125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="153.080078125" x="-0.0400390625" y="34.97412109375">ConcreteElement2<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -102,10 +102,10 @@
     <node id="n5">
       <data key="d6">
         <y:ShapeNode>
-          <y:Geometry height="79.0" width="115.0" x="-281.0" y="75.0"/>
+          <y:Geometry height="79.0" width="115.0" x="-177.5" y="75.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle color="#000000" raised="false" type="line" width="1.0"/>
-          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="44.90625" x="35.046875" y="27.69921875">Client<y:LabelModel>
+          <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="18" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="26.0517578125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="50.01953125" x="32.490234375" y="26.47412109375">Client<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -122,7 +122,7 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="59.275390625" x="43.3816449431615" y="-101.00274658203125">&lt;&lt;use&gt;&gt;<y:LabelModel>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="67.171875" x="75.96974473504952" y="-89.81843404274198">&lt;&lt;use&gt;&gt;<y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -140,7 +140,7 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="59.275390625" x="-55.62947443710459" y="-103.64661378322216">&lt;&lt;use&gt;&gt;<y:LabelModel>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="67.171875" x="-28.61363235722888" y="-86.48300170898438">&lt;&lt;use&gt;&gt;<y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -158,7 +158,7 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="101.2822265625" x="131.85888671875" y="19.42431640625">&lt;&lt;implement&gt;&gt;
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="115.1796875" x="45.66015625" y="18.19921875">&lt;&lt;implement&gt;&gt;
 <y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
@@ -177,7 +177,7 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="59.275390625" x="-1.9356348158250967" y="85.0606610244331">&lt;&lt;use&gt;&gt;<y:LabelModel>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="67.171875" x="-10.685333251953125" y="68.73336791992188">&lt;&lt;use&gt;&gt;<y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -195,7 +195,7 @@
           <y:Path sx="0.0" sy="0.0" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="105.171875" x="-227.3359375" y="-40.57568359375">&lt;&lt;implement&gt;&gt; <y:LabelModel>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="119.625" x="-204.5625" y="-41.80078125">&lt;&lt;implement&gt;&gt; <y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -216,7 +216,7 @@
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="105.171875" x="-214.4997541882803" y="21.878848135239537">&lt;&lt;implement&gt;&gt; <y:LabelModel>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="119.625" x="-203.98837521332894" y="42.9317038837238">&lt;&lt;implement&gt;&gt; <y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -229,17 +229,16 @@
       </data>
     </edge>
     <edge id="e6" source="n5" target="n0">
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="-0.5" sy="5.5" tx="0.0" ty="0.0"/>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
-          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="14" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="21.1513671875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="59.275390625" x="39.600341796875" y="19.42431640625">&lt;&lt;use&gt;&gt;<y:LabelModel>
+          <y:EdgeLabel alignment="center" configuration="AutoFlippingLabel" distance="2.0" fontFamily="Dialog" fontSize="16" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="23.6015625" horizontalTextPosition="center" iconTextGap="4" modelName="custom" preferredPlacement="anywhere" ratio="0.5" textColor="#000000" verticalTextPosition="bottom" visible="true" width="67.171875" x="38.780120129015536" y="18.19921875">&lt;&lt;use&gt;&gt;<y:LabelModel>
               <y:SmartEdgeLabelModel autoRotationEnabled="false" defaultAngle="0.0" defaultDistance="10.0"/>
             </y:LabelModel>
             <y:ModelParameter>
-              <y:SmartEdgeLabelModelParameter angle="0.0" distance="30.0" distanceToCenter="true" position="right" ratio="0.5" segment="0"/>
+              <y:SmartEdgeLabelModelParameter angle="0.0" distance="30.0" distanceToCenter="true" position="right" ratio="0.7059024933051272" segment="-1"/>
             </y:ModelParameter>
             <y:PreferredPlacementDescriptor angle="0.0" angleOffsetOnRightSide="0" angleReference="absolute" angleRotationOnRightSide="co" distance="-1.0" frozen="true" placement="anywhere" side="anywhere" sideReference="relative_to_edge_flow"/>
           </y:EdgeLabel>
