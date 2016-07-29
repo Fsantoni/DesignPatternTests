@@ -243,12 +243,14 @@ We utilized Mockito's \textit{mock} function to isolate errors with an origin in
 \subsubsection{Code Coverage}
 The code coverage measure obtained from EclEmma Java plugin is: 98.6\% 
 \begin{itemize}
-	\item Adapter: 97.1\% (UnitTest: 88.6\%)
+	\item Adapter: 97.1\% (UnitTest: 97.1\%)
 	\item Adaptee: 100\%
 	\item AdapteeOpposite: 100\% 
 \end{itemize}
 
 The single remaining untested branch is a setter method which was not called with all the possible inputs equivalence classes.
+
+Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the Adapter class's code is the same.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%2
 

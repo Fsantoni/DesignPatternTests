@@ -51,6 +51,23 @@ public class UnitTestObjectAdapter {
 		int result=adapt.getIntResult();
 
 		assertEquals(0,result);
+		
+		
+
+		AdapteeOpposite b =mock(AdapteeOpposite.class);
+		doNothing().when(b).setBooleanResult(true);
+		when(b.getBooleanResult()).thenReturn(false);
+
+		ObjectAdapter adapt1 = new ObjectAdapter(b);
+
+		b.setBooleanResult(true);
+		int result1 =adapt1.getIntResult();
+
+
+		assertEquals(1,result1);
+
+		
+		
 	}
 
 	
