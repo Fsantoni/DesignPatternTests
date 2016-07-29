@@ -76,7 +76,13 @@ Francesco Santoni}}
 \chapter{Introduction}
 \markboth{Introduction}{\textit{Introduction}}
 
-77777777777 VUOTO PER ORA
+We identify a collection of structural and behavioral design patterns: Class Adapter, Object Adapter, Proxy, Decorator, Composite, Observer, State, Visitor.
+
+% ordine degli strutturali è individuato dalla "naturale" evoluzione in complessità della topologia% 
+For each pattern we realize an implementation in Java and we develop a reasoned test suite based on a realistic fault model and on chosen coverage criteria.
+
+We realize the tests through the JUnit\cite{1} plug-in for Eclipse and the Mockito\cite{2} framework. EclEmma \cite{3} is used to provide a code coverage measure.
+
 
 \chapter{Design Patterns}
 \markboth{Design Patterns}{\textit{Design Patterns}}
@@ -337,6 +343,121 @@ In the Figure \ref{Codepengraph} are made explicit the relations between classes
 
 \paragraph{Field \textit{price}: Data flow}
 We generated a test suite capable of testing all the \textit{all-uses} paths:
+\begin{itemize}
+	\item Component() getChild()
+	\item Component() getValue()
+	\item Component() add() getChild()
+	\item Component() add() getValue()
+	\item Component() add() add() remove() getChild()
+	\item Component() add() add() remove() getValue() 
+\end{itemize}
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We identified the 3 cases of:
+\begin{itemize}
+	\item single Leaf
+	\item Composite containing Leaf
+	\item Composite containing Composite
+\end{itemize}
+as representative of the entire set of possible hierarchies.
+
+We then tested all the composite-specific methods (add, remove, getChild) on the identified cases.
+
+In both type of tests, since the tested class's methods (Component) interacted with external classes (Leaf or Composites) we  differentiated between Unit and Integration tests.
+
+We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the main class's code.
+\subsubsection{Code Coverage}
+The code coverage measure obtained from EclEmma Java plugin is: 97.8\% 
+\begin{itemize}
+	\item Component: 92.3\% (UnitTest 92.3\%)
+	\item Composite: 100\%
+	\item Leaf: 100\%
+	\item LeafException 100\%
+\end{itemize}
+
+The remaining untested branches are found in the implementation of the composite-specific methods that Component provides for Leaf: all other classes (Composite) directly override those methods so their implementation when they are called not by a Leaf is never tested.
+
+Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
+\section{Observer}
+
+The Composite pattern "composes" objects into tree structures to represent part-whole hierarchies. Implementing the composite pattern lets clients treat individual objects and compositions uniformly.
+
+\subsubsection{Class Diagram}
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.7\textwidth]{./Composite/ClassDiagram.png}
+	\caption{Composite: Class Diagram }
+	\label{CoclassDiag}
+\end{figure}
+
+\begin{itemize}
+	\item \textbf{Component}: common interface to the individual and compound objects.
+	\item \textbf{Composite}: composition of individual objects and other compositions.
+	\item \textbf{Leaf}: individual object. 
+	\item \textbf{LeafException}: exception thrown when a composite-specific method is called on a Leaf object. 
+	
+\end{itemize}
+
+\subsubsection{Fault Model}
+
+The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
+\begin{itemize}
+	\item the common \textit{operation} works differently than expected
+	\item the composite-specific methods produce unexpected effects when called on a Leaf object
+\end{itemize}
+
+
+\subsection{Testing}
+
+The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.
+
+As long as the different outcomes are observed we can reasonably predict that no uniform treatments of the components is in place.
+
+The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable\textit{price},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
+
+
+We decided to explore both of them separately in specific focused tests.
+\newline
+\paragraph{Field \textit{price}: Data flow}
+We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks are represented by functions.
+
+\subparagraph{Data Flow Graph}
+Both Client and other wrapping Composites interacts with the Component methods.
+The Data Flow Graph can be seen in Figure \ref{Codataflow}.
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Composite/CallGraph.png}
+	\caption{Data Flow Graph: \textit{price}}
+	\label{Codataflow}
+\end{figure}
+
+
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
+
+The field was tested in the fixed hierarchy formed with a Composite element containing another Composite, which contained a Leaf.  
+We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
+
+
+
+\paragraph{Method \textit{operation\(\)}: Topology}
+We generated a Class Dependency Graph to identify all the possible relations between classes.
+
+\subparagraph{Class Dependency Graph}
+In the Figure \ref{Codepengraph} are made explicit the relations between classes: in particular since Component is an abstract class it and its inheriting classes depend on each other. 
+\begin{figure}[!h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
+	\caption{Data Flow Graph: \textit{operation()}}
+	\label{Codepengraph}
+\end{figure}
+
+\subsubsection{Tests}
+
+\paragraph{Field \textit{price}: Data flow}
+We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{enumerate}
 	\item Component() getChild()
 	\item Component() getValue()
@@ -373,10 +494,6 @@ The remaining untested branches are found in the implementation of the composite
 
 Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
-\section{Observer}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%6
 \section{State}
 
@@ -406,17 +523,7 @@ Con l'utilizzo di queste idee appena esposte sarebbe possibile arrivare ad un ri
 \addcontentsline{toc}{chapter}{Bibliografia}
 \begin{thebibliography}{99}
 
-\bibitem{1} Lluis-Pere de las Heras, David Fernandez, Ernest Valveny, Josep Llados and Gemma Sanchez, ``Unsupervised Wall Detector in Architectural Floor Plans,'' in 12th International Conference on Document Analysis and Recognition, 2013.
-
-\bibitem{2} P. Dosch, K. Tombre, C. Ah-Soon, and G. Masini, ``A complete system for the analysis of architectural drawings,'' International Journal on Document Analysis and Recognition, vol. 3, pp. 102 \verb0-0 116, 2000.
-
-\bibitem{3} T. Lu, H. Yang, R. Yang, and S. Cai, ``Automatic analysis and integration of architectural drawings,'' International Journal on Document Analysis and Recognition, vol. 9, pp. 31 \verb0-0 47, 2007.
-
-\bibitem{4} S. Mace, H. Locteau, E. Valveny, and S. Tabbone, ``A system to detect rooms in architectural floor plan images,'' in Proceedings of the 9th IAPR International Workshop on Document Analysis Systems, 2010, pp. 167\verb0-0 174.
-
-\bibitem{5} Lluis-Pere de las Heras, David Fernandez, Ernest Valveny, Josep Llados and Gemma Sanchez, ``Statistical segmentation and structural recognition for floor plan interpretation,''  2013.
-
-\bibitem{6} S. Ahmed, M. Liwicki, M. Weber, and A. Dengel, ``Improved automatic analysis of architectural floor plans,'' in Proceedings of the 11th International Conference on Document Analysis and Recognition, 2011.
+\bibitem{1} 
 
 \end{thebibliography}
 \addcontentsline{toc}{chapter}{Elenco delle Figure}\listoffigures
