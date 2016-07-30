@@ -853,7 +853,7 @@ In some cases such highlighting is confusing and can even be impossible to elimi
 In some other cases test execution is questionable or impossible by design: for example private, empty default constructors (assuming they receive no calls) or methods that contains no logic, like plain getters and setters,
 or even extra exception handlers installed to close resources from try/with statements.
 
-
+\addcontentsline{toc}{chapter}{\protect\numberline{}Conclusions}
 \chapter*{Conclusions}
 We identified a collection of structural and behavioral design patterns; for each pattern we produced an implementation in Java, which we then studied to identify the main faults they were susceptible to.
 We then created a reasoned test suite based on the fault model and on a coverage criteria chosen pattern by pattern.
@@ -867,7 +867,7 @@ In the end most patterns (except ObjectAdapter, Proxy and Composite) presented a
 Even the lowest covered pattern, Proxy, presents a 93.8\% measure of code coverage, with the untested branches being lines of code void of logic, we can thus consider the possibility of relaxing the coverage criteria used: in testing modification of fields through data flow graph rather than applying an \textit{all-uses} criterion we could use an \textit{all-def}; in testing the correct delegation in different topologies (Class Dependency Graph) we could substitute the \textit{all-nodes} criterion to the \textit{all-edges} we used.
  
 
-
+\addcontentsline{toc}{chapter}{\protect\numberline{}The Sitography}
 \begin{thebibliography}{9}
 
 \bibitem{1} JUnit \url{http://junit.org/junit4/}
@@ -875,5 +875,6 @@ Even the lowest covered pattern, Proxy, presents a 93.8\% measure of code covera
 \bibitem{3} EclEmma \url{http://www.eclemma.org/}
 
 \end{thebibliography}
+\addcontentsline{toc}{chapter}{\protect\numberline{}List of Figures}
 \listoffigures
 \end{document}
