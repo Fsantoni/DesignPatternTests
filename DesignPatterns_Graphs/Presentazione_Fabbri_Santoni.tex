@@ -430,49 +430,65 @@ as representative of the entire set of possible hierarchies.}<2>
 \end{section}
 
 
-\section{JUnit \& Mockito}
-To generate and execute the test cases of our chosen test suites we utilized the already existent Java frameworks provided by JUnit \cite{1} and Mockito \cite{2}. To further provide a measure of code coverage we utilized the specific JUnit's plug-in EclEmma \cite{3}.
-
-\subsection{JUnit}
-
-JUnit is an open source unit testing framework for the Java programming language. JUnit has been important in the development of test-driven development and is one of a family of unit testing frameworks which is collectively known as xUnit that originated with SUnit.
-
-JUnit is linked as a JAR at compile-time: the framework resides under package junit.framework for JUnit 3.8 and earlier, and under package org.junit for JUnit 4 and later: this allows JUnit 4 to maintain backward compatibility.
-JUnit 5 is currently in its beta phase.
-
-The framework allows the programmer to easily create \textit{drivers} for the tests and the ability to verify the produced outputs. 
-
-The tests, in fact, return a success if all the \textit{Assertion}s contained therein are verified.
-
-In our project we utilized JUnit 4 for the added functionality it provides: \textit{Annotation}s to identify the test methods and a wider range of Assertions for testing expected results, among which an equality between Arrays which we utilized in our tests.
-
-Main benefits of the framework are: \begin{itemize}
-	\item JUnit tests can be run automatically and check their own results and provide immediate feedback without a need to manually comb through a report of test results.
-	
-	\item JUnit tests can be organized into test suites containing test cases and even other test suites.
-	
-	\item Junit shows test progress through an user-friendly bar that is green while the tests have not encountered errors and turns red when a test fails.
-	
-\end{itemize}
-
-
-\subsection{Mockito}
-
-Mockito is an open source testing framework for Java. The framework allows the creation of test double objects (mock objects) in automated unit tests for the purpose of Test-driven Development (TDD) or Behavior Driven Development (BDD).
-
-Mock testing frameworks are utilized to lower the cost of testing: ensuring that objects perform the behaviors that are expected of them in fact requires the creation of test automation frameworks that actually exercises each behavior and verifies that it performs as expected. The problem is that the requirement to create an entire testing framework is often an onerous task that requires as much effort as writing the original objects that were supposed to be tested. 
-
-Mock testing frameworks thus come to aid in effectively faking some external dependencies so that the object being tested has a consistent interaction with its outside dependencies, thus notably lowering the onus on the programmer.
-
-While utilizing the framework we identified some noteworthy details:
-\begin{itemize}
-	\item in the Proxy class we utilized \textit{spy} on the very class we were testing to allow injection of other mocked classes
-	\item the \textit{doReturn().when()} construct is to be preferred to the \textit{when().myMethod()} construct with \textit{spy} due to the fact that the latter actually executes the function and produces side-effects before returning the designed output
-	\item returning an Answer() allows for side-effects to be produced when a mocked object's method is called. 
-	\item Answer is not necessary if the side-effects are produced only on the very class under test due to the fact that one can independently produce them by simply calling the respective tested methods.
-\end{itemize}
-
-
-
+\begin{section}{JUnit \& Mockito}
+	\begin{subsection}{JUnit \& Mockito}
+		
+		\begin{frame}
+			
+			\frametitle{JUnit}
+			{\small 
+				JUnit is an open source unit testing framework for the Java programming language.
+				The framework allows the programmer to easily create \textit{drivers} for the tests and the ability to verify the produced outputs. 
+				\begin{itemize}
+					
+					\item \textit{Annotation}s identify the test methods 
+					\item \textit{Assertion}s tests for expected results.
+					
+				\end{itemize}
+				Main benefits of the framework are: \begin{itemize}
+					\item JUnit tests can be run automatically and check their own results and provide immediate feedback without a need to manually comb through a report of test results.
+					
+					\item JUnit tests can be organized into test suites containing test cases and even other test suites.
+					
+					\item Junit shows test progress through an user-friendly bar that is green while the tests have not encountered errors and turns red when a test fails.
+					
+				\end{itemize}}
+			\end{frame}
+			\begin{frame}
+				\frametitle{Mockito}
+				{\small Mockito is an open source testing framework for Java. The framework allows the creation of test double objects also called mock objects.
+					
+					Mock testing frameworks allow the faking of external dependencies so that the object being tested is isolated from external behaviors: otherwise ensuring that objects perform the way they are expected to would require the creation of tests that actually exercise each behavior and verify that it performs as expected, with costs comparable to writing the original objects our system interacts with.
+					
+					While utilizing the framework we identified some noteworthy details:
+					\begin{itemize}
+						\item in the Proxy class we utilized \textit{spy} on the very class we were testing to allow injection of other mocked classes
+						\item the \textit{doReturn().when()} construct is to be preferred to the \textit{when().myMethod()} construct with \textit{spy} due to the fact that the latter actually executes the function and produces side-effects before returning the designed output
+						\item returning an Answer() allows for side-effects to be produced when a mocked object's method is called. 
+						\item Answer is not necessary if the side-effects are produced only on the very class under test due to the fact that one can independently produce them by simply calling the respective tested methods.
+					\end{itemize}}
+				\end{frame}
+				
+			\end{subsection}
+		\end{section}
+		
+		
+		\begin{section}{}
+			\begin{subsection}{Conclusions}
+				\begin{frame}
+					
+					\frametitle{Conclusions}{\small 
+						We identified a collection of structural and behavioral design patterns; for each pattern we produced an implementation in Java, which we then studied to identify the main faults they were susceptible to.
+						We then created a reasoned test suite based on the fault model and on a coverage criteria chosen pattern by pattern.
+						
+						We realized both Unit and Integration tests through the JUnit plug-in for Eclipse and the Mockito framework; we then applied EclEmma to provide a code coverage measure.
+						
+						This measure was subsequently studied to identify both the untested branches and the reason for which they were not covered.
+						
+						In the end most patterns (except ObjectAdapter, Proxy and Composite) presented a full code coverage.
+					}
+				\end{frame}
+			\end{subsection}
+		\end{section}
 
 \end{document}
