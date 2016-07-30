@@ -163,13 +163,8 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 	\label{ProclassDiag}
 \end{figure} 
 			
-		\end{frame}
-	\end{subsection}
-
-
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Proxy - Fault Model}
+	
+\only{		\frametitle{Proxy - Fault Model}
 		
 		The pattern focuses on optimizing or controlling the access to the heavy subject. We have failures in the following situations:  
 		\begin{itemize}
@@ -177,16 +172,10 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 			\item the cached copies provided by the Proxy differ from the actual source.
 		\end{itemize}
 		\vspace{5mm}
-	The sources of failure depend on the inability of the Client to reach the RealSubject fields through the Proxy or in the inability of the Proxy of providing correct cached versions:  we reasoned that it is sufficient to test the ways in which the variable \textit{realSubj} interacts and is modified by the methods, by slight modification of the tests we can automatically verify the cached versions validity. 
+	The sources of failure depend on the inability of the Client to reach the RealSubject fields through the Proxy or in the inability of the Proxy of providing correct cached versions:  we reasoned that it is sufficient to test the ways in which the variable \textit{realSubj} interacts and is modified by the methods, by slight modification of the tests we can automatically verify the cached versions validity.}<1> 
 		
-	\end{frame}
-\end{subsection}
 
-
-
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Proxy - Data Flow Graph}
+		\only{\frametitle{Proxy - Data Flow Graph}
 		\begin{figure}[!h]
 		\centering
 		\includegraphics[width=0.8\textwidth]{./Proxy/CallGraph.png}
@@ -202,7 +191,8 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 			\item Proxy() getSubString() getSubString()
 			\item Proxy() getSubString() getString()			
 		\end{itemize}
-		}In particular  \textit{Proxy() getSubString() getSubString()} was altered to test the returned cached version after each method call. 		
+		}In particular  \textit{Proxy() getSubString() getSubString()} was altered to test the returned cached version after each method call.}<2> 		
+		
 	\end{frame}
 \end{subsection}
 
@@ -217,26 +207,18 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 	\label{DeclassDiag}
 \end{figure} 
 		
-	\end{frame}
-\end{subsection}
-
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Decorator - Fault Model}
+\only{		\frametitle{Decorator - Fault Model}
 		
 		The pattern focuses on allowing an extension of functionality in objects. Grave errors are found in the following situations:  
 		\begin{itemize}
 			\item the call to the \textbf{operation (getName)} does not reach the Component or results in unexpected behavior
 		\end{itemize}
 		\vspace{5mm}
-	The sources of failure depend on the presence of errors in the sequence of additive behavior to the \textit{operation (getName)}. We reasoned that to produce a satisfying test suite it is sufficient to test the correctness of the sequence of method calls in different hierarchies of classes.
-		
-	\end{frame}
-\end{subsection}
+	The sources of failure depend on the presence of errors in the sequence of additive behavior to the \textit{operation (getName)}. We reasoned that to produce a satisfying test suite it is sufficient to test the correctness of the sequence of method calls in different hierarchies of classes.}<1>
 
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Decorator - Class Dependency Graph}
+		
+
+\only{		\frametitle{Decorator - Class Dependency Graph}
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Decorator/ClassDepencyGraph.png}
@@ -251,7 +233,8 @@ We identified the 3 cases of:}
 	
 \end{itemize}
 {\footnotesize as representative of the entire set of possible hierarchies.
-We then tested the \textit{getName()} method on the identified cases.} 		
+We then tested the \textit{getName()} method on the identified cases.}}<2> 		
+
 	\end{frame}
 \end{subsection}
 
@@ -266,12 +249,8 @@ The Composite pattern "composes" objects into tree structures to represent part-
 	\label{CoclassDiag}
 \end{figure}
 		
-	\end{frame}
-\end{subsection}
 
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Composite - Fault Model}
+		\only{\frametitle{Composite - Fault Model}
 		
 The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
 \begin{itemize}
@@ -279,14 +258,10 @@ The pattern focuses on treating uniformly individual and compound objects. Grave
 	\item the composite-specific methods produce unexpected effects when called on a Leaf object
 \end{itemize}
 		\vspace{5mm}
-The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.
-		
-	\end{frame}
-\end{subsection}
+The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.}<1>
 
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Composite - Data Flow Graph}
+
+		\only{\frametitle{Composite - Data Flow Graph}
 
 \begin{figure}[!h]
 	\centering
@@ -301,13 +276,9 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item Component() add() getValue()
 	\item Component() add() add() remove() getChild()
 	\item Component() add() add() remove() getValue() 
-\end{itemize} 		
-	\end{frame}
-\end{subsection}
+\end{itemize}}<2> 		
 
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Composite - Class Dependency Graph}
+		\only{\frametitle{Composite - Class Dependency Graph}
 		
 		\begin{figure}[!h]
 			\centering
@@ -323,7 +294,7 @@ We identified the 3 cases of:
 \end{itemize}
 as representative of the entire set of possible hierarchies.
 
-We then tested all the composite-specific methods (add, remove, getChild) on the identified cases.	
+We then tested all the composite-specific methods (add, remove, getChild) on the identified cases.}<3>	
 	\end{frame}
 \end{subsection}
 
@@ -338,12 +309,8 @@ We then tested all the composite-specific methods (add, remove, getChild) on the
 	\label{ObclassDiag}
 \end{figure}
 		
-	\end{frame}
-\end{subsection}
 
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Observer - Fault Model}
+		\only{\frametitle{Observer - Fault Model}
 The pattern focuses on maintaining updated objects that expressed the interest in a specific subject. Failures are found in the following situations:  
 \begin{itemize}
 	\item \textit{attach} and \textit{detach} do not produce the expected results.
@@ -351,14 +318,10 @@ The pattern focuses on maintaining updated objects that expressed the interest i
 	\item the observer after being notified does not execute correctly the \textit{update} method.
 \end{itemize}
 		\vspace{5mm}
-		The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We considered the correct modification on the subject internal \textit{state} as not important for our pattern.  We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after an inter-class method invocation and the way the \textit{state} of the observer is modified after a notification.
+		The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We considered the correct modification on the subject internal \textit{state} as not important for our pattern.  We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after an inter-class method invocation and the way the \textit{state} of the observer is modified after a notification.}<1>
 		
-	\end{frame}
-\end{subsection}
 
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Observer - Data Flow Graph: field \textit{list\_observer}}
+		\only{\frametitle{Observer - Data Flow Graph: field \textit{list\_observer}}
 		
 		We decided to test the interaction between the variable and the methods
 		following the all-uses criterion, we deemed the all-def criterion excessively restrictive to test this pattern.
@@ -367,12 +330,9 @@ The pattern focuses on maintaining updated objects that expressed the interest i
 	\includegraphics[width=0.8\textwidth]{./Observer/CallGraph.png}
 	\label{Obdataflow1}
 \end{figure} 		
-	\end{frame}
-\end{subsection}
+}<2>
 
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Observer - Data Flow Graph: field \textit{state}}
+		\only{\frametitle{Observer - Data Flow Graph: field \textit{state}}
 		
 		\begin{figure}[!h]
 			\centering
@@ -387,7 +347,8 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item ConcreteObserver() update() getState()
 	
 \end{itemize}
-In both type of tests, since the tested class's methods (ConcreteSubject and ConcreteObserver) interacted with external classes (Observer and Subject) we  differentiated between Unit and Integration tests.		
+In both type of tests, since the tested class's methods (ConcreteSubject and ConcreteObserver) interacted with external classes (Observer and Subject) we  differentiated between Unit and Integration tests.}<3>		
+
 	\end{frame}
 \end{subsection}
 
@@ -401,12 +362,7 @@ In both type of tests, since the tested class's methods (ConcreteSubject and Con
 	\label{SclassDiag}
 \end{figure}
 		
-	\end{frame}
-\end{subsection}
-
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{State - Fault Model}
+		\only{\frametitle{State - Fault Model}
 		The pattern focuses on delegating the actual methods implementation to internal state classes. Grave errors are found in the following situations:  
 		\begin{itemize}
 			\item internal state changes in an erroneous manner. 
@@ -414,14 +370,10 @@ In both type of tests, since the tested class's methods (ConcreteSubject and Con
 			\item (with less importance) the internal classes' inner state changes in an erroneous manner.
 		\end{itemize}
 		\vspace{5mm}
-		The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We considered the correct modification on the subject internal \textit{state} as not important for our pattern.  We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after an inter-class method invocation and the way the \textit{state} of the observer is modified after a notification.
+		The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We considered the correct modification on the subject internal \textit{state} as not important for our pattern.  We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after an inter-class method invocation and the way the \textit{state} of the observer is modified after a notification.}<1>
 		
-	\end{frame}
-\end{subsection}
-
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{State - Data Flow Graph}
+		
+		\only{\frametitle{State - Data Flow Graph}
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./State/CallGraph.png}
@@ -435,7 +387,8 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item StateContext() writeOutput() writeOutput()
 \end{itemize}
 
-The last test case is actually used to test the correctness of the way ConcreteStates update the field and does not cover a particular D-U path.
+The last test case is actually used to test the correctness of the way ConcreteStates update the field and does not cover a particular D-U path.}<2>
+
 	
 	\end{frame}
 \end{subsection}
@@ -451,25 +404,15 @@ The Visitor pattern is a way of separating an algorithm from an object structure
 	\label{ViclassDiag}
 \end{figure}
 		
-	\end{frame}
-\end{subsection}
-
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Visitor - Fault Model}
+		\only{\frametitle{Visitor - Fault Model}
 The pattern focuses on treating uniformly objects of different types while operating on them with different specializations of the same function. A failure is produced by the following situation:  
 \begin{itemize}
 	\item the wrong \textit{visit()} is applied to an Element
 \end{itemize}
 		\vspace{5mm}
-The sources of failure depend on the inability of the Visitor to identify the specialized implementation to execute. This depends mainly on the type of Element we are working with. We thus reasoned that to produce a satisfying test suite we must test the way \textit{visit} works when applied to all possible hierarchies of Element types.
+The sources of failure depend on the inability of the Visitor to identify the specialized implementation to execute. This depends mainly on the type of Element we are working with. We thus reasoned that to produce a satisfying test suite we must test the way \textit{visit} works when applied to all possible hierarchies of Element types.}<1>
 		
-	\end{frame}
-\end{subsection}
-
-\begin{subsection}{Design Patterns}
-	\begin{frame}
-		\frametitle{Visitor - Class Dependency Graph}
+		\only{\frametitle{Visitor - Class Dependency Graph}
 		
 \begin{figure}[!h]
 	\centering
@@ -481,7 +424,7 @@ We identified the 2 cases of:
 	\item Visitor ConcreteVisitor Element ConcreteElement2 Visitor
 	\item Visitor ConcreteVisitor Element ConcreteElement1 Visitor	
 \end{itemize}
-as representative of the entire set of possible hierarchies.
+as representative of the entire set of possible hierarchies.}<2>
 	\end{frame}
 \end{subsection}
 \end{section}
