@@ -41,13 +41,14 @@ keywordstyle=\color{red}\bfseries, commentstyle=\color{blue}, frame= single,}
 \begin{subsection}{Introduction}
 \begin{frame}
 \frametitle{Introduction}
-
-In this paper we identify a collection of structural and behavioral design patterns: Class Adapter, Object Adapter, Proxy, Decorator, Composite, Observer, State, Visitor.
+\begin{itemize}
+	\item We have identified a collection of structural and behavioral design patterns: Class Adapter, Object Adapter, Proxy, Decorator, Composite, Observer, State, Visitor.
 
 % ordine degli strutturali è individuato dalla "naturale" evoluzione in complessità della topologia% 
-For each pattern we realize an implementation in Java and we develop a reasoned test suite based on a realistic fault model and on chosen coverage criteria.
+\item For each pattern we realize an implementation in Java and we develop a reasoned test suite based on a realistic fault model and on chosen coverage criteria.
 
-We realize the tests through the \textit{JUnit} plug-in for Eclipse and the \textit{Mockito} framework. \textit{EclEmma} is used to provide a code coverage measure.
+\item We realize the tests through the \textit{JUnit} plug-in for Eclipse and the \textit{Mockito} framework. \textit{EclEmma} is used to provide a code coverage measure.
+\end{itemize}
 \end{frame}
 \end{subsection}
 \end{section}
@@ -56,11 +57,11 @@ We realize the tests through the \textit{JUnit} plug-in for Eclipse and the \tex
 	\begin{subsection}{Design Patterns}
 		\begin{frame}
 \only<1>{			\frametitle{Class Adapter}
-Adapts a pre-existent class to a new interface through inheritance. Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added.
+Adapts a pre-existent class to a new interface through inheritance.\\Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added.
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Adapter/Class/ClassDiagram.png}	
+	\includegraphics[width=0.74\textwidth]{./Adapter/Class/ClassDiagram.png}	
 	\label{CAclassDiag}
 \end{figure} 
 }
@@ -79,11 +80,10 @@ The two sources of failure both depend on the inability of the Client to reach t
 		\only<3>{	\frametitle{Class Adapter - Data Flow Graph}
 	\begin{figure}[h]
 		\centering
-		\includegraphics[width=0.7\textwidth]{./Adapter/Class/CallGraph.png}	
+		\includegraphics[width=0.74\textwidth]{./Adapter/Class/CallGraph.png}	
 		\label{CAdataflow}
-	\end{figure}
-	
-\vspace{5mm}
+	\end{figure}	
+\vspace{3mm}
 {\footnotesize 	We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\begin{itemize}
 		\item Adapter() getInt() 
@@ -101,13 +101,11 @@ The two sources of failure both depend on the inability of the Client to reach t
 		\begin{frame}
 			
 	\only<1>{		\frametitle{Object Adapter}
-Adapts a pre-existent class to a new interface through class composition. 
-
-{\small Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added.}			
+Adapts a pre-existent class to a new interface through class composition. Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added.
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Adapter/Object/ClassDiagram.png}	
+	\includegraphics[width=0.74\textwidth]{./Adapter/Object/ClassDiagram.png}	
 	\label{OAclassDiag}
 \end{figure} 
 }
@@ -120,8 +118,9 @@ Adapts a pre-existent class to a new interface through class composition.
 		\item the adapter cannot interact with the legacy methods 
 		\item the instance contained in the adapter, which inherited the adaptee class, has overrode its methods in an unforeseen way
 	\end{itemize}
-\vspace{5mm}
-	The sources of failure depend on the inability of the Client to reach the Adaptee methods through the Adapter or in the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden:  we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods, considering all the possible alternative implementations. 
+\vspace{3mm}
+	The sources of failure are about the inability of the Client to reach the Adaptee methods through the Adapter and about the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden.
+	We reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods, considering all the possible alternative implementations. 
 
 }
 	\only<3>{	\frametitle{Object Adapter - Data Flow Graph}
@@ -141,7 +140,6 @@ Adapts a pre-existent class to a new interface through class composition.
 			\item Adapter( Adaptee ) getInt() 
 			\item Adapter( AdapteeOpposite ) getInt()
 		\end{itemize}	
-		Of these the first, being already tested in the first suite, is not repeated.
 		}
 			
 		\end{frame}
@@ -152,14 +150,11 @@ Adapts a pre-existent class to a new interface through class composition.
 	\begin{subsection}{Design Patterns}
 		\begin{frame}
 		\only{	\frametitle{Proxy}
-The Proxy pattern is constituted by a class  functioning as an interface to something else, usually a complex or heavy object.
-
-{\small It is called by the client to access the real serving object behind the scenes, it either provides a cached result or transmits the request to the actual object.
-}			
+The Proxy pattern is constituted by a class  functioning as an interface to something else, usually a complex or heavy object. It is called by the client to access the real serving object behind the scenes, it either provides a cached result or transmits the request to the actual object.			
 			
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Proxy/ClassDiagram.png}
+	\includegraphics[width=0.72\textwidth]{./Proxy/ClassDiagram.png}
 	\label{ProclassDiag}
 \end{figure} }<1>
 			
@@ -171,18 +166,18 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 			\item the access to the RealSubject is impeded
 			\item the cached copies provided by the Proxy differ from the actual source.
 		\end{itemize}
-		\vspace{5mm}
-	The sources of failure depend on the inability of the Client to reach the RealSubject fields through the Proxy or in the inability of the Proxy of providing correct cached versions:  we reasoned that it is sufficient to test the ways in which the variable \textit{realSubj} interacts and is modified by the methods, by slight modification of the tests we can automatically verify the cached versions validity.}<2> 
+		\vspace{3mm}
+	The sources of failure are about the inability of the Client to reach the RealSubject fields through the Proxy or about the inability of the Proxy of providing correct cached versions. We reasoned that it is sufficient to test the ways in which the variable \textit{realSubj} interacts and is modified by the methods, by slight modification of the tests we can automatically verify the cached versions validity.}<2> 
 		
 
 		\only{\frametitle{Proxy - Data Flow Graph}
 		\begin{figure}[!h]
 		\centering
-		\includegraphics[width=0.8\textwidth]{./Proxy/CallGraph.png}
+		\includegraphics[width=0.75\textwidth]{./Proxy/CallGraph.png}
 		
 		\label{Prodataflow}
 	\end{figure}
-		{\footnotesize We generated a test suite capable of testing all the \textit{all-uses} paths:
+		We generated a test suite capable of testing all the \textit{all-uses} paths:
 		\begin{itemize}
 			\item Proxy() getString() 
 			\item Proxy() getString() getString()
@@ -190,8 +185,7 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 			\item Proxy() getString() getSubString()
 			\item Proxy() getSubString() getSubString()
 			\item Proxy() getSubString() getString()			
-		\end{itemize}
-		}In particular  \textit{Proxy() getSubString() getSubString()} was altered to test the returned cached version after each method call.}<3> 		
+		\end{itemize}}<3> 		
 		
 	\end{frame}
 \end{subsection}
@@ -203,7 +197,7 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Decorator/ClassDiagram.png}	
+	\includegraphics[width=0.75\textwidth]{./Decorator/ClassDiagram.png}	
 	\label{DeclassDiag}
 \end{figure} 
 		}<1>
@@ -211,10 +205,10 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 		
 		The pattern focuses on allowing an extension of functionality in objects. Grave errors are found in the following situations:  
 		\begin{itemize}
-			\item the call to the \textbf{operation (getName)} does not reach the Component or results in unexpected behavior
+			\item the call to the \textit{operation (getName)} does not reach the Component or results in unexpected behavior
 		\end{itemize}
-		\vspace{5mm}
-	The sources of failure depend on the presence of errors in the sequence of additive behavior to the \textit{operation (getName)}. We reasoned that to produce a satisfying test suite it is sufficient to test the correctness of the sequence of method calls in different hierarchies of classes.}<2>
+		\vspace{3mm}
+	The sources of failure are about the presence of errors in the sequence of additive behavior to the \textit{operation (getName)}. We reasoned that to produce a satisfying test suite it is sufficient to test the correctness of the sequence of method calls in different hierarchies of classes.}<2>
 
 		
 
@@ -224,16 +218,14 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 	\includegraphics[width=0.8\textwidth]{./Decorator/ClassDepencyGraph.png}
 	\label{Dedepengraph}
 \end{figure}
-{\footnotesize We decided to generate a test suite dependent on the \textit{all-edges} criterion.
-We identified the 3 cases of:}
+We decided to generate a test suite dependent on the \textit{all-edges} criterion.
+We identified the 3 cases of:
 \begin{itemize}
 	\item ConcreteComponent
 	\item Decorator ConcreteComponent
 	\item Decorator Decorator ConcreteComponent
 	
-\end{itemize}
-{\footnotesize as representative of the entire set of possible hierarchies.
-We then tested the \textit{getName()} method on the identified cases.}}<3> 		
+\end{itemize}}<3> 		
 
 	\end{frame}
 \end{subsection}
@@ -245,7 +237,7 @@ The Composite pattern "composes" objects into tree structures to represent part-
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Composite/ClassDiagram.png}
+	\includegraphics[width=0.8\textwidth]{./Composite/ClassDiagram.png}
 	\label{CoclassDiag}
 \end{figure}
 		}<1>
@@ -257,8 +249,8 @@ The pattern focuses on treating uniformly individual and compound objects. Grave
 	\item the common \textit{operation} works differently than expected
 	\item the composite-specific methods produce unexpected effects when called on a Leaf object
 \end{itemize}
-		\vspace{5mm}
-The sources of failure depend on the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.}<2>
+		\vspace{3mm}
+The sources of failure are about the inability of the specific components (individual or composite parts) to be interacted in an uniform way. We reasoned that to produce a satisfying test suite we must test two different things: the way \textit{operation} works under the possible hierarchies at runtime and the way the different objects behave under calls from composite-specific methods.}<2>
 
 
 		\only{\frametitle{Composite - Data Flow Graph}
@@ -268,7 +260,7 @@ The sources of failure depend on the inability of the specific components (indiv
 	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}	
 	\label{Codepengraph}
 \end{figure}
-We generated a test suite capable of testing all the \textit{all-uses} paths:
+{\footnotesize We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{itemize}
 	\item Component() getChild()
 	\item Component() getValue()
@@ -276,7 +268,7 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item Component() add() getValue()
 	\item Component() add() add() remove() getChild()
 	\item Component() add() add() remove() getValue() 
-\end{itemize}}<3> 		
+\end{itemize}}}<3> 		
 
 		\only{\frametitle{Composite - Class Dependency Graph}
 		
@@ -291,10 +283,7 @@ We identified the 3 cases of:
 	\item single Leaf
 	\item Composite containing Leaf
 	\item Composite containing Composite
-\end{itemize}
-as representative of the entire set of possible hierarchies.
-
-We then tested all the composite-specific methods (add, remove, getChild) on the identified cases.}<4>	
+\end{itemize}}<4>	
 	\end{frame}
 \end{subsection}
 
@@ -305,7 +294,7 @@ We then tested all the composite-specific methods (add, remove, getChild) on the
 		
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Observer/ClassDiagram.png}
+	\includegraphics[width=0.74\textwidth]{./Observer/ClassDiagram.png}
 	\label{ObclassDiag}
 \end{figure}}<1>
 		
@@ -317,28 +306,25 @@ The pattern focuses on maintaining updated objects that expressed the interest i
 	\item after a change of the subject state the following observers are not \textit{notified}.
 	\item the observer after being notified does not execute correctly the \textit{update} method.
 \end{itemize}
-		\vspace{5mm}
-		The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We considered the correct modification on the subject internal \textit{state} as not important for our pattern.  We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after an inter-class method invocation and the way the \textit{state} of the observer is modified after a notification.}<2>
+		\vspace{3mm}
+		The sources of failure are about the presence of problems that impede the correct functioning of the inter-class methods and about the inability of the observer to correctly update. We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after an inter-class method invocation and the way the \textit{state} of the observer is modified after a notification.}<2>
 		
 
 		\only{\frametitle{Observer - Data Flow Graph: field \textit{list\_observer}}
-		
-		We decided to test the interaction between the variable and the methods
-		following the all-uses criterion, we deemed the all-def criterion excessively restrictive to test this pattern.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Observer/CallGraph.png}
 	\label{Obdataflow1}
 \end{figure} 
 
-We generated a test suite capable of testing all the \textit{all-uses} paths:
-\begin{enumerate}
+{\footnotesize We generated a test suite capable of testing all the \textit{all-uses} paths:
+\begin{itemize}
 	\item Subject() setState()[notify()]	
 	\item Subject() detach() 		
-	\item Subject() attach()x3 detach()x2 (+setState()[notify()]) 
-	\item Subject() attach()x2 detach()x2 attach() detach() attach() (+setState()[notify()])
-\end{enumerate}		
-}<3>
+	\item Subject() attach()x3 detach()x2 
+	\item Subject() attach()x2 detach()x2 attach() detach() attach()
+\end{itemize}		
+}}<3>
 
 		\only{\frametitle{Observer - Data Flow Graph: field \textit{state}}
 		
@@ -353,8 +339,7 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item ConcreteObserver() getState()
 	\item ConcreteObserver() update() getState()
 	
-\end{itemize}
-In both type of tests, since the tested class's methods (ConcreteSubject and ConcreteObserver) interacted with external classes (Observer and Subject) we  differentiated between Unit and Integration tests.}<4>		
+\end{itemize}}<4>		
 
 	\end{frame}
 \end{subsection}
@@ -365,7 +350,7 @@ In both type of tests, since the tested class's methods (ConcreteSubject and Con
 		The State pattern implements a state machine by implementing each individual state as a derived class of the state pattern interface, and implementing state transitions by invoking methods defined by the pattern's superclass.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./State/ClassDiagram.png}
+	\includegraphics[width=0.8\textwidth]{./State/ClassDiagram.png}
 	\label{SclassDiag}
 \end{figure}}<1>
 		
@@ -374,10 +359,10 @@ In both type of tests, since the tested class's methods (ConcreteSubject and Con
 		\begin{itemize}
 			\item internal state changes in an erroneous manner. 
 			\item the internal state methods produce unexpected side effects or results.
-			\item (with less importance) the internal classes' inner state changes in an erroneous manner.
+			\item the internal classes' inner state changes in an erroneous manner.
 		\end{itemize}
-		\vspace{5mm}
-		The sources of failure depend on the presence of problems that impede the correct functioning of the inter-class methods and, in the lesser part, by the inability of the observer to correctly update. We considered the correct modification on the subject internal \textit{state} as not important for our pattern.  We reasoned that to produce a satisfying test suite we must test the way \textit{list\_observers} is modified after an inter-class method invocation and the way the \textit{state} of the observer is modified after a notification.}<2>
+		\vspace{3mm}
+		The sources of failure are about errors found in the internal classes methods. We reasoned that to produce a satisfying test suite it is sufficient to test the way the \textit{state} field interacts with the StateContext methods.}<2>
 		
 		
 		\only{\frametitle{State - Data Flow Graph}
@@ -392,9 +377,7 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item StateContext() writeOutput() 
 	\item StateContext() setState() writeOutput()
 	\item StateContext() writeOutput() writeOutput()
-\end{itemize}
-
-The last test case is actually used to test the correctness of the way ConcreteStates update the field and does not cover a particular D-U path.}<3>
+\end{itemize}}<3>
 
 	
 	\end{frame}
@@ -403,11 +386,11 @@ The last test case is actually used to test the correctness of the way ConcreteS
 \begin{subsection}{Design Patterns}
 	\begin{frame}
 	\only{	\frametitle{Visitor}
-The Visitor pattern is a way of separating an algorithm from an object structure on which it operates. {\footnotesize The pattern allows one to add new virtual functions to a family of classes without modifying the classes themselves: the visitor class implements all of the appropriate specializations of the virtual function. The visitor takes the instance reference as input, and implements the goal through double dispatch.}
+The Visitor pattern is a way of separating an algorithm from an object structure on which it operates. The pattern allows one to add new virtual functions to a family of classes without modifying the classes themselves.
 		
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Visitor/ClassDiagram.png}
+	\includegraphics[width=0.8\textwidth]{./Visitor/ClassDiagram.png}
 	\label{ViclassDiag}
 \end{figure}}<1>
 		
@@ -416,22 +399,21 @@ The pattern focuses on treating uniformly objects of different types while opera
 \begin{itemize}
 	\item the wrong \textit{visit()} is applied to an Element
 \end{itemize}
-		\vspace{5mm}
-The sources of failure depend on the inability of the Visitor to identify the specialized implementation to execute. This depends mainly on the type of Element we are working with. We thus reasoned that to produce a satisfying test suite we must test the way \textit{visit} works when applied to all possible hierarchies of Element types.}<2>
+		\vspace{3mm}
+The sources of failure are about the inability of the Visitor to identify the specialized implementation to execute. We  reasoned that to produce a satisfying test suite we must test the way \textit{visit} works when applied to all possible hierarchies of Element types.}<2>
 		
 		\only{\frametitle{Visitor - Class Dependency Graph}
 		
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Visitor/ClassDependencyGraph.png}
+	\includegraphics[width=0.84\textwidth]{./Visitor/ClassDependencyGraph.png}
 	\label{Videpengraph}
 \end{figure}
 We identified the 2 cases of:
 \begin{itemize}
 	\item Visitor ConcreteVisitor Element ConcreteElement2 Visitor
 	\item Visitor ConcreteVisitor Element ConcreteElement1 Visitor	
-\end{itemize}
-as representative of the entire set of possible hierarchies.}<3>
+\end{itemize}}<3>
 	\end{frame}
 \end{subsection}
 \end{section}
@@ -463,19 +445,24 @@ as representative of the entire set of possible hierarchies.}<3>
 			\end{frame}
 			\begin{frame}
 				\frametitle{Mockito}
-				{\small Mockito is an open source testing framework for Java. The framework allows the creation of test double objects also called mock objects.
+				\begin{itemize}
+			\item Mockito is an open source testing framework for Java. The framework allows the creation of test double objects also called mock objects.
 					
-					Mock testing frameworks allow the faking of external dependencies so that the object being tested is isolated from external behaviors: otherwise ensuring that objects perform the way they are expected to would require the creation of tests that actually exercise each behavior and verify that it performs as expected, with costs comparable to writing the original objects our system interacts with.
-					
-					While utilizing the framework we identified some noteworthy details:
-					\begin{itemize}
-						\item in the Proxy class we utilized \textit{spy} on the very class we were testing to allow injection of other mocked classes
-						\item the \textit{doReturn().when()} construct is to be preferred to the \textit{when().myMethod()} construct with \textit{spy} due to the fact that the latter actually executes the function and produces side-effects before returning the designed output
-						\item returning an Answer() allows for side-effects to be produced when a mocked object's method is called. 
-						\item Answer is not necessary if the side-effects are produced only on the very class under test due to the fact that one can independently produce them by simply calling the respective tested methods.
-					\end{itemize}}
+			\item Mock testing frameworks allow the faking of external dependencies so that the object being tested is isolated from external behaviors: otherwise ensuring that objects perform the way they are expected to would require the creation of tests that actually exercise each behavior and verify that it performs as expected, with costs comparable to.
+				\end{itemize}
 				\end{frame}
 				
+				\begin{frame}
+					\frametitle{Mockito}
+									
+						While utilizing the framework we identified some noteworthy details:
+						\begin{itemize}
+							\item in the Proxy class we utilized \textit{spy} on the very class we were testing to allow injection of other mocked classes.
+							\item the \textit{doReturn().when()} construct is to be preferred to the \textit{when().myMethod()} construct with \textit{spy} due to the fact that the latter actually executes the function and produces side-effects before returning the designed output.
+							\item returning an Answer() allows for side-effects to be produced when a mocked object's method is called. 
+							\item Answer is not necessary if the side-effects are produced only on the very class under test due to the fact that one can independently produce them by simply calling the respective tested methods.
+						\end{itemize}
+					\end{frame}
 			\end{subsection}
 		\end{section}
 		
@@ -484,16 +471,29 @@ as representative of the entire set of possible hierarchies.}<3>
 			\begin{subsection}{Conclusions}
 				\begin{frame}
 					
-					\frametitle{Conclusions}{\small 
-						We identified a collection of structural and behavioral design patterns; for each pattern we produced an implementation in Java, which we then studied to identify the main faults they were susceptible to.
-						We then created a reasoned test suite based on the fault model and on a coverage criteria chosen pattern by pattern.
+					\frametitle{Conclusions}
+						\begin{itemize}
+						\item We identified a collection of structural and behavioral design patterns. For each pattern:
+							{\footnotesize \begin{itemize}
+								\item we produced an implementation
+							\end{itemize} 
+							\begin{itemize}
+								\item we studied it to identify the main faults
+							\end{itemize} 
+								\begin{itemize}
+									\item we created a reasoned test suite based on the fault model and on a coverage criteria chosen pattern by pattern
+								\end{itemize} }
 						
-						We realized both Unit and Integration tests through the JUnit plug-in for Eclipse and the Mockito framework; we then applied EclEmma to provide a code coverage measure.
+						\item We realized both Unit and Integration tests through the JUnit plug - in for Eclipse and the Mockito framework.
+								{\footnotesize \begin{itemize}
+									\item we applied EclEmma to provide a code coverage measure
+								\end{itemize}} 
+								
+						\item This measure was studied to identify both the untested branches and the reason for which they were not covered.
 						
-						This measure was subsequently studied to identify both the untested branches and the reason for which they were not covered.
-						
-						In the end most patterns (except ObjectAdapter, Proxy and Composite) presented a full code coverage.
-					}
+						\item In the end most patterns presented a full code coverage.
+					\end{itemize}
+					
 				\end{frame}
 			\end{subsection}
 		\end{section}
