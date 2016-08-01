@@ -17,7 +17,7 @@
     <node id="n0">
       <data key="d6">
         <y:GenericNode configuration="BevelNode3">
-          <y:Geometry height="60.0" width="180.0" x="461.5546875000001" y="420.0"/>
+          <y:Geometry height="60.0" width="180.0" x="461.5546875000001" y="480.0"/>
           <y:Fill color="#FF9900" transparent="false"/>
           <y:BorderStyle hasColor="false" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="19" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="27.27685546875" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="52.576171875" x="63.7119140625" y="16.361572265625">Client<y:LabelModel>
@@ -275,7 +275,10 @@
     <edge id="e0" source="n0" target="n4">
       <data key="d10">
         <y:PolyLineEdge>
-          <y:Path sx="7.0" sy="5.931703204047267" tx="0.0" ty="0.0"/>
+          <y:Path sx="7.0" sy="5.931703204047267" tx="0.0" ty="0.0">
+            <y:Point x="558.5546875000001" y="560.948039629005"/>
+            <y:Point x="558.5546875" y="560.948039629005"/>
+          </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
           <y:BendStyle smoothed="false"/>
@@ -286,7 +289,7 @@
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-33.0" ty="-4.91294266441821">
-            <y:Point x="288.5546875" y="450.0"/>
+            <y:Point x="288.5546875" y="510.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -298,7 +301,7 @@
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="15.0" ty="-3.5795760539627963">
-            <y:Point x="793.3846153846154" y="450.0"/>
+            <y:Point x="793.3846153846154" y="510.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
@@ -310,7 +313,7 @@
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-11.4453125" ty="2.4204239460372037">
-            <y:Point x="986.7692307692307" y="450.0"/>
+            <y:Point x="986.7692307692307" y="510.0"/>
           </y:Path>
           <y:LineStyle color="#000000" type="line" width="1.0"/>
           <y:Arrows source="none" target="standard"/>
