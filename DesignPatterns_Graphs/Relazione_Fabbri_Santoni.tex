@@ -1,5 +1,4 @@
 \documentclass[12pt, a4paper, oneside, openright]{book}
-\renewcommand\bibname{Sitography}
 \pdfpagewidth\paperwidth
 \pdfpageheight\paperheight
 \usepackage{graphicx}
@@ -18,7 +17,7 @@
 \pagestyle{myheadings}
 \begin{titlepage}
 \begin{center}
-{{\Large{\textsc{Universit\`{a} degli studi di Firenze}}}} \rule[0.1cm]{15.8cm}{0.1mm}
+{{\Large{\textsc{Universit\`{a} degli Studi di Firenze}}}} \rule[0.1cm]{15.8cm}{0.1mm}
 \rule[0.5cm]{15.8cm}{0.6mm}
 {\small{\bf Department of Information Engineering\\
 Master of Science in Information Engineering}}
@@ -68,19 +67,17 @@ Francesco Santoni}}
 \chapter{Introduction}
 \markboth{Introduction}{\textit{Introduction}}
 
-In this paper we identify a collection of structural and behavioral design patterns: Class Adapter, Object Adapter, Proxy, Decorator, Composite, Observer, State, Visitor.
+In this paper we identify a collection of structural and behavioral design patterns \cite{4}: Class Adapter, Object Adapter, Proxy, Decorator, Composite, Observer, State, Visitor.
 
 % ordine degli strutturali è individuato dalla "naturale" evoluzione in complessità della topologia% 
-For each pattern we realize an implementation in Java and we develop a reasoned test suite based on a realistic fault model and on chosen coverage criteria.
+For each pattern we realize an implementation in Java and develop a reasoned test suite based on a realistic fault model and on chosen coverage criteria.
 
-We realize the tests through the JUnit\cite{1} plug-in for Eclipse and the Mockito\cite{2} framework. EclEmma \cite{3} is used to provide a code coverage measure.
+We realize the tests through the JUnit \cite{1} plug-in for Eclipse and the Mockito \cite{2} framework. EclEmma \cite{3} is used to provide a code coverage measure.
 
 
 \chapter{Design Patterns}
 \markboth{Design Patterns}{\textit{Design Patterns}}
-In software engineering, a design pattern is a general reusable template to solve a commonly occurring problem within a given context.
-
-We will study:
+In software engineering, a design pattern is a general reusable template to solve a commonly occurring problem within a given context.\\Among the possible choices, we elected to study:
 \begin{enumerate}
 	\item Structural patterns: Adapter(both in his Class and Object variants), Proxy, Decorator, Composite.
 	\item Behavioural patterns: Observer, State, Visitor.
@@ -88,13 +85,13 @@ We will study:
 
 
 \section{Class Adapter}
- Adapts a pre-existent class to a new interface through inheritance.  Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added. 
+ Adapts a pre-existent class to a new interface through inheritance.  Through the new interface the old methods can be directly presented, modified and produce aggregated results; completely new functionality can also be added. 
  
  
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
-	\centering
-	\includegraphics[width=0.6\textwidth]{./Adapter/Class/ClassDiagram.png}
+	\centering 
+	\includegraphics[width=0.64\textwidth]{./Adapter/Class/ClassDiagram.png}
 	\caption{Class Adapter: Class Diagram }
 	\label{CAclassDiag}
 \end{figure}
@@ -109,24 +106,23 @@ We will study:
 Given that the pattern focuses on allowing access to legacy methods through a new interface, failures are found in the following situations:  
 \begin{itemize}
 	\item the adapter did not inherit from the legacy class or the new interface
-	\item the adapter cannot interact with the legacy methods 
+	\item the adapter cannot interact with the legacy methods or unexpected results are produced
 \end{itemize}
 
 \subsection{Testing}
 The two sources of failure both depend on the inability of the Client to reach the Adaptee methods through the Adapter.  We reasoned that it is thus sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods.
-
  As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
-\newline
-We have thus represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks represent functions.
 
-We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact deemed the\textit{ all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus all its \textit{uses}.    
+We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set to the level that basic blocks represent functions.
+
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we in fact deemed the\textit{ all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus find the need to test all its \textit{uses}.    
 
 
 \paragraph{Data Flow Graph}
  The Client is the only external class interacting with the public methods of the Adapter. The Data Flow Graph can be seen in Figure \ref{CAdataflow}.
 \begin{figure}[h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Adapter/Class/CallGraph.png}
+	\includegraphics[width=0.84\textwidth]{./Adapter/Class/CallGraph.png}
 	\caption{Data Flow Graph: \textit{bool\_value}}
 	\label{CAdataflow}
 \end{figure}
@@ -147,22 +143,24 @@ The special case of
 	\item Adapter() setBool() getBool() 
 		
 \end{itemize}	
-is not tested because all the methods are directly inherited from the legacy class(and thus are supposedly already tested) and no side-effects, which could have invalidated some invariants, are introduced in the adapter.
+is not tested because all the methods are directly inherited from the legacy class(and thus are supposedly already tested) and no side-effects, which could have invalidated some invariants, are introduced in our adapter.
 
-In this particular pattern the presence of a lone object other than the Client makes Unit and Integration tests un-distinguishable.
+In this particular pattern the absence of any external other than the Client class interacting in any way with the Adapter makes Unit and Integration tests un-distinguishable.
 
 \subsubsection{Code Coverage}
 The code coverage measure obtained from EclEmma Java plug-in is: 100\%.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%1
+\newpage
 \section{Object Adapter}
 Adapts a pre-existent class to a new interface through class composition. 
 
-Through the new interface the old methods can be directly presented, modified, produce aggregated results or completely new functionality can be added. 
+Through the new interface the old methods can be directly presented, modified and produce aggregated results; completely new functionality can also be added. 
+ 
 
-The composition adds the possibility of dynamically switching the adapted legacy class (not contemplated in our implementation) and the possibility of overridden methods with altered functionality.
+The composition adds the possibility of dynamically switching the adapted legacy class (not contemplated in our implementation) and the possibility of having overridden methods with altered functionality.
 
-If the adaptee class is declared final, the increased complexity from overridden methods is eliminated but the extra functionality is removed as well.
+If the Adaptee class is declared final, the increased complexity from overridden methods is eliminated but the extra functionality is removed as well.
 
 
 \subsubsection{Class Diagram}
@@ -190,7 +188,7 @@ Given that the pattern focuses on allowing access to legacy methods through a ne
 
 \subsection{Testing}
 
-The sources of failure depend on the inability of the Client to reach the Adaptee methods through the Adapter or in the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden:  we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods, considering all the possible alternative implementations. 
+The sources of failure depend on the inability of the Client to reach the Adaptee methods through the Adapter or in the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden:  we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods, considering all the existent alternative implementations in the overridden methods. 
 As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
 
 The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable \textit{bool\_value},  and topology, the different ways the classes are ordered in a hierarchy at runtime.
@@ -205,16 +203,16 @@ Like the ClassAdapter, only the Client interacts with the Adapter methods.
 The Data Flow Graph can be seen in Figure \ref{OAdataflow}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.75\textwidth]{./Adapter/Object/CallGraph.png}
+	\includegraphics[width=0.84\textwidth]{./Adapter/Object/CallGraph.png}
 	\caption{Data Flow Graph: \textit{bool\_value}}
 	\label{OAdataflow}
 \end{figure}
 
 
-We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, in we fact deemed the \textit{all-def} criterion not useful to test this pattern because we value mainly the transmission of the right value of the field and thus all its \textit{uses}.   
+We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, in this case it is identical to the \textit{all-def} criterion since there is only a single \textit{use}.   
 
 \paragraph{Overridden methods}
-We have tested separately the overridden variants of the methods through simple tests.
+We have tested separately in all the possible topologies exclusively the methods which presented overridden variants, without considering the methods which did not differ.
 
 We reasoned that such a separation would allow us to sufficiently cover the code while maintaining a low number of tests.
 
@@ -223,16 +221,16 @@ We reasoned that such a separation would allow us to sufficiently cover the code
 
 
 We generated a test suite capable of testing all the \textit{all-uses} paths:
-\begin{enumerate}
+\begin{itemize}
 	\item Adapter() getInt() 
 	\item Adapter() setInt() getInt() 
 	
-\end{enumerate}
+\end{itemize}
 To these are also added the topology tests:
-\begin{enumerate}
+\begin{itemize}
 	\item Adapter( Adaptee ) getInt() 
 	\item Adapter( AdapteeOpposite ) getInt()
-\end{enumerate}	
+\end{itemize}	
 Of these the first, being already tested in the first suite, is not repeated.
 
 Since in this pattern the tested class's methods (Adapter's) interacted with external classes (Adaptee) we  differentiated between Unit and Integration tests.
@@ -251,7 +249,7 @@ The single remaining untested branch is a setter method which was not called wit
 Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the Adapter class's code is the same.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%2
-
+ \newpage
 \section{Proxy}
 
 The Proxy pattern is constituted by a class  functioning as an interface to something else, usually a complex or heavy object.
@@ -261,7 +259,7 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Proxy/ClassDiagram.png}
+	\includegraphics[width=0.79\textwidth]{./Proxy/ClassDiagram.png}
 	\caption{Proxy: Class Diagram }
 	\label{ProclassDiag}
 \end{figure}
@@ -282,7 +280,7 @@ The pattern focuses on optimizing or controlling the access to the heavy subject
 
 \subsection{Testing}
 
-The sources of failure depend on the inability of the Client to reach the RealSubject fields through the Proxy or in the inability of the Proxy of providing correct cached versions:  we reasoned that it is sufficient to test the ways in which the variable \textit{realSubj} interacts and is modified by the methods, by slight modification of the tests we can automatically verify the cached versions validity.
+The sources of failure depend on the inability of the Client to reach the RealSubject fields through the Proxy or on the inability of the Proxy of providing correct cached versions:  we reasoned that it is sufficient to test the ways in which the variable \textit{realSubj} interacts and is modified by the methods, by slight modification of the tests we can automatically verify the cached versions validity.
 
 
 
@@ -295,7 +293,7 @@ Only the Client interacts with the Proxy methods.
 The Data Flow Graph can be seen in Figure \ref{Prodataflow}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Proxy/CallGraph.png}
+	\includegraphics[width=0.94\textwidth]{./Proxy/CallGraph.png}
 	\caption{Data Flow Graph: \textit{realSubj}}
 	\label{Prodataflow}
 \end{figure}
@@ -307,7 +305,7 @@ We decided to test the interaction between the variable and the methods followin
 
 \paragraph{Data Flow: field \textit{realSubj}}
 We generated a test suite capable of testing all the \textit{all-uses} paths:
-\begin{enumerate}
+\begin{itemize}
 	\item Proxy() getString() 
 	\item Proxy() getString() getString()
 	\item Proxy() getSubString()
@@ -315,15 +313,16 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item Proxy() getSubString() getSubString()
 	\item Proxy() getSubString() getString()
 	
-\end{enumerate}
+\end{itemize}
 In particular  \textit{Proxy() getSubString() getSubString()} was altered to test the returned cached version after each method call. 
 
 
 Since in this pattern the tested class's methods (Proxy's) interacted with external classes (RealSubject) we  differentiated between Unit and Integration tests.
 
-The Proxy class, by having to provide a cached version or to instantiate a RealSubject which will process the heavy data and return it to the Proxy, poses problems to the injection of a mocked RealSubject class.
+There are difficulties in injecting mocked versions of the RealSubject in the Proxy.
+The Proxy class, when called, has to provide a cached response or must instantiate a RealSubject which will process the data and report back: this means the instantiation happen directly inside the methods of the class, which means that, for testability, they must be altered to allow "outside interference" . 
 
-Two possibilities were considered: create a RealSubjectFactory to pass during the construction of the Proxy and utilize it during the instantiation of the inner RealSubject or separate the responsibility of instantiation in a method void of logic.
+Two possibilities were considered: create a RealSubject's Factory to pass during the construction of the Proxy and utilize it during the instantiation of the inner RealSubject or separate the responsibility of instantiation in a method void of logic.
 
 In the first possibility, one would have to use Mockito's \textit{mock} method to mock the Factory so that it would return a mocked RealSubject, while in the second case one would have to use Mockito's \textit{spy} method to modify the Proxy itself so that the logic-less method would return a mocked RealSubject.
 
@@ -350,7 +349,7 @@ The Decorator pattern allows behavior to be added to an individual object, eithe
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Decorator/ClassDiagram.png}
+	\includegraphics[width=0.79\textwidth]{./Decorator/ClassDiagram.png}
 	\caption{Decorator: Class Diagram }
 	\label{DeclassDiag}
 \end{figure}
@@ -367,7 +366,7 @@ The Decorator pattern allows behavior to be added to an individual object, eithe
 
 The pattern focuses on allowing an extension of functionality in objects. Grave errors are found in the following situations:  
 \begin{itemize}
-	\item the call to the \textbf{operation (getName)} does not reach the Component or results in unexpected behavior
+	\item the call to the \textit{operation (getName)} does not reach the Component or results in unexpected behavior
 \end{itemize}
 
 
@@ -375,14 +374,14 @@ The pattern focuses on allowing an extension of functionality in objects. Grave 
 
 The sources of failure depend on the presence of errors in the sequence of additive behavior to the \textit{operation (getName)}. We reasoned that to produce a satisfying test suite it is sufficient to test the correctness of the sequence of method calls in different hierarchies of classes.
 
-\paragraph{Topology: method \textit{operation\(\)}}
+\paragraph{Topology: method \textit{operation()}}
 We generated a Class Dependency Graph to identify all the possible relations between classes.
 
 \subparagraph{Class Dependency Graph}
-In the Figure \ref{Dedepengraph} are made explicit the relations between classes: in particular since Decorator is an abstract class it and its inheriting classes depend on each other. 
+In the Figure \ref{Dedepengraph} are made explicit the relations between classes: in particular, since Decorator is an abstract class, it and its inheriting classes depend on each other. 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Decorator/ClassDepencyGraph.png}
+	\includegraphics[width=1\textwidth]{./Decorator/ClassDepencyGraph.png}
 	\caption{Class Dependency Graph: \textit{getName()}}
 	\label{Dedepengraph}
 \end{figure}
@@ -390,7 +389,7 @@ In the Figure \ref{Dedepengraph} are made explicit the relations between classes
 We decided to generate a test suite dependent on the \textit{all-edges} criterion.
 
 \subsubsection{Tests}
-\paragraph{Topology: method \textit{operation\(\)}}
+\paragraph{Topology: method \textit{operation()}}
 We identified the 3 cases of:
 \begin{itemize}
 	\item ConcreteComponent
@@ -400,6 +399,8 @@ We identified the 3 cases of:
 \end{itemize}
 as representative of the entire set of possible hierarchies.
 We then tested the \textit{getName()} method on the identified cases.
+Technically for the \textit{all-edges} criterion the third test would have been enough, but we decided to be more rigorous and test for all the possible equivalence classes of topologies.
+
 
 Since the tested class's methods (ConcreteComponent and Decorator) interacted with external classes (an other Component) we  differentiated between Unit and Integration tests.
 
@@ -418,7 +419,7 @@ The Composite pattern "composes" objects into tree structures to represent part-
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Composite/ClassDiagram.png}
+	\includegraphics[width=0.89\textwidth]{./Composite/ClassDiagram.png}
 	\caption{Composite: Class Diagram }
 	\label{CoclassDiag}
 \end{figure}
@@ -436,7 +437,7 @@ The Composite pattern "composes" objects into tree structures to represent part-
 The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
 \begin{itemize}
 	\item the common \textit{operation} works differently than expected
-	\item the composite-specific methods produce unexpected effects when called on a Leaf object
+	\item the composite-specific methods produce unexpected results when called on a Leaf object
 \end{itemize}
 
 
@@ -450,7 +451,7 @@ The problem of testing thus expands in two different orthogonal dimensions: data
 
 
 We decided to explore both of them separately in specific focused tests.
-\newline
+
 \paragraph{Data Flow: field \textit{price}}
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks represent functions.
 
@@ -459,20 +460,20 @@ Both Client and other wrapping Composites interacts with the Component methods.
 The Data Flow Graph can be seen in Figure \ref{Codataflow}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Composite/CallGraph.png}
+	\includegraphics[width=1\textwidth]{./Composite/CallGraph.png}
 	\caption{Data Flow Graph: \textit{price}}
 	\label{Codataflow}
 \end{figure}
 
 
-We then decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
+We decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
 
 The field was tested in the fixed hierarchy formed with a Composite element containing another Composite, which contained a Leaf.  
 We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
   
   
   
-\paragraph{Topology: method \textit{operation\(\)}}
+\paragraph{Topology: methods \textit{composition-specific}}
 We generated a Class Dependency Graph to identify all the possible relations between classes.
 
 \subparagraph{Class Dependency Graph}
@@ -480,7 +481,7 @@ In the Figure \ref{Codepengraph} are made explicit the relations between classes
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
-	\caption{Class Dependency Graph: \textit{operation()}}
+	\caption{Class Dependency Graph: \textit{composition-specific}}
 	\label{Codepengraph}
 \end{figure}
 
@@ -499,7 +500,7 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item Component() add() add() remove() getValue() 
 \end{itemize}
 
-\paragraph{Topology: method \textit{operation\(\)}}
+\paragraph{Topology: methods \textit{composition-specific}}
 We identified the 3 cases of:
 \begin{itemize}
 	\item single Leaf
@@ -522,7 +523,7 @@ The code coverage measure obtained from EclEmma Java plug-in is: 97.8\%
 	\item LeafException 100\%
 \end{itemize}
 
-The remaining untested branches are found in the implementation of the composite-specific methods that Component provides for Leaf: all other classes (Composite) directly override those methods so their implementation when they are called not by a Leaf is never tested.
+The remaining untested branches are found in the implementation of the composite-specific methods that Component provides for Leaf: all other classes (Composite) directly override those methods so their implementation, when they are called not by a Leaf, is never tested.
 
 Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
 
@@ -537,7 +538,7 @@ The observers must be explicitly associated and disassociated with the subjects 
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Observer/ClassDiagram.png}
+	\includegraphics[width=0.8\textwidth]{./Observer/ClassDiagram.png}
 	\caption{Observer: Class Diagram }
 	\label{ObclassDiag}
 \end{figure}
@@ -555,7 +556,7 @@ The observers must be explicitly associated and disassociated with the subjects 
 The pattern focuses on maintaining updated objects that expressed the interest in a specific subject. Failures are found in the following situations:  
 \begin{itemize}
 	\item \textit{attach} and \textit{detach} do not produce the expected results.
-	\item after a change of the subject state the following observers are not \textit{notified}.
+	\item after a change of the subject state the dependent observers are not \textit{notified}.
 	\item the observer after being notified does not execute correctly the \textit{update} method.
 \end{itemize}
 
@@ -576,7 +577,7 @@ Only the Client interacts with the Subject methods, in particular the responsibi
 The Data Flow Graph can be seen in Figure \ref{Obdataflow1}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Observer/CallGraph.png}
+	\includegraphics[width=1\textwidth]{./Observer/CallGraph.png}
 	\caption{Data Flow Graph: \textit{list\_observers}}
 	\label{Obdataflow1}
 \end{figure}
@@ -592,7 +593,7 @@ Both Client and followed Subjects interacts with the Component methods.
 The Data Flow Graph can be seen in Figure \ref{Obdataflow2}.
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Observer/CallGraph_State.png}
+	\includegraphics[width=0.9\textwidth]{./Observer/CallGraph_State.png}
 	\caption{Data Flow Graph: \textit{state}}
 	\label{Obdataflow2}
 \end{figure}
@@ -606,12 +607,12 @@ We decided to test the interaction between the variable and the methods followin
 \paragraph{Data Flow: field \textit{list\_observer}}
 We decided to test as separate and distinct cases for situations like \textit{detach() detach()} where the methods are called with the same Observer or different ones. 
 We generated a test suite capable of testing all the \textit{all-uses} paths:
-\begin{enumerate}
+\begin{itemize}
 	\item Subject() setState()[notify()]	
 	\item Subject() detach() 		
 	\item Subject() attach()x3 detach()x2 (+setState()[notify()]) 
 	\item Subject() attach()x2 detach()x2 attach() detach() attach() (+setState()[notify()])
-\end{enumerate}
+\end{itemize}
 \vspace{3mm}
 
 Each of these paths is interesting for more in-depth study:
@@ -620,13 +621,13 @@ Each of these paths is interesting for more in-depth study:
 	\item a detach is called with empty list
 	\item[3,4] by interspersing verifications on the \textit{list\_observer} we test all combinations of the different D-U paths:
 	\begin{enumerate}
-		\item attach() attach()  
-		\item attach() detach()	 	
-		\item detach() detach()	 
-		\item detach() notify()
-		\item Subject() attach()
-		\item detach() attach()
-		\item attach() notify()
+		\item[-] attach() attach()  
+		\item[-] attach() detach()	 	
+		\item[-] detach() detach()	 
+		\item[-] detach() notify()
+		\item[-] Subject() attach()
+		\item[-] detach() attach()
+		\item[-] attach() notify()
 	\end{enumerate} 
 	
 \end{enumerate} 
@@ -635,23 +636,23 @@ To create an output of the \textit{list\_observer} we utilize a support method v
 
 \paragraph{Data Flow: field \textit{state}}
 We generated a test suite capable of testing all the \textit{all-uses} paths:
-\begin{enumerate}
+\begin{itemize}
 	\item ConcreteObserver() getState()
 	\item ConcreteObserver() update() getState()
 	
-\end{enumerate}
+\end{itemize}
 	
 
-	
+\vspace{6mm}	
 
-In both type of tests, since the tested class's methods (ConcreteSubject and ConcreteObserver) interacted with external classes (Observer and Subject) we  differentiated between Unit and Integration tests.
+In testing both fields, since the tested class's methods (ConcreteSubject and ConcreteObserver) interacted with external classes (Observer and Subject) we  differentiated between Unit and Integration tests.
 
 We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the main class's code.
 
 \subsubsection{Code Coverage}
 The code coverage measure obtained from EclEmma Java plug-in is: 100\% (Unit: 100\%)
 
-
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%6
 \section{State}
 
@@ -660,7 +661,7 @@ The State pattern implements a state machine by implementing each individual sta
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./State/ClassDiagram.png}
+	\includegraphics[width=0.9\textwidth]{./State/ClassDiagram.png}
 	\caption{State: Class Diagram }
 	\label{SclassDiag}
 \end{figure}
@@ -719,26 +720,23 @@ The last test case is actually used to test the correctness of the way ConcreteS
 
 Since the tested class's methods (StateContext) interacted with external classes (ConcreteStates) we  differentiated between Unit and Integration tests.
 
-In particular the third integration test does not have a corresponding unit test case since it would be identical to the first unit test case.
-
 We utilized Mockito's \textit{mock} function to isolate errors with an origin in external classes from interfering with the main class's code.
 \subsubsection{Code Coverage}
 The code coverage measure obtained from EclEmma Java plug-in is: 100\% (Unit: StateContext: 100\%) 
 
 
-Since the Unit Tests and the Integration Tests are identical, with the only difference that the Unit Tests utilize Mockito's help to isolate from external classes, the coverage of the classes' code is the same.
-
+\newpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%7
 \section{Visitor}
 The Visitor pattern is a way of separating an algorithm from an object structure on which it operates. 
 
-The pattern allows one to add new virtual functions to a family of classes without modifying the classes themselves: the visitor class implements all of the appropriate specializations of the virtual function. The visitor takes the instance reference as input and implements the goal through double dispatch.
+The pattern allows one to add new virtual functions to a family of classes without modifying the classes themselves: the visitor class implements all of the appropriate specializations of the virtual function. The visitor takes the instance reference as input and produces the output through double dispatch.
 
 
 \subsubsection{Class Diagram}
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.7\textwidth]{./Visitor/ClassDiagram.png}
+	\includegraphics[width=1\textwidth]{./Visitor/ClassDiagram.png}
 	\caption{Visitor: Class Diagram }
 	\label{ViclassDiag}
 \end{figure}
@@ -763,14 +761,14 @@ The pattern focuses on treating uniformly objects of different types while opera
 
 The sources of failure depend on the inability of the Visitor to identify the specialized implementation to execute. This depends mainly on the type of Element we are working with. We thus reasoned that to produce a satisfying test suite we must test the way \textit{visit} works when applied to all possible hierarchies of Element types.
 
-\paragraph{Topology: method \textit{visit\(\)}}
+\paragraph{Topology: method \textit{visit()}}
 We generated a Class Dependency Graph to identify all the possible relations between classes.
 
 \subparagraph{Class Dependency Graph}
 In the Figure \ref{Videpengraph} are made explicit the relations between classes. 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Visitor/ClassDependencyGraph.png}
+	\includegraphics[width=1\textwidth]{./Visitor/ClassDependencyGraph.png}
 	\caption{Class Dependency Graph: \textit{visit()}}
 	\label{Videpengraph}
 \end{figure}
@@ -779,8 +777,8 @@ We decided to generate a test suite dependent on the \textit{all-edges} criterio
 
 \subsubsection{Tests}
   	
-\paragraph{Topology: method \textit{visit\(\)}}
-We identified the 2 cases of:
+\paragraph{Topology: method \textit{visit()}}
+We identified the 2 cases:
 \begin{itemize}
 		\item Visitor ConcreteVisitor Element ConcreteElement2 Visitor
 		\item Visitor ConcreteVisitor Element ConcreteElement1 Visitor	
@@ -800,7 +798,7 @@ Since the Unit Tests and the Integration Tests are identical, with the only diff
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%8
 
 \chapter{JUnit \& Mockito}
-To generate and execute the test cases of our chosen test suites we utilized the already existent Java frameworks provided by JUnit \cite{1} and Mockito \cite{2}. To further provide a measure of code coverage we utilized the specific JUnit's plug-in EclEmma \cite{3}.
+To generate and execute the test cases of our chosen test suites we utilized the already existent Java frameworks provided by JUnit\cite{1} and Mockito\cite{2}. To further provide a measure of code coverage we utilized the specific JUnit's plug-in EclEmma\cite{3}.
 
 \section{JUnit}
 
@@ -809,14 +807,14 @@ JUnit is an open source unit testing framework for the Java programming language
 JUnit is linked as a JAR at compile-time: the framework resides under package junit.framework for JUnit 3.8 and earlier, and under package org.junit for JUnit 4 and later: this allows JUnit 4 to maintain backward compatibility.
 JUnit 5 is currently in its beta phase.
 
-The framework allows the programmer to easily create \textit{drivers} for the tests and the ability to verify the produced outputs. 
+The framework allows the programmer to easily create \textit{drivers} for the tests and the ability to immediately verify the produced outputs. 
 
 The tests, in fact, return a success if all the \textit{Assertion}s contained therein are verified.
 
 In our project we utilized JUnit 4 for the added functionality it provides: \textit{Annotation}s to identify the test methods and a wider range of Assertions for testing expected results, among which an equality between Arrays which we utilized in our tests.
 
 Main benefits of the framework are: \begin{itemize}
-	\item JUnit tests can be run automatically and check their own results and provide immediate feedback without a need to manually comb through a report of test results.
+	\item JUnit tests can be run automatically, check their own results and provide immediate feedback without a need to manually comb through a report of test results.
 	
 	\item JUnit tests can be organized into test suites containing test cases and even other test suites.
 
@@ -835,7 +833,7 @@ Mock testing frameworks thus come to aid in effectively faking some external dep
 While utilizing the framework we identified some noteworthy details:
 \begin{itemize}
 	\item in the Proxy class we utilized \textit{spy} on the very class we were testing to allow injection of other mocked classes
-	\item the \textit{doReturn().when()} construct is to be preferred to the \textit{when().myMethod()} construct with \textit{spy} due to the fact that the latter actually executes the function and produces side-effects before returning the designed output
+	\item  when using \textit{spy}, the \textit{doReturn().when()} construct is to be preferred to the \textit{when().myMethod()} construct due to the fact that the latter actually executes the function and produces side-effects before returning the designed output
 	\item returning an Answer() allows for side-effects to be produced when a mocked object's method is called. 
 	\item Answer is not necessary if the side-effects are produced only on the very class under test due to the fact that one can independently produce them by simply calling the respective tested methods.
 \end{itemize}
@@ -850,29 +848,30 @@ EclEmma measures the branch coverage of the bytecode produced by the compiler. T
 
 In some cases such highlighting is confusing and can even be impossible to eliminate through testing: the Java compiler in fact sometimes creates additional bytecode that seems to have no relation to the source code (e.g. synthetic classes and methods). 
 
-In some other cases test execution is questionable or impossible by design: for example private, empty default constructors (assuming they receive no calls) or methods that contains no logic, like plain getters and setters,
+In some other cases test execution is questionable or impossible by design: private, empty default constructors (assuming they receive no calls) or methods that contains no logic, like plain getters and setters,
 or even extra exception handlers installed to close resources from try/with statements.
 
 \addcontentsline{toc}{chapter}{\protect\numberline{}Conclusions}
 \chapter*{Conclusions}
-We identified a collection of structural and behavioral design patterns; for each pattern we produced an implementation in Java, which we then studied to identify the main faults they were susceptible to.
-We then created a reasoned test suite based on the fault model and on a coverage criteria chosen pattern by pattern.
+We identified a collection of structural and behavioral design patterns; for each pattern, we produced an implementation in Java, which we then studied to identify the main faults they were susceptible to.
+We created a reasoned test suite based on the fault model and on a coverage criteria chosen pattern by pattern.
 
-We realized both Unit and Integration tests through the JUnit\cite{1} plug-in for Eclipse and the Mockito\cite{2} framework; we then applied EclEmma \cite{3} to provide a code coverage measure.
+We realized both Unit and Integration tests through the JUnit\cite{1} plug-in for Eclipse and the Mockito\cite{2} framework; we then applied EclEmma\cite{3} to provide a code coverage measure.
 
 This measure was subsequently studied to identify both the untested branches and the reason for which they were not covered.
 
 In the end most patterns (except ObjectAdapter, Proxy and Composite) presented a full code coverage.
 
-Even the lowest covered pattern, Proxy, presents a 93.8\% measure of code coverage, with the untested branches being lines of code void of logic, we can thus consider the possibility of relaxing the coverage criteria used: in testing modification of fields through data flow graph rather than applying an \textit{all-uses} criterion we could use an \textit{all-def}; in testing the correct delegation in different topologies (Class Dependency Graph) we could substitute the \textit{all-nodes} criterion to the \textit{all-edges} we used.
+Even the lowest covered pattern, Proxy, presents a 93.8\% measure of code coverage, with the untested branches being lines of code void of logic. We can thus consider the possibility of relaxing the coverage criteria used: in testing modification of fields through data flow graphs, rather than applying an \textit{all-uses} criterion we could use an \textit{all-def}; in testing the correct delegation in different topologies (Class Dependency Graphs) we could substitute the \textit{all-nodes} criterion to the \textit{all-edges} we used.
  
 
-\addcontentsline{toc}{chapter}{\protect\numberline{}The Sitography}
+\addcontentsline{toc}{chapter}{\protect\numberline{}The Bibliography}
 \begin{thebibliography}{9}
 
-\bibitem{1} JUnit \url{http://junit.org/junit4/}
-\bibitem{2} Mockito \url{http://mockito.org/}
-\bibitem{3} EclEmma \url{http://www.eclemma.org/}
+\bibitem{4} E. Gamma, R. Helm, R. Johnson and J. Lasvergeres, \textit{Design Patterns}. Paris: Vuibert, 1999.
+\bibitem{1} JUnit, \url{http://junit.org/junit4/javadoc/latest}, 1 Aug. 2016
+\bibitem{2} Mockito, \url{http://site.mockito.org/mockito/docs/current/org/mockito/Mockito.html}, 1 Aug. 2016
+\bibitem{3} EclEmma, \url{http://www.eclemma.org/index.html}, 1 Aug. 2016
 
 \end{thebibliography}
 \addcontentsline{toc}{chapter}{\protect\numberline{}List of Figures}
