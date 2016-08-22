@@ -48,7 +48,7 @@ keywordstyle=\color{red}\bfseries, commentstyle=\color{blue}, frame= single,}
 % ordine degli strutturali è individuato dalla "naturale" evoluzione in complessità della topologia% 
 \item For each pattern we realize an implementation in Java and we develop a\textbf{ reasoned test suite} based on a realistic \textbf{fault model} and on chosen\textbf{ coverage criteria}.
 
-\item We realize the tests through the \textit{JUnit} plug-in for Eclipse and the \textit{Mockito} framework. \textit{EclEmma} is used to provide a code coverage measure.
+\item We realize the tests through the \textit{JUnit} plug-in for Eclipse and the \textit{Mockito} framework. \textit{EclEmma} is used to provide a code coverage measure(bytecode branch coverage).
 \end{itemize}
 \end{frame}
 \end{subsection}
@@ -58,7 +58,7 @@ keywordstyle=\color{red}\bfseries, commentstyle=\color{blue}, frame= single,}
 	\begin{subsection}{Design Patterns}
 		\begin{frame}
 \only<1>{			\frametitle{Class Adapter}
-Adapts a pre-existent class to a new interface through inheritance.\\Through the new interface the old methods can be directly presented, modified or produce aggregated results.
+\textbf{Adapts a pre-existent class to a new interface through inheritance.}\\Through the new interface the old methods can be directly presented, modified or produce aggregated results.
 
 \begin{figure}[!h]
 	\centering
@@ -70,17 +70,17 @@ Adapts a pre-existent class to a new interface through inheritance.\\Through the
 \only<2>{
 	
 			\frametitle{Class Adapter - Fault Model}
-Given that the pattern focuses on allowing access to legacy methods through a new interface, failures are found in the following situations:  
+The pattern focuses on allowing access to legacy methods through a new interface.
 \begin{itemize}
-	\item the adapter did not inherit from the legacy class or the new interface
-	\item the adapter cannot interact with the legacy methods 
+	\item The adapter did not inherit from the legacy class or the new interface
+	\item The adapter cannot interact with the legacy methods 
 \end{itemize}
 \vspace{5mm}
 
 \begin{Solutions}
 
 \begin{itemize}
-\item test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods
+\item Test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods
 \end{itemize}
 \end{Solutions}
 	}
@@ -91,7 +91,7 @@ Given that the pattern focuses on allowing access to legacy methods through a ne
 		\label{CAdataflow}
 	\end{figure}	
 \vspace{3mm}
-{\footnotesize 	We generated a test suite capable of testing all the \textit{all-uses} paths:
+{\footnotesize Almost all the \textit{\textbf{all-uses}} \textbf{paths}:
 	\begin{itemize}
 		\item Adapter() getInt() 
 		\item Adapter() getBool() 
@@ -108,7 +108,7 @@ Given that the pattern focuses on allowing access to legacy methods through a ne
 		\begin{frame}
 			
 	\only<1>{		\frametitle{Object Adapter}
-Adapts a pre-existent class to a new interface through class composition. Through the new interface the old methods can be directly presented, modified or produce aggregated results.
+\textbf{Adapts a pre-existent class to a new interface through class composition}. Through the new interface the old methods can be directly presented, modified or produce aggregated results.
 
 \begin{figure}[!h]
 	\centering
@@ -119,17 +119,16 @@ Adapts a pre-existent class to a new interface through class composition. Throug
 \only<2>{
 	\frametitle{Object Adapter - Fault Model}
 	
-	Given that the pattern focuses on allowing access to legacy methods through a new interface, failures are found in the following situations:  
+	The pattern focuses on allowing access to legacy methods through a new interface.  
 	\begin{itemize}
-		\item the adapter did not inherit from the legacy class or the new interface
-		\item the adapter cannot interact with the legacy methods 
-		\item the instance contained in the adapter, which inherited the adaptee class, has overrode its methods in an unforeseen way
+		\item The adapter cannot interact with the legacy methods 
+		\item The instance contained in the adapter, which inherited the adaptee class, has overrode its methods in an unforeseen way
 	\end{itemize}
 \vspace{3mm}
 \begin{Solutions}
 
 \begin{itemize}
-	\item  test the ways in which the variable \textit{bool\_value} interacts with the methods, considering all the possible alternative implementations 
+	\item  Test the ways in which the variable \textit{adaptee} interacts with the methods, considering all the possible alternative implementations of the overrode methods.
 \end{itemize}
 \end{Solutions}
 
@@ -140,13 +139,13 @@ Adapts a pre-existent class to a new interface through class composition. Throug
 			\includegraphics[width=0.75\textwidth]{./Adapter/Object/CallGraph.png}	
 			\label{CAdataflow}
 		\end{figure}
-	{\small 	We generated a test suite capable of testing all the \textit{all-uses} paths:
+	{\small 	All the \textbf{\textit{all-uses} paths}:
 		\begin{itemize}
 			\item Adapter() getInt() 
 			\item Adapter() setInt() getInt() 
 			
 		\end{itemize}
-		To these are also added the topology tests:
+		To these are also added the overridden method' tests:
 		\begin{itemize}
 			\item Adapter( Adaptee ) getInt() 
 			\item Adapter( AdapteeOpposite ) getInt()
@@ -161,7 +160,7 @@ Adapts a pre-existent class to a new interface through class composition. Throug
 	\begin{subsection}{Design Patterns}
 		\begin{frame}
 		\only{	\frametitle{Proxy}
-The Proxy pattern is constituted by a class  functioning as an interface to something else, usually a complex or heavy object. It is used to access the real serving object behind the scenes, it either provides a cached result or transmits the request to the actual object.			
+The Proxy pattern is constituted by a class  functioning as an interface to something else, usually a complex or heavy object. It is used to access the real serving object behind the scenes, it either\textbf{ provides a cached result or transmits the request to the actual object}.			
 			\vspace{-4mm}
 \begin{figure}[!h]
 	\centering
@@ -172,15 +171,15 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 	
 \only{		\frametitle{Proxy - Fault Model}
 		
-		The pattern focuses on optimizing or controlling the access to the heavy subject. We have failures in the following situations:  
+		The pattern focuses on optimizing or controlling the access to the heavy subject.  
 		\begin{itemize}
-			\item the access to the RealSubject is impeded
-			\item the cached copies provided by the Proxy differ from the actual source
+			\item The access to the RealSubject is impeded
+			\item The cached copies provided by the Proxy differ from the actual source
 		\end{itemize}
 		\vspace{3mm}
 \begin{Solutions}
 	\begin{itemize}
-	\item	test the ways in which the variable \textit{realSubj} interacts and is modified by the methods \begin{itemize}
+	\item	Test the ways in which the variable \textit{realSubj} interacts and is modified by the methods \begin{itemize}
 		\item[$ \rightarrow $] by slight modification of the tests we can automatically verify the cached versions validity
 	\end{itemize}
 	\end{itemize}
@@ -194,7 +193,7 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 		
 		\label{Prodataflow}
 	\end{figure}
-	{\footnotesize 	We generated a test suite capable of testing all the \textit{all-uses} paths:
+	{\footnotesize 	All the \textbf{\textit{all-uses} paths}:
 		\begin{itemize}
 			\item Proxy() getString() 
 			\item Proxy() getString() getString()
@@ -210,7 +209,7 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 \begin{subsection}{Design Patterns}
 	\begin{frame}\only{
 		\frametitle{Decorator}
-		The Decorator pattern allows behavior to be added to an individual object, either statically or dynamically, without affecting the behavior of other objects from the same class.
+		The Decorator pattern \textbf{allows behavior to be added to an individual object}, either statically or dynamically, without affecting the behavior of other objects from the same class.
 
 \begin{figure}[!h]
 	\centering
@@ -220,14 +219,14 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 		}<1>
 \only{		\frametitle{Decorator - Fault Model}
 		
-		The pattern focuses on allowing an extension of functionality in objects. Grave errors are found in the following situations:  
+		The pattern focuses on allowing an extension of functionality in objects. 
 		\begin{itemize}
-			\item the call to the \textit{operation (getName)} does not reach the Component or results in unexpected behavior
+			\item The call to the \textit{operation (getName)} does not reach the Component or results in unexpected behavior
 		\end{itemize}
 		\vspace{3mm}
 \begin{Solutions}
 	\begin{itemize}
-		\item test the correctness of the sequence of method calls in different hierarchies of classes
+		\item Test the correctness of the sequence of method calls in different hierarchies of classes
 	\end{itemize}
 \end{Solutions}}<2>
 
@@ -239,12 +238,11 @@ The Proxy pattern is constituted by a class  functioning as an interface to some
 	\includegraphics[width=0.95\textwidth]{./Decorator/ClassDepencyGraph.png}
 	\label{Dedepengraph}
 \end{figure}
-{\small We decided to generate a test suite dependent on the \textit{all-edges} criterion.
-We identified the 3 cases of:
+{\small  \textbf{\textit{All-edges}} criterion: 3 cases 
 \begin{itemize}
 	\item ConcreteComponent
-	\item Decorator ConcreteComponent
-	\item Decorator Decorator ConcreteComponent
+	\item ConcreteDecorator1 ConcreteComponent
+	\item ConcreteDecorator1 ConcreteDecorator2 ConcreteComponent
 	
 \end{itemize}}}<3> 		
 
@@ -254,7 +252,7 @@ We identified the 3 cases of:
 \begin{subsection}{Design Patterns}
 	\begin{frame}
 		\only{\frametitle{Composite}
-The Composite pattern "composes" objects into tree structures to represent part-whole hierarchies. Implementing the composite pattern lets clients treat individual objects and compositions uniformly.
+The Composite pattern "composes" objects into tree structures to\textbf{ represent part-whole hierarchies}. Implementing the composite pattern lets clients \textbf{treat individual objects and compositions uniformly}.
 
 \begin{figure}[!h]
 	\centering
@@ -265,16 +263,16 @@ The Composite pattern "composes" objects into tree structures to represent part-
 
 		\only{\frametitle{Composite - Fault Model}
 		
-The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
+The pattern focuses on treating uniformly individual and compound objects.  
 \begin{itemize}
-	\item the common \textit{operation} works differently than expected
-	\item the composite-specific methods produce unexpected effects when called on a Leaf object
+	\item The  common \textit{operation (getValue)} works differently than expected
+	\item The composite-specific methods produce unexpected effects
 \end{itemize}
 		\vspace{3mm}
 \begin{Solutions}
 	\begin{itemize}
-		\item test the way \textit{operation} works under the possible hierarchies at runtime 
-		\item test the way the different objects behave under calls from composite-specific methods
+		\item Test the way \textit{operation} works under the possible hierarchies at runtime  
+		\item Test the way the different objects(\textit{Leaf} and \textit{Composite}) behave under calls from composite-specific methods
 	\end{itemize}
 \end{Solutions}}<2>
 
@@ -283,11 +281,11 @@ The pattern focuses on treating uniformly individual and compound objects. Grave
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}	
+	\includegraphics[width=0.87\textwidth]{./Composite/CallGraph.png}	
 	\label{Codepengraph}
 \end{figure}
 \vspace{-3mm}
-{\footnotesize We generated a test suite capable of testing all the \textit{all-uses} paths:
+{\footnotesize Most \textbf{\textit{all-uses} paths}:
 \begin{itemize}
 	\item Component() getChild()
 	\item Component() getValue()
@@ -301,11 +299,12 @@ The pattern focuses on treating uniformly individual and compound objects. Grave
 		
 		\begin{figure}[!h]
 			\centering
-			\includegraphics[width=0.87\textwidth]{./Composite/CallGraph.png}
 			
-			\label{Codataflow}
+			\includegraphics[width=0.8\textwidth]{./Composite/ClassDepencyGraph.png}
+			
+	
 		\end{figure}
-We identified the 3 cases of:
+\textbf{\textit{All Edges} criterion}: 3 cases 
 \begin{itemize}
 	\item single Leaf
 	\item Composite containing Leaf
@@ -317,7 +316,7 @@ We identified the 3 cases of:
 \begin{subsection}{Design Patterns}
 	\begin{frame}
 		\only{\frametitle{Observer}
-		In the Observer pattern an object, called the subject, maintains a list of its dependents, called observers, and notifies them automatically of any state changes, usually by calling one of their methods.
+		In the Observer pattern an object, called the subject, maintains a list of its dependents, called observers, and \textbf{notifies them automatically of any state changes}, usually by calling one of their methods.
 		
 \begin{figure}[!h]
 	\centering
@@ -327,17 +326,17 @@ We identified the 3 cases of:
 		
 
 		\only{\frametitle{Observer - Fault Model}
-The pattern focuses on maintaining updated objects that expressed the interest in a specific subject. Failures are found in the following situations:  
+The pattern focuses on maintaining updated objects that expressed the interest in a specific subject.  
 \begin{itemize}
-	\item \textit{attach} and \textit{detach} do not produce the expected results
-	\item after a change of the subject state the following observers are not \textit{notified}
-	\item the observer after being notified does not execute correctly the \textit{update} method
+	\item \textit{Attach} and \textit{detach} do not produce the expected results
+	\item After a change of the subject state the  observers are not \textit{notified}
+	\item The observer after being notified does not execute correctly the \textit{update} method
 \end{itemize}
 		\vspace{3mm}
 \begin{Solutions}
 	\begin{itemize}
-			\item test the way \textit{list\_observers} is modified after an inter-class method invocation 
-			\item test the way the \textit{state} of the observer is modified after a notification
+			\item Test the way \textit{list\_observers} is modified after an inter-class method invocation 
+			\item Test the way the \textit{state} of the observer is modified after a notification
 	\end{itemize}
 \end{Solutions}}<2>
 		
@@ -349,7 +348,7 @@ The pattern focuses on maintaining updated objects that expressed the interest i
 	\label{Obdataflow1}
 \end{figure} 
 
-{\footnotesize We generated a test suite capable of testing all the \textit{all-uses} paths:
+{\footnotesize All the \textbf{\textit{all-uses} paths}:
 \begin{itemize}
 	\item Subject() setState()[notify()]	
 	\item Subject() detach() 		
@@ -366,7 +365,7 @@ The pattern focuses on maintaining updated objects that expressed the interest i
 			\label{Obdataflow2}
 		\end{figure}
 		
-We generated a test suite capable of testing all the \textit{all-uses} paths:
+All the \textbf{\textit{all-uses} paths}:
 \begin{itemize}
 	\item ConcreteObserver() getState()
 	\item ConcreteObserver() update() getState()
@@ -379,7 +378,7 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{subsection}{Design Patterns}
 	\begin{frame}
 	\only{	\frametitle{State}
-		The State pattern implements a state machine by implementing each individual state as a derived class of the state pattern interface, and implementing state transitions by invoking methods defined by the pattern's superclass.
+		The State pattern implements a \textbf{state machine} by implementing \textbf{each individual state as a derived class} of the state pattern interface, and implementing state transitions by invoking methods defined by the pattern's superclass.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./State/ClassDiagram.png}
@@ -387,16 +386,16 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 \end{figure}}<1>
 		
 		\only{\frametitle{State - Fault Model}
-		The pattern focuses on delegating the actual methods implementation to internal state classes. Grave errors are found in the following situations:  
+		The pattern focuses on delegating the actual methods implementation to internal state classes.  
 		\begin{itemize}
-			\item internal state changes in an erroneous manner 
-			\item the internal state methods produce unexpected side effects or results
-			\item the internal classes' inner state changes in an erroneous manner
+			\item The context state changes in an erroneous manner 
+			\item The internal state's methods produce unexpected side effects or results
+		
 		\end{itemize}
 		\vspace{3mm}
 		\begin{Solutions}
 			\begin{itemize}
-				\item test the way the \textit{state} field interacts with the StateContext methods
+				\item Test the way the \textit{state} field interacts with the StateContext methods
 			\end{itemize}
 		\end{Solutions}}<2>
 		
@@ -408,7 +407,7 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\label{Sdataflow}
 \end{figure}
 
-We generated a test suite capable of testing all the \textit{all-uses} paths:
+All the \textbf{\textit{all-uses} paths}:
 \begin{itemize}
 	\item StateContext() writeOutput() 
 	\item StateContext() setState() writeOutput()
@@ -422,7 +421,9 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 \begin{subsection}{Design Patterns}
 	\begin{frame}
 	\only{	\frametitle{Visitor}
-The Visitor pattern is a way of separating an algorithm from an object structure on which it operates. The pattern allows one to add new virtual functions to a family of classes without modifying the classes themselves.
+The Visitor pattern is a way of \textbf{separating an algorithm from an object structure on which it operates}. 
+
+The pattern allows one to add new virtual functions to a family of classes without modifying the classes themselves.
 		\vspace{-3mm}
 \begin{figure}[!h]
 	\centering
@@ -431,14 +432,14 @@ The Visitor pattern is a way of separating an algorithm from an object structure
 \end{figure}}<1>
 		
 		\only{\frametitle{Visitor - Fault Model}
-The pattern focuses on treating uniformly objects of different types while operating on them with different specializations of the same function. A failure is produced by the following situation:  
+The pattern focuses on treating uniformly objects of different types while operating on them with different specializations of the same function.
 \begin{itemize}
-	\item the wrong \textit{visit()} is applied to an Element
+	\item The wrong \textit{visit()} is applied to an Element
 \end{itemize}
 		\vspace{3mm}
 \begin{Solutions}
 	\begin{itemize}
-		\item test the way \textit{visit} works when applied to all possible hierarchies of Element types
+		\item Test the way \textit{visit} works when applied to all possible hierarchies of Element types
 	\end{itemize}
 \end{Solutions}}<2>
 		
@@ -449,7 +450,7 @@ The pattern focuses on treating uniformly objects of different types while opera
 	\includegraphics[width=0.84\textwidth]{./Visitor/ClassDependencyGraph.png}
 	\label{Videpengraph}
 \end{figure}
-We identified the 2 cases of:
+\textbf{\textit{All edges} criterion}: 2 cases
 \begin{itemize}
 	\item Visitor ConcreteVisitor Element ConcreteElement2 Visitor
 	\item Visitor ConcreteVisitor Element ConcreteElement1 Visitor	
@@ -466,32 +467,31 @@ We identified the 2 cases of:
 			
 			\frametitle{JUnit}
 			{\small 
-				JUnit is an open source unit testing framework for the Java programming language.
+				\textbf{JUnit} is an open source \textbf{unit} (and integration) \textbf{testing framework} for the \textbf{Java} programming language.
 				The framework allows the programmer to easily create \textit{drivers} for the tests and the ability to verify the produced outputs. 
 				\begin{itemize}
 					
-					\item \textit{Annotation}s identify the test methods 
-					\item \textit{Assertion}s tests for expected results
+					\item \textit{\textbf{Annotation}}s identify the test methods 
+					\item \textit{\textbf{Assertion}}s compare the produced output to expected results and produce a verdict on the test's outcome. 
 					
 				\end{itemize}
 				Main benefits of the framework are: \begin{itemize}
-					\item JUnit tests can be run automatically and check their own results and provide immediate feedback without a need to manually comb through a report of test results.
+					\item JUnit tests can be run automatically, check their own results and provide immediate feedback without a need to manually comb through a report of test results.
 					
 					\item JUnit tests can be organized into test suites containing test cases and even other test suites.
-					
-					\item Junit shows test progress through an user-friendly bar that is green while the tests have not encountered errors and turns red when a test fails.
+				
 					
 				\end{itemize}}
 			\end{frame}
 			\begin{frame}
 				\frametitle{Mockito}
 				\begin{itemize}
-			\item Mockito is an open source testing framework for Java. The framework allows the creation of test double objects also called mock objects.
+			\item Mockito is an open source testing framework for Java. The framework allows the \textbf{creation of test double objects} also called \textbf{mock objects}.
 					
 		\begin{itemize}
-				\item[$ \rightarrow $] mock testing frameworks allow the faking of external dependencies so that the object being tested is isolated from external behaviors
+				\item[$ \rightarrow $] Mock testing frameworks allow the faking of external dependencies so that the object being tested is \textbf{isolated from external behaviors}
 				
-				 \item[$ \rightarrow $] ensuring that objects perform the way they are expected to would require the creation of tests that actually exercise each behavior and verify that it performs as expected. \textit{Costs comparable to implementing the other classes}
+				 \item[$ \rightarrow $] Ensuring that objects perform the way they are expected to would require the creation of tests that actually exercise each behavior and verify that it performs as expected. \textit{With costs comparable to implementing the external dependencies}
 				
 		\end{itemize}
 				\end{itemize}
@@ -502,9 +502,9 @@ We identified the 2 cases of:
 									
 						While utilizing the framework we identified some noteworthy details:
 						\begin{itemize}
-							\item in the Proxy class we utilized \textit{spy} on the very class we were testing to allow injection of other mocked classes.
-							\item when using \textit{spy} the \textit{doReturn().when()} construct is to be preferred to the \textit{when().myMethod()} construct  due to the fact that the latter actually executes the function and produces side-effects before returning the designed output.
-							\item returning an Answer() allows for side-effects to be produced when a mocked object's method is called. 
+							\item in the Proxy class we utilized \textit{spy} \textbf{on the very class we were testing} to allow injection of other mocked classes.
+						
+							\item in the Visitor class we returned an Answer() construct to produce side-effects when the mocked object's methods were called. 
 							\item Answer is not necessary if the side-effects are produced only on the very class under test due to the fact that one can independently produce them by simply calling the respective tested methods.
 						\end{itemize}
 					\end{frame}
@@ -523,7 +523,7 @@ We identified the 2 cases of:
 								\item produced an implementation
 							\end{itemize} 
 							\begin{itemize}
-								\item identified its main faults
+								\item identified the most error-prone points
 							\end{itemize} 
 								\begin{itemize}
 									\vspace{-0.8mm}
@@ -532,7 +532,7 @@ We identified the 2 cases of:
 						
 						\item We realized both Unit and Integration tests through the JUnit plug - in for Eclipse and the Mockito framework.
 								{\footnotesize \begin{itemize}
-									\item[$ \rightarrow $] applied EclEmma to provide a code coverage measure
+									\item[$ \rightarrow $] applied EclEmma to provide a code coverage measure(bytecode branch cov.f)
 								\end{itemize}} 
 								
 						\item We identified both the untested branches and the reason for which they were not covered.

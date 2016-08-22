@@ -99,7 +99,7 @@ In software engineering, a design pattern is a general reusable template to solv
 \begin{itemize}
 	\item \textbf{Adaptee}: legacy class with specific methods and fields
 	\item \textbf{Target}: desired interface
-	\item \textbf{ClassAdapter}: inherits from both Adaptee and Target, adapts the legacy methods to the desired interface  
+	\item \textbf{Adapter}: inherits from both Adaptee and Target, adapts the legacy methods to the desired interface  
 \end{itemize}
 
 \subsubsection{Fault Model}
@@ -173,14 +173,15 @@ If the Adaptee class is declared final, the increased complexity from overridden
 
 \begin{itemize}
 	\item \textbf{Adaptee}: legacy class with specific methods and fields
+	\item \textbf{AdapteeOpposite}: inherits form the legacy class, overrides the getter method
 	\item \textbf{Target}: desired interface
-	\item \textbf{ObjectAdapter}: inherits from Target, adapts the legacy methods to the desired interface through delegation
+	\item \textbf{Adapter}: inherits from Target, adapts the legacy methods to the desired interface through delegation
 \end{itemize}
 
 \subsubsection{Fault Model}
 Given that the pattern focuses on allowing access to legacy methods through a new interface, failures are found in the following situations:  
 \begin{itemize}
-	\item the adapter did not inherit from the legacy class or the new interface
+
 	\item the adapter cannot interact with the legacy methods 
 	\item the instance contained in the adapter, which inherited the adaptee class, has overrode its methods in an unforeseen way
 \end{itemize}
@@ -188,10 +189,9 @@ Given that the pattern focuses on allowing access to legacy methods through a ne
 
 \subsection{Testing}
 
-The sources of failure depend on the inability of the Client to reach the Adaptee methods through the Adapter or in the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden:  we reasoned that it is sufficient to test the ways in which the variable \textit{bool\_value} interacts and is modified by the methods, considering all the existent alternative implementations in the overridden methods. 
+The sources of failure depend on the inability of the Client to reach the Adaptee methods through the Adapter or in the inability of the Adapter in foreseeing the possible ways in which the Adaptee methods can be overridden:  we reasoned that it is sufficient to test the ways in which the variable \textit{adaptee} interacts and is modified by the methods, considering all the existent alternative implementations in the overridden methods. 
 As long as the variable changes in an unexpected way the connection between Client and Adaptee is in fact cut off.
 
-The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable \textit{bool\_value},  and topology, the different ways the classes are ordered in a hierarchy at runtime.
 
 We decided to explore both of them separately in specific focused tests.
 \newline
@@ -204,7 +204,7 @@ The Data Flow Graph can be seen in Figure \ref{OAdataflow}.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=0.84\textwidth]{./Adapter/Object/CallGraph.png}
-	\caption{Data Flow Graph: \textit{bool\_value}}
+	\caption{Data Flow Graph: \textit{adaptee}}
 	\label{OAdataflow}
 \end{figure}
 
@@ -393,8 +393,8 @@ We decided to generate a test suite dependent on the \textit{all-edges} criterio
 We identified the 3 cases of:
 \begin{itemize}
 	\item ConcreteComponent
-	\item Decorator ConcreteComponent
-	\item Decorator Decorator ConcreteComponent
+	\item ConcreteDecorator ConcreteComponent
+	\item ConcreteDecorator1 ConcreteDecorator2 ConcreteComponent
 	
 \end{itemize}
 as representative of the entire set of possible hierarchies.
@@ -437,8 +437,8 @@ The Composite pattern "composes" objects into tree structures to represent part-
 
 The pattern focuses on treating uniformly individual and compound objects. Grave errors are found in the following situations:  
 \begin{itemize}
-	\item the common \textit{operation} works differently than expected
-	\item the composite-specific methods produce unexpected results when called on a Leaf object
+	\item the common \textit{operation (getValue)} works differently than expected
+	\item the composite-specific methods produce unexpected results(either do not throw exceptions when applied on a Leaf or produce wrong results when applied on a Composite)
 \end{itemize}
 
 
@@ -448,12 +448,12 @@ The sources of failure depend on the inability of the specific components (indiv
 
 As long as outcomes different from the expectation are observed we can reasonably predict that no uniform treatments of the components is in place.
 
-The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable \textit{price},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
+The problem of testing thus expands in two different orthogonal dimensions: data flow, the series of calls that modify or use the variable \textit{vector},  and topology, the different hierarchies of objects with respect to the method \textit{operation}.
 
 
 We decided to explore both of them separately in specific focused tests.
 
-\paragraph{Data Flow: field \textit{price}}
+\paragraph{Data Flow: field \textit{vector}}
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks represent functions.
 
 \subparagraph{Data Flow Graph}
@@ -462,15 +462,16 @@ The Data Flow Graph can be seen in Figure \ref{Codataflow}.
 \begin{figure}[!h]
 	\centering
 	\includegraphics[width=1\textwidth]{./Composite/CallGraph.png}
-	\caption{Data Flow Graph: \textit{price}}
+	\caption{Data Flow Graph: \textit{vector}}
 	\label{Codataflow}
 \end{figure}
 
 \vspace{7mm}
-We decided to test the interaction between the variable and the methods following the\textit{ all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
+We decided to test the interaction between the variable and the methods following the\textit{all-uses} criterion, we deemed the \textit{all-def} criterion excessively restrictive to test this pattern.
 
-The field was tested in the fixed hierarchy formed with a Composite element containing another Composite, which contained a Leaf.  
+The field was tested in a fixed hierarchy formed with a Composite element containing another Composite, which contained a Leaf.  
 We reasoned that the chosen fixed hierarchy, while not allowing to test on each possible instance, is sufficiently complete, maintaining a balance between number of tests and efficiency.
+To be noted though is that the fixed hierarchy actually changes during the execution of the tests due to the application of methods like \textit{add() }and \textit{remove()}
   
   
   
@@ -490,8 +491,8 @@ We decided to generate a test suite dependent on the \textit{all-edges} criterio
 
 \subsubsection{Tests}
 
-\paragraph{Data Flow: field \textit{price}}
-We generated a test suite capable of testing all the \textit{all-uses} paths:
+\paragraph{Data Flow: field \textit{vector}}
+We generated a test suite capable of testing most \textit{all-uses} paths:
 \begin{itemize}
 	\item Component() getChild()
 	\item Component() getValue()
@@ -500,6 +501,8 @@ We generated a test suite capable of testing all the \textit{all-uses} paths:
 	\item Component() add() add() remove() getChild()
 	\item Component() add() add() remove() getValue() 
 \end{itemize}
+
+The cases where \textit{remove()} was called before \textit{add()} are not considered, we pass the responsibility of not calling the methods in such order to the Client.
 
 \paragraph{Topology: methods \textit{composition-specific}}
 We identified the 3 cases of:
@@ -590,7 +593,7 @@ We decided to test the interaction between the variable and the methods followin
 We have represented the field's interaction with the class methods through a data flow graph in which the granularity was set such that basic blocks represent functions.
 
 \subparagraph{Data Flow Graph}
-Both Client and followed Subjects interacts with the Component methods.
+Both Client and followed Subjects interacts with the ConcreteObserver methods.
 The Data Flow Graph can be seen in Figure \ref{Obdataflow2}.
 \begin{figure}[!h]
 	\centering
@@ -803,7 +806,7 @@ To generate and execute the test cases of our chosen test suites we utilized the
 
 \section{JUnit}
 
-JUnit is an open source unit testing framework for the Java programming language. JUnit has been important in the development of test-driven development and is one of a family of unit testing frameworks which is collectively known as xUnit that originated with SUnit.
+JUnit is an open source unit (and integration) testing framework for the Java programming language. JUnit has been important in the development of test-driven development and is one of a family of unit testing frameworks which is collectively known as xUnit that originated with SUnit.
 
 JUnit is linked as a JAR at compile-time: the framework resides under package junit.framework for JUnit 3.8 and earlier, and under package org.junit for JUnit 4 and later: this allows JUnit 4 to maintain backward compatibility.
 JUnit 5 is currently in its beta phase.
